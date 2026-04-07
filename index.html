@@ -3,511 +3,162 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sanit Climat – Générateur de Contrats</title>
+<title>Sanit Climat — Générateur de Contrats</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
 
-  :root {
-    --cyan: #1E88C7;
-    --cyan-dark: #1565A0;
-    --cyan-light: #E3F2FD;
-    --dark: #0D1B2A;
-    --mid: #2C3E50;
-    --gray: #6B7A8D;
-    --light: #F5F8FA;
-    --white: #FFFFFF;
-    --success: #27AE60;
-    --danger: #E74C3C;
-    --border: #D5E3EE;
-    --radius: 12px;
-    --shadow: 0 4px 24px rgba(30,136,199,0.10);
-    --shadow-lg: 0 12px 48px rgba(30,136,199,0.18);
-  }
+:root {
+  --cyan: #1E88C7;
+  --cyan-dark: #1565A0;
+  --cyan-light: #E3F2FD;
+  --dark: #0D1B2A;
+  --mid: #2C3E50;
+  --gray: #6B7A8D;
+  --light: #F4F7FA;
+  --white: #FFFFFF;
+  --success: #27AE60;
+  --danger: #E74C3C;
+  --border: #D5E3EE;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(30,136,199,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--light); color: var(--dark); min-height: 100vh; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* HEADER */
+header {
+  background: var(--dark);
+  color: white;
+  padding: 0 40px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon { width: 38px; height: 38px; background: var(--cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.logo-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 17px; }
+.logo-sub { font-size: 10px; color: var(--cyan); letter-spacing: 2px; text-transform: uppercase; margin-top: 1px; }
+.badge { background: rgba(30,136,199,0.25); border: 1px solid var(--cyan); color: var(--cyan); padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--light);
-    color: var(--dark);
-    min-height: 100vh;
-  }
+/* CONTAINER */
+.container { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+.page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 30px; margin-bottom: 4px; }
+.page-title span { color: var(--cyan); }
+.page-sub { color: var(--gray); font-size: 14px; margin-bottom: 36px; }
 
-  /* ── HEADER ─────────────────────────────────────────── */
-  header {
-    background: var(--dark);
-    color: var(--white);
-    padding: 0 40px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .logo-icon {
-    width: 36px;
-    height: 36px;
-    background: var(--cyan);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-  }
-  .logo-text {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 18px;
-    letter-spacing: 0.5px;
-  }
-  .logo-sub {
-    font-size: 11px;
-    color: var(--cyan);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-  }
-  .header-badge {
-    background: var(--cyan);
-    color: white;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-  }
+/* STEPS */
+.steps { display: flex; background: white; border-radius: var(--radius); padding: 6px; box-shadow: var(--shadow); margin-bottom: 32px; overflow-x: auto; gap: 2px; }
+.step { flex: 1; min-width: 110px; padding: 11px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--gray); font-weight: 600; white-space: nowrap; transition: all .2s; user-select: none; }
+.step.active { background: var(--cyan); color: white; }
+.step.done { background: var(--cyan-light); color: var(--cyan-dark); cursor: pointer; }
+.step-num { width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; flex-shrink: 0; }
+.step.active .step-num { background: rgba(255,255,255,0.25); }
+.step.done .step-num { background: var(--cyan); color: white; }
 
-  /* ── MAIN LAYOUT ────────────────────────────────────── */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px 24px;
-  }
+/* PANELS */
+.panel { background: white; border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px; margin-bottom: 20px; display: none; animation: fadeIn .25s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.panel-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; color: var(--dark); }
+.panel-icon { width: 36px; height: 36px; background: var(--cyan-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
 
-  .page-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 32px;
-    margin-bottom: 6px;
-    background: linear-gradient(135deg, var(--dark) 0%, var(--cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .page-sub {
-    color: var(--gray);
-    font-size: 15px;
-    margin-bottom: 40px;
-  }
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field.s2 { grid-column: span 2; }
+.field.s3 { grid-column: span 3; }
+label { font-size: 11px; font-weight: 700; color: var(--mid); text-transform: uppercase; letter-spacing: 0.7px; }
+input, select, textarea {
+  border: 2px solid var(--border); border-radius: 8px; padding: 10px 13px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--dark);
+  background: white; transition: border-color .15s; outline: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--cyan); }
+select { cursor: pointer; }
+.hint { font-size: 11px; color: var(--gray); margin-top: 3px; }
 
-  /* ── STEPS PROGRESS ─────────────────────────────────── */
-  .steps {
-    display: flex;
-    gap: 0;
-    margin-bottom: 40px;
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 6px;
-    box-shadow: var(--shadow);
-    overflow-x: auto;
-  }
-  .step {
-    flex: 1;
-    min-width: 120px;
-    padding: 12px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--gray);
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  .step.active {
-    background: var(--cyan);
-    color: white;
-  }
-  .step.done {
-    background: var(--cyan-light);
-    color: var(--cyan-dark);
-  }
-  .step-num {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-  .step.active .step-num { background: rgba(255,255,255,0.3); }
-  .step.done .step-num { background: var(--cyan); color: white; }
+/* TYPE CARDS */
+.type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tc {
+  border: 2px solid var(--border); border-radius: var(--radius); padding: 18px 12px;
+  cursor: pointer; transition: all .2s; text-align: center; position: relative;
+  user-select: none;
+}
+.tc:hover { border-color: var(--cyan); background: var(--cyan-light); transform: translateY(-2px); }
+.tc.sel { border-color: var(--cyan); background: var(--cyan-light); }
+.tc.sel::after { content: '✓'; position: absolute; top: 8px; right: 10px; color: var(--cyan); font-weight: 800; font-size: 13px; }
+.tc-icon { font-size: 28px; margin-bottom: 8px; }
+.tc-label { font-weight: 700; font-size: 13px; color: var(--dark); line-height: 1.3; }
+.tc-sub { font-size: 11px; color: var(--gray); margin-top: 3px; }
 
-  /* ── FORM PANELS ────────────────────────────────────── */
-  .panel {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 32px;
-    margin-bottom: 24px;
-    display: none;
-  }
-  .panel.active { display: block; }
+/* TOGGLE */
+.toggle { display: flex; border: 2px solid var(--border); border-radius: 8px; overflow: hidden; width: fit-content; }
+.tbtn { padding: 9px 20px; border: none; background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--gray); transition: all .15s; }
+.tbtn.on { background: var(--cyan); color: white; }
 
-  .panel-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 24px;
-    color: var(--dark);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .panel-title-icon {
-    width: 36px;
-    height: 36px;
-    background: var(--cyan-light);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
+/* ROWS */
+.rows-list { display: flex; flex-direction: column; gap: 10px; }
+.eq-row, .pr-row {
+  display: grid; gap: 10px; align-items: end;
+  background: var(--light); border-radius: 8px; padding: 12px;
+}
+.eq-row { grid-template-columns: 2fr 80px 2fr 36px; }
+.pr-row { grid-template-columns: 2fr 80px 80px 120px 36px; }
+.btn-rm { width: 36px; height: 36px; border: none; background: #FFE5E5; color: var(--danger); border-radius: 6px; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: all .15s; align-self: flex-end; }
+.btn-rm:hover { background: var(--danger); color: white; }
+.btn-add { display: flex; align-items: center; gap: 8px; padding: 9px 18px; border: 2px dashed var(--cyan); background: none; color: var(--cyan); border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; transition: all .15s; margin-top: 4px; }
+.btn-add:hover { background: var(--cyan-light); }
 
-  /* ── FORM ELEMENTS ──────────────────────────────────── */
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
-  .form-grid.full { grid-template-columns: 1fr; }
+/* NAV */
+.nav { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+.btn { padding: 11px 28px; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; }
+.btn-p { background: var(--cyan); color: white; }
+.btn-p:hover { background: var(--cyan-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(30,136,199,0.3); }
+.btn-s { background: var(--light); color: var(--mid); border: 2px solid var(--border); }
+.btn-s:hover { background: var(--border); }
+.btn-gen { background: var(--success); color: white; padding: 13px 36px; font-size: 15px; }
+.btn-gen:hover { background: #219653; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.35); }
+.btn-gen:disabled { opacity: .5; cursor: not-allowed; transform: none !important; }
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .field.span2 { grid-column: span 2; }
-  .field.span3 { grid-column: span 3; }
+/* RECAP */
+.recap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.rb { background: var(--light); border-radius: 10px; padding: 14px 16px; border-left: 4px solid var(--cyan); }
+.rb-title { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gray); font-weight: 700; margin-bottom: 10px; }
+.rr { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; gap: 8px; }
+.rk { color: var(--gray); }
+.rv { font-weight: 700; text-align: right; }
+.total-bar { background: var(--cyan); color: white; border-radius: 12px; padding: 18px 24px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.tb-label { font-size: 13px; opacity: .9; }
+.tb-ht { font-size: 11px; opacity: .75; margin-top: 2px; }
+.tb-amount { font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800; }
 
-  label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--mid);
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-  }
+/* STATUS */
+.status { text-align: center; padding: 32px 20px; }
+.spinner { width: 44px; height: 44px; border: 4px solid var(--border); border-top-color: var(--cyan); border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 16px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.ok-icon { width: 60px; height: 60px; background: var(--success); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px; animation: pop .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.dl-btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 32px; background: #2B579A; color: white; border-radius: 10px; text-decoration: none; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; transition: all .2s; cursor: pointer; border: none; margin-top: 16px; }
+.dl-btn:hover { background: #1e4080; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43,87,154,0.4); }
 
-  input, select, textarea {
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--dark);
-    background: var(--white);
-    transition: border-color 0.15s;
-    outline: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--cyan);
-  }
-  textarea { resize: vertical; min-height: 80px; }
+hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
+.note { font-size: 12px; color: var(--gray); background: var(--cyan-light); border-left: 3px solid var(--cyan); border-radius: 6px; padding: 9px 13px; margin-bottom: 16px; }
 
-  /* ── TYPE CARDS ─────────────────────────────────────── */
-  .type-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 8px;
-  }
-  .type-card {
-    border: 2px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: center;
-    position: relative;
-  }
-  .type-card:hover { border-color: var(--cyan); background: var(--cyan-light); }
-  .type-card.selected { border-color: var(--cyan); background: var(--cyan-light); }
-  .type-card.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    color: var(--cyan);
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .type-card-icon { font-size: 28px; margin-bottom: 8px; }
-  .type-card-label {
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--dark);
-    line-height: 1.3;
-  }
-  .type-card-sub {
-    font-size: 11px;
-    color: var(--gray);
-    margin-top: 4px;
-  }
-
-  /* ── PRESTATION ROWS ────────────────────────────────── */
-  .prestations-list { display: flex; flex-direction: column; gap: 12px; }
-  .presta-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 36px;
-    gap: 10px;
-    align-items: end;
-    background: var(--light);
-    border-radius: 8px;
-    padding: 14px;
-  }
-  .presta-row label { font-size: 11px; }
-  .btn-remove {
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: #FFE5E5;
-    color: var(--danger);
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.15s;
-    align-self: flex-end;
-  }
-  .btn-remove:hover { background: var(--danger); color: white; }
-
-  .btn-add-presta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border: 2px dashed var(--cyan);
-    background: transparent;
-    color: var(--cyan);
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.15s;
-    width: fit-content;
-  }
-  .btn-add-presta:hover { background: var(--cyan-light); }
-
-  /* ── NAV BUTTONS ────────────────────────────────────── */
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 32px;
-    gap: 16px;
-  }
-  .btn {
-    padding: 12px 32px;
-    border: none;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-  }
-  .btn-primary {
-    background: var(--cyan);
-    color: white;
-  }
-  .btn-primary:hover { background: var(--cyan-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
-  .btn-secondary {
-    background: var(--light);
-    color: var(--mid);
-    border: 2px solid var(--border);
-  }
-  .btn-secondary:hover { background: var(--border); }
-  .btn-success {
-    background: var(--success);
-    color: white;
-    padding: 14px 40px;
-    font-size: 15px;
-  }
-  .btn-success:hover { background: #219653; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.3); }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-
-  /* ── RECAP ──────────────────────────────────────────── */
-  .recap-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .recap-block {
-    background: var(--light);
-    border-radius: 10px;
-    padding: 16px;
-    border-left: 4px solid var(--cyan);
-  }
-  .recap-block-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--gray);
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-  .recap-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    margin-bottom: 6px;
-    gap: 10px;
-  }
-  .recap-key { color: var(--gray); }
-  .recap-val { font-weight: 600; color: var(--dark); text-align: right; }
-
-  .total-block {
-    background: var(--cyan);
-    color: white;
-    border-radius: 12px;
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  .total-label { font-size: 14px; opacity: 0.9; }
-  .total-amount { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
-  .total-ht { font-size: 12px; opacity: 0.8; }
-
-  /* ── LOADING / SUCCESS ──────────────────────────────── */
-  .gen-status {
-    display: none;
-    text-align: center;
-    padding: 40px;
-  }
-  .gen-status.show { display: block; }
-  .spinner {
-    width: 48px;
-    height: 48px;
-    border: 4px solid var(--border);
-    border-top-color: var(--cyan);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin: 0 auto 20px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .success-icon {
-    width: 64px;
-    height: 64px;
-    background: var(--success);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    margin: 0 auto 20px;
-    animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-
-  .download-buttons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 20px;
-  }
-  .btn-download {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 28px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    transition: all 0.2s;
-    cursor: pointer;
-    border: none;
-  }
-  .btn-dl-word { background: #2B579A; color: white; }
-  .btn-dl-word:hover { background: #1e4080; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43,87,154,0.4); }
-
-  /* ── DIVIDER ────────────────────────────────────────── */
-  .divider {
-    border: none;
-    border-top: 2px solid var(--border);
-    margin: 24px 0;
-  }
-
-  .section-sub {
-    font-size: 12px;
-    color: var(--gray);
-    margin-bottom: 16px;
-    padding: 10px 14px;
-    background: var(--cyan-light);
-    border-radius: 6px;
-    border-left: 3px solid var(--cyan);
-  }
-
-  /* ── TOGGLE CLIENT TYPE ─────────────────────────────── */
-  .toggle-group {
-    display: flex;
-    gap: 0;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    width: fit-content;
-  }
-  .toggle-btn {
-    padding: 10px 20px;
-    border: none;
-    background: var(--white);
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--gray);
-    transition: all 0.15s;
-  }
-  .toggle-btn.active {
-    background: var(--cyan);
-    color: white;
-  }
-
-  @media (max-width: 768px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .form-grid.cols3 { grid-template-columns: 1fr; }
-    .field.span2, .field.span3 { grid-column: span 1; }
-    .type-cards { grid-template-columns: repeat(2, 1fr); }
-    .presta-row { grid-template-columns: 1fr 1fr; }
-    .recap-grid { grid-template-columns: 1fr; }
-  }
+@media(max-width:720px) {
+  .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
+  .field.s2, .field.s3 { grid-column: span 1; }
+  .type-grid { grid-template-columns: repeat(2, 1fr); }
+  .eq-row { grid-template-columns: 1fr 60px 36px; }
+  .pr-row { grid-template-columns: 1fr 1fr; }
+  .recap-grid { grid-template-columns: 1fr; }
+  header { padding: 0 16px; }
+  .container { padding: 24px 14px 60px; }
+}
 </style>
 </head>
 <body>
@@ -516,647 +167,819 @@
   <div class="logo">
     <div class="logo-icon">🔥</div>
     <div>
-      <div class="logo-text">Sanit Climat</div>
+      <div class="logo-name">Sanit Climat</div>
       <div class="logo-sub">Générateur de contrats</div>
     </div>
   </div>
-  <div class="header-badge">v2.0 — Marseille</div>
+  <div class="badge">✦ Standalone — aucune installation</div>
 </header>
 
 <div class="container">
-  <div class="page-title">Nouveau contrat de maintenance</div>
-  <div class="page-sub">Renseignez les informations ci-dessous pour générer le contrat complet en Word.</div>
+  <div class="page-title">Nouveau <span>contrat</span> de maintenance</div>
+  <div class="page-sub">Remplissez les 5 étapes · Le fichier Word se télécharge directement dans votre navigateur</div>
 
-  <!-- Steps -->
+  <!-- STEPS NAV -->
   <div class="steps">
-    <div class="step active" id="step-1" onclick="goStep(1)">
-      <div class="step-num">1</div>Type de contrat
-    </div>
-    <div class="step" id="step-2" onclick="goStep(2)">
-      <div class="step-num">2</div>Informations client
-    </div>
-    <div class="step" id="step-3" onclick="goStep(3)">
-      <div class="step-num">3</div>Site & équipements
-    </div>
-    <div class="step" id="step-4" onclick="goStep(4)">
-      <div class="step-num">4</div>Tarification
-    </div>
-    <div class="step" id="step-5" onclick="goStep(5)">
-      <div class="step-num">5</div>Durée & récap
-    </div>
+    <div class="step active" id="s1" onclick="goTo(1)"><div class="step-num">1</div>Type</div>
+    <div class="step" id="s2" onclick="goTo(2)"><div class="step-num">2</div>Client</div>
+    <div class="step" id="s3" onclick="goTo(3)"><div class="step-num">3</div>Site & équipements</div>
+    <div class="step" id="s4" onclick="goTo(4)"><div class="step-num">4</div>Tarification</div>
+    <div class="step" id="s5" onclick="goTo(5)"><div class="step-num">5</div>Durée & génération</div>
   </div>
 
-  <!-- STEP 1: Type de contrat -->
-  <div class="panel active" id="panel-1">
-    <div class="panel-title">
-      <div class="panel-title-icon">📋</div>
-      Choisissez le type de contrat
-    </div>
-    <div class="type-cards">
-      <div class="type-card" data-type="chaudiere" onclick="selectType(this)">
-        <div class="type-card-icon">🔥</div>
-        <div class="type-card-label">Chaudière</div>
-        <div class="type-card-sub">Entretien chaudières gaz</div>
+  <!-- ── STEP 1 : TYPE ── -->
+  <div class="panel active" id="p1">
+    <div class="panel-title"><div class="panel-icon">📋</div>Type de contrat</div>
+    <div class="type-grid">
+      <div class="tc" data-t="chaudiere" onclick="pickType(this)">
+        <div class="tc-icon">🔥</div>
+        <div class="tc-label">Chaudière</div>
+        <div class="tc-sub">Entretien chaudières gaz</div>
       </div>
-      <div class="type-card" data-type="vmc" onclick="selectType(this)">
-        <div class="type-card-icon">💨</div>
-        <div class="type-card-label">VMC</div>
-        <div class="type-card-sub">Moteurs VMC</div>
+      <div class="tc" data-t="vmc" onclick="pickType(this)">
+        <div class="tc-icon">💨</div>
+        <div class="tc-label">VMC</div>
+        <div class="tc-sub">Moteurs VMC</div>
       </div>
-      <div class="type-card" data-type="multi" onclick="selectType(this)">
-        <div class="type-card-icon">🏢</div>
-        <div class="type-card-label">Multi-équipements</div>
-        <div class="type-card-sub">VMC + Chaudières + Ramonage</div>
+      <div class="tc" data-t="multi" onclick="pickType(this)">
+        <div class="tc-icon">🏢</div>
+        <div class="tc-label">Multi-équipements</div>
+        <div class="tc-sub">VMC + Chaudières + Ramonage</div>
       </div>
-      <div class="type-card" data-type="thermodynamique" onclick="selectType(this)">
-        <div class="type-card-icon">💧</div>
-        <div class="type-card-label">Ballon thermodynamique</div>
-        <div class="type-card-sub">Chauffe-eau thermodynamique</div>
+      <div class="tc" data-t="thermodynamique" onclick="pickType(this)">
+        <div class="tc-icon">💧</div>
+        <div class="tc-label">Ballon thermodynamique</div>
+        <div class="tc-sub">Chauffe-eau thermodynamique</div>
       </div>
-      <div class="type-card" data-type="climatisation" onclick="selectType(this)">
-        <div class="type-card-icon">❄️</div>
-        <div class="type-card-label">Génie climatique</div>
-        <div class="type-card-sub">Climatisation / split</div>
+      <div class="tc" data-t="climatisation" onclick="pickType(this)">
+        <div class="tc-icon">❄️</div>
+        <div class="tc-label">Génie climatique</div>
+        <div class="tc-sub">Climatisation / split</div>
       </div>
-      <div class="type-card" data-type="maintenance" onclick="selectType(this)">
-        <div class="type-card-icon">🔧</div>
-        <div class="type-card-label">Maintenance générale</div>
-        <div class="type-card-sub">Autre équipement</div>
+      <div class="tc" data-t="maintenance" onclick="pickType(this)">
+        <div class="tc-icon">🔧</div>
+        <div class="tc-label">Maintenance générale</div>
+        <div class="tc-sub">Autre équipement</div>
       </div>
     </div>
-    <div class="nav-buttons">
-      <div></div>
-      <button class="btn btn-primary" onclick="nextStep(1)">Suivant →</button>
-    </div>
+    <div class="nav"><div></div><button class="btn btn-p" onclick="next(1)">Suivant →</button></div>
   </div>
 
-  <!-- STEP 2: Client -->
-  <div class="panel" id="panel-2">
-    <div class="panel-title">
-      <div class="panel-title-icon">👤</div>
-      Informations client
-    </div>
-
-    <div class="field" style="margin-bottom: 20px;">
+  <!-- ── STEP 2 : CLIENT ── -->
+  <div class="panel" id="p2">
+    <div class="panel-title"><div class="panel-icon">👤</div>Informations client</div>
+    <div class="field" style="margin-bottom:18px;">
       <label>Type de client</label>
-      <div class="toggle-group">
-        <button class="toggle-btn active" id="btn-bailleur" onclick="setClientType('bailleur')">Bailleur / SDC / Syndic</button>
-        <button class="toggle-btn" id="btn-particulier" onclick="setClientType('particulier')">Particulier</button>
+      <div class="toggle">
+        <button class="tbtn on" id="tb-bail" onclick="setCT('bailleur')">Bailleur / SDC / Syndic</button>
+        <button class="tbtn" id="tb-part" onclick="setCT('particulier')">Particulier / Entreprise</button>
       </div>
     </div>
-
-    <div id="fields-bailleur" class="form-grid">
-      <div class="field span2">
-        <label>Nom du Syndicat / SDC *</label>
-        <input type="text" id="clientNom" placeholder="ex: SDC DEBUSSY" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Représenté par (Bailleur) *</label>
-        <input type="text" id="clientRepresentant" placeholder="ex: LOGIS MEDITERRANEE" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Représentant physique</label>
-        <input type="text" id="clientRepresentant2" placeholder="ex: M. Bernard RANVIER (DGD)">
-      </div>
-      <div class="field">
-        <label>Adresse ligne 1 *</label>
-        <input type="text" id="clientAdresse1" placeholder="ex: Résidence HYDE PARK" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Adresse ligne 2</label>
-        <input type="text" id="clientAdresse2" placeholder="ex: 180 avenue Jules Cantini">
-      </div>
-      <div class="field">
-        <label>Code postal + Ville *</label>
-        <input type="text" id="clientAdresse3" placeholder="ex: 13295 MARSEILLE CDX 08" oninput="updateRecap()">
-      </div>
+    <!-- bailleur -->
+    <div id="f-bail" class="form-grid">
+      <div class="field s2"><label>Nom du Syndicat / SDC *</label><input id="cNom" placeholder="ex: SDC DEBUSSY" oninput="updR()"></div>
+      <div class="field"><label>Représenté par (bailleur) *</label><input id="cRep" placeholder="ex: LOGIS MEDITERRANEE" oninput="updR()"></div>
+      <div class="field"><label>Représentant physique</label><input id="cRep2" placeholder="ex: M. Bernard RANVIER (DGD)"></div>
+      <div class="field"><label>Adresse ligne 1 *</label><input id="cAdr1" placeholder="ex: Résidence HYDE PARK" oninput="updR()"></div>
+      <div class="field"><label>Adresse ligne 2</label><input id="cAdr2" placeholder="ex: 180 avenue Jules Cantini"></div>
+      <div class="field"><label>CP + Ville *</label><input id="cAdr3" placeholder="ex: 13295 MARSEILLE CDX 08"></div>
     </div>
-
-    <div id="fields-particulier" class="form-grid" style="display:none;">
-      <div class="field">
-        <label>Civilité</label>
-        <select id="clientCivilite">
-          <option value="Mr">Mr</option>
-          <option value="Mme">Mme</option>
-          <option value="M. et Mme">M. et Mme</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Nom *</label>
-        <input type="text" id="clientNomPart" placeholder="ex: ARMAGANIAN" oninput="syncParticulier()">
-      </div>
-      <div class="field span2">
-        <label>Adresse ligne 1 *</label>
-        <input type="text" id="clientAdr1Part" placeholder="ex: Lotissement Les CARDELINES" oninput="syncParticulier()">
-      </div>
-      <div class="field">
-        <label>Complément adresse</label>
-        <input type="text" id="clientAdr2Part" placeholder="ex: N° 14" oninput="syncParticulier()">
-      </div>
-      <div class="field">
-        <label>Code postal + Ville *</label>
-        <input type="text" id="clientAdr3Part" placeholder="ex: 13170 LES PENNES MIRABEAU" oninput="syncParticulier()">
-      </div>
+    <!-- particulier -->
+    <div id="f-part" class="form-grid" style="display:none">
+      <div class="field"><label>Civilité</label><select id="cCiv"><option>Mr</option><option>Mme</option><option>M. et Mme</option><option>La Société</option></select></div>
+      <div class="field"><label>Nom / Société *</label><input id="cNomP" placeholder="ex: ARMAGANIAN" oninput="syncP()"></div>
+      <div class="field s2"><label>Adresse ligne 1 *</label><input id="cA1P" placeholder="ex: Lotissement Les CARDELINES" oninput="syncP()"></div>
+      <div class="field"><label>Complément</label><input id="cA2P" placeholder="ex: N° 14" oninput="syncP()"></div>
+      <div class="field"><label>CP + Ville *</label><input id="cA3P" placeholder="ex: 13170 LES PENNES MIRABEAU" oninput="syncP()"></div>
     </div>
-
-    <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="prevStep(2)">← Précédent</button>
-      <button class="btn btn-primary" onclick="nextStep(2)">Suivant →</button>
-    </div>
+    <div class="nav"><button class="btn btn-s" onclick="prev(2)">← Précédent</button><button class="btn btn-p" onclick="next(2)">Suivant →</button></div>
   </div>
 
-  <!-- STEP 3: Site & équipements -->
-  <div class="panel" id="panel-3">
-    <div class="panel-title">
-      <div class="panel-title-icon">🏗️</div>
-      Site & équipements
+  <!-- ── STEP 3 : SITE ── -->
+  <div class="panel" id="p3">
+    <div class="panel-title"><div class="panel-icon">🏗️</div>Site & équipements</div>
+    <div class="form-grid" style="margin-bottom:20px;">
+      <div class="field"><label>Nom de la résidence / site *</label><input id="rNom" placeholder="ex: Résidence LES BARTAVELLES" oninput="updR()"></div>
+      <div class="field"><label>Adresse complète du site *</label><input id="rAdr" placeholder="ex: 63 Chemin du Bon Civet 13400 AUBAGNE"></div>
     </div>
-
-    <div class="form-grid">
-      <div class="field">
-        <label>Nom de la résidence / site *</label>
-        <input type="text" id="residenceNom" placeholder="ex: Résidence LES BARTAVELLES" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Adresse du site *</label>
-        <input type="text" id="residenceAdresse" placeholder="ex: 63 Chemin du Bon Civet 13400 AUBAGNE">
-      </div>
-    </div>
-
-    <hr class="divider">
-    <div class="section-sub">📦 Listez les équipements à entretenir (pour l'annexe de liste)</div>
-
-    <div id="equipements-list" class="prestations-list">
-      <!-- Dynamically generated -->
-    </div>
-    <button class="btn-add-presta" onclick="addEquipement()">+ Ajouter un équipement</button>
-
-    <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="prevStep(3)">← Précédent</button>
-      <button class="btn btn-primary" onclick="nextStep(3)">Suivant →</button>
-    </div>
+    <hr class="div">
+    <div class="note">📦 Listez les équipements (pour l'annexe — facultatif)</div>
+    <div id="eq-list" class="rows-list"></div>
+    <button class="btn-add" onclick="addEq()">＋ Ajouter un équipement</button>
+    <div class="nav"><button class="btn btn-s" onclick="prev(3)">← Précédent</button><button class="btn btn-p" onclick="next(3)">Suivant →</button></div>
   </div>
 
-  <!-- STEP 4: Tarification -->
-  <div class="panel" id="panel-4">
-    <div class="panel-title">
-      <div class="panel-title-icon">💰</div>
-      Tarification
-    </div>
-
-    <div class="field" style="margin-bottom: 20px;">
-      <label>Mode de tarification</label>
-      <div class="toggle-group">
-        <button class="toggle-btn active" id="btn-simple" onclick="setTarifMode('simple')">Montant global</button>
-        <button class="toggle-btn" id="btn-multi" onclick="setTarifMode('multi')">Détail par prestation</button>
+  <!-- ── STEP 4 : TARIFICATION ── -->
+  <div class="panel" id="p4">
+    <div class="panel-title"><div class="panel-icon">💰</div>Tarification</div>
+    <div class="field" style="margin-bottom:18px;">
+      <label>Mode de saisie</label>
+      <div class="toggle">
+        <button class="tbtn on" id="tb-sim" onclick="setTM('simple')">Montant global</button>
+        <button class="tbtn" id="tb-mul" onclick="setTM('multi')">Détail par prestation</button>
       </div>
     </div>
-
-    <!-- Simple -->
-    <div id="tarif-simple" class="form-grid">
-      <div class="field">
-        <label>Nombre de visites annuelles</label>
-        <input type="text" id="nombreVisites" value="1 visite annuelle" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Montant H.T. (€) *</label>
-        <input type="number" id="montantHT" placeholder="ex: 9944.48" step="0.01" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Taux TVA (%)</label>
-        <select id="tva" onchange="updateRecap()">
-          <option value="10">10% (travaux résidentiels)</option>
-          <option value="20">20% (climatisation)</option>
+    <!-- simple -->
+    <div id="t-sim" class="form-grid">
+      <div class="field"><label>Libellé visites</label><input id="nbVis" value="1 visite annuelle" oninput="updR()"></div>
+      <div class="field"><label>Montant H.T. (€) *</label><input type="number" id="mHT" placeholder="ex: 9944.48" step="0.01" oninput="updR()"></div>
+      <div class="field"><label>Taux TVA</label>
+        <select id="tva" onchange="updR()">
+          <option value="10">10 % — travaux résidentiels</option>
+          <option value="20">20 % — climatisation / tertiaire</option>
         </select>
       </div>
     </div>
-
-    <!-- Multi prestations -->
-    <div id="tarif-multi" style="display:none;">
-      <div id="prestations-list" class="prestations-list"></div>
-      <button class="btn-add-presta" style="margin-top: 12px;" onclick="addPrestation()">+ Ajouter une prestation</button>
-      <div class="field" style="margin-top: 16px; max-width: 200px;">
-        <label>Taux TVA (%)</label>
-        <select id="tva-multi" onchange="updateRecap()">
-          <option value="10">10%</option>
-          <option value="20">20%</option>
+    <!-- multi -->
+    <div id="t-mul" style="display:none">
+      <div id="pr-list" class="rows-list"></div>
+      <button class="btn-add" onclick="addPr()">＋ Ajouter une prestation</button>
+      <div class="field" style="margin-top:14px;max-width:220px;">
+        <label>Taux TVA</label>
+        <select id="tva2" onchange="updR()">
+          <option value="10">10 %</option>
+          <option value="20">20 %</option>
         </select>
       </div>
     </div>
-
-    <hr class="divider">
-    <div class="field" style="max-width: 400px;">
-      <label>Garantie pièces P2+P3 (chaudières) ?</label>
-      <select id="garantiePieces">
+    <hr class="div">
+    <div class="field" style="max-width:420px;">
+      <label>Garantie pièces (P2 + P3)</label>
+      <select id="garPieces">
         <option value="non">Non — Entretien forfaitaire P2 uniquement</option>
-        <option value="oui">Oui — Entretien P2 + Garantie pièces P3</option>
+        <option value="oui">Oui — P2 + Garantie pièces P3 incluse</option>
       </select>
     </div>
-
-    <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="prevStep(4)">← Précédent</button>
-      <button class="btn btn-primary" onclick="nextStep(4)">Suivant →</button>
-    </div>
+    <div class="nav"><button class="btn btn-s" onclick="prev(4)">← Précédent</button><button class="btn btn-p" onclick="next(4)">Suivant →</button></div>
   </div>
 
-  <!-- STEP 5: Durée & récap -->
-  <div class="panel" id="panel-5">
-    <div class="panel-title">
-      <div class="panel-title-icon">📅</div>
-      Durée & récapitulatif
-    </div>
-
-    <div class="form-grid cols3">
-      <div class="field">
-        <label>Durée du contrat</label>
-        <select id="duree" onchange="updateRecap()">
+  <!-- ── STEP 5 : DUREE & GENERATION ── -->
+  <div class="panel" id="p5">
+    <div class="panel-title"><div class="panel-icon">📅</div>Durée & génération</div>
+    <div class="form-grid g3" style="margin-bottom:24px;">
+      <div class="field"><label>Durée</label>
+        <select id="duree" onchange="updR()">
           <option value="1 an">1 an</option>
           <option value="3 ans">3 ans</option>
           <option value="5 ans">5 ans</option>
         </select>
       </div>
-      <div class="field">
-        <label>Date de début *</label>
-        <input type="text" id="dateDebut" placeholder="ex: 01/03/2025" oninput="updateRecap()">
-      </div>
-      <div class="field">
-        <label>Date de fin *</label>
-        <input type="text" id="dateFin" placeholder="ex: 28/02/2026" oninput="updateRecap()">
-      </div>
+      <div class="field"><label>Date de début *</label><input id="dDeb" placeholder="ex: 01/01/2026" oninput="updR()"></div>
+      <div class="field"><label>Date de fin *</label><input id="dFin" placeholder="ex: 31/12/2026" oninput="updR()"></div>
     </div>
-
-    <hr class="divider">
-    <div class="panel-title" style="font-size: 16px; margin-bottom: 16px;">
-      <div class="panel-title-icon">✅</div>
-      Récapitulatif
+    <hr class="div">
+    <div class="panel-title" style="font-size:16px;margin-bottom:14px;"><div class="panel-icon">✅</div>Récapitulatif</div>
+    <div class="recap-grid" id="recap"></div>
+    <div id="total"></div>
+    <div id="status"></div>
+    <div class="nav">
+      <button class="btn btn-s" onclick="prev(5)">← Précédent</button>
+      <button class="btn btn-gen" id="btnGen" onclick="generate()">📄 Générer le contrat Word</button>
     </div>
-
-    <div class="recap-grid" id="recap-grid"></div>
-    <div id="total-block"></div>
-
-    <div id="gen-status" class="gen-status">
-      <div class="spinner" id="gen-spinner"></div>
-      <div id="gen-message" style="color: var(--gray); font-size: 15px;">Génération en cours...</div>
-    </div>
-
-    <div class="nav-buttons">
-      <button class="btn btn-secondary" onclick="prevStep(5)">← Précédent</button>
-      <button class="btn btn-success" id="btn-generate" onclick="generateContract()">
-        📄 Générer le contrat Word
-      </button>
-    </div>
-
-    <div id="download-area" style="display:none;" class="download-buttons"></div>
   </div>
 
 </div>
 
 <script>
-// ── STATE ─────────────────────────────────────────────────────────────────────
-let currentStep = 1;
-let clientType = 'bailleur';
-let tarifMode = 'simple';
-let selectedType = null;
-let equipements = [];
-let prestations = [];
-let prestationsData = [];
+// ════════════════════════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════════════════════════
+let curStep = 1, selType = null, ct = 'bailleur', tm = 'simple';
+let eqIdCtr = 0, prIdCtr = 0;
 
-// ── NAVIGATION ────────────────────────────────────────────────────────────────
-function goStep(n) {
-  if (n > currentStep) return; // Only go back
-  setStep(n);
-}
+const TYPE_LABELS = {
+  chaudiere:'🔥 Chaudière', vmc:'💨 VMC', multi:'🏢 Multi-équipements',
+  thermodynamique:'💧 Ballon thermodynamique', climatisation:'❄️ Génie climatique',
+  maintenance:'🔧 Maintenance générale'
+};
+const TYPE_TITLES = {
+  chaudiere:'Contrat maintenance chaudière', vmc:'Contrat maintenance VMC',
+  multi:'Contrat maintenance', thermodynamique:'Contrat ballon thermodynamique',
+  climatisation:'Contrat génie climatique', maintenance:'Contrat maintenance'
+};
+const EQUIP_LABEL = {
+  chaudiere:'des chaudières gaz', vmc:'des moteurs VMC',
+  multi:'des équipements (VMC, chaudières et ramonage)',
+  thermodynamique:'du ballon thermodynamique',
+  climatisation:'des installations de génie climatique',
+  maintenance:'des équipements de maintenance'
+};
 
-function nextStep(from) {
-  if (!validateStep(from)) return;
-  setStep(from + 1);
-  if (from + 1 === 5) updateRecap();
-}
-
-function prevStep(from) {
-  setStep(from - 1);
-}
-
-function setStep(n) {
-  currentStep = n;
-  for (let i = 1; i <= 5; i++) {
-    const panel = document.getElementById('panel-' + i);
-    const step = document.getElementById('step-' + i);
-    panel.classList.toggle('active', i === n);
-    step.classList.remove('active', 'done');
-    if (i === n) step.classList.add('active');
-    else if (i < n) step.classList.add('done');
+// ════════════════════════════════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════════════════════════════════
+function goTo(n){ if(n<curStep || n===curStep) setStep(n); }
+function next(from){ if(!valid(from)) return; setStep(from+1); if(from+1===5) updR(); }
+function prev(from){ setStep(from-1); }
+function setStep(n){
+  curStep=n;
+  for(let i=1;i<=5;i++){
+    document.getElementById('p'+i).classList.toggle('active',i===n);
+    const s=document.getElementById('s'+i);
+    s.className='step'+(i===n?' active':i<n?' done':'');
   }
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-
-function validateStep(n) {
-  if (n === 1 && !selectedType) {
-    alert('Veuillez sélectionner un type de contrat.');
-    return false;
+function valid(n){
+  if(n===1&&!selType){ alert('Veuillez sélectionner un type de contrat.'); return false; }
+  if(n===2){
+    const nom = ct==='bailleur'?v('cNom'):v('cNomP');
+    if(!nom){ alert('Veuillez renseigner le nom du client.'); return false; }
   }
-  if (n === 2) {
-    if (clientType === 'bailleur' && !document.getElementById('clientNom').value.trim()) {
-      alert('Veuillez renseigner le nom du client.');
-      return false;
-    }
-    if (clientType === 'particulier' && !document.getElementById('clientNomPart').value.trim()) {
-      alert('Veuillez renseigner le nom du client.');
-      return false;
-    }
-  }
+  if(n===3&&!v('rNom')){ alert('Veuillez renseigner le nom de la résidence/site.'); return false; }
+  if(n===4&&tm==='simple'&&!v('mHT')){ alert('Veuillez saisir le montant H.T.'); return false; }
+  if(n===5&&(!v('dDeb')||!v('dFin'))){ alert('Veuillez saisir les dates de début et fin.'); return false; }
   return true;
 }
+const v = id => (document.getElementById(id)||{}).value||'';
 
-// ── TYPE SELECTION ────────────────────────────────────────────────────────────
-function selectType(el) {
-  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedType = el.dataset.type;
-  // Auto-set TVA
-  if (selectedType === 'climatisation') {
-    document.getElementById('tva').value = '20';
-    document.getElementById('tva-multi').value = '20';
+// ════════════════════════════════════════════════════════════
+// TYPE / CLIENT
+// ════════════════════════════════════════════════════════════
+function pickType(el){
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); selType=el.dataset.t;
+  // auto TVA
+  const is20 = selType==='climatisation';
+  document.getElementById('tva').value = is20?'20':'10';
+  document.getElementById('tva2').value = is20?'20':'10';
+}
+function setCT(type){
+  ct=type;
+  document.getElementById('tb-bail').classList.toggle('on',type==='bailleur');
+  document.getElementById('tb-part').classList.toggle('on',type==='particulier');
+  document.getElementById('f-bail').style.display=type==='bailleur'?'grid':'none';
+  document.getElementById('f-part').style.display=type==='particulier'?'grid':'none';
+}
+function syncP(){
+  const civ=v('cCiv'), nom=v('cNomP');
+  document.getElementById('cNom').value=nom;
+  document.getElementById('cRep').value=civ+' '+nom;
+  document.getElementById('cAdr1').value=v('cA1P');
+  document.getElementById('cAdr2').value=v('cA2P');
+  document.getElementById('cAdr3').value=v('cA3P');
+  updR();
+}
+
+// ════════════════════════════════════════════════════════════
+// TARIF MODE
+// ════════════════════════════════════════════════════════════
+function setTM(m){
+  tm=m;
+  document.getElementById('tb-sim').classList.toggle('on',m==='simple');
+  document.getElementById('tb-mul').classList.toggle('on',m==='multi');
+  document.getElementById('t-sim').style.display=m==='simple'?'grid':'none';
+  document.getElementById('t-mul').style.display=m==='multi'?'block':'none';
+  if(m==='multi'&&document.getElementById('pr-list').children.length===0) addPr();
+  updR();
+}
+
+// ════════════════════════════════════════════════════════════
+// DYNAMIC ROWS
+// ════════════════════════════════════════════════════════════
+function addEq(){
+  const id='eq'+(++eqIdCtr);
+  const div=document.createElement('div');
+  div.className='eq-row'; div.id=id;
+  div.innerHTML=`
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow('${id}')">✕</button>`;
+  document.getElementById('eq-list').appendChild(div);
+}
+function addPr(){
+  const id='pr'+(++prIdCtr);
+  const div=document.createElement('div');
+  div.className='pr-row'; div.id=id;
+  div.innerHTML=`
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow('${id}')">✕</button>`;
+  document.getElementById('pr-list').appendChild(div);
+}
+function rmRow(id){ const el=document.getElementById(id); if(el) el.remove(); updR(); }
+
+// ════════════════════════════════════════════════════════════
+// RECAP
+// ════════════════════════════════════════════════════════════
+function calcTotal(){
+  let ht=0, tvaR=10;
+  if(tm==='simple'){
+    ht=parseFloat(v('mHT')||0);
+    tvaR=parseInt(v('tva')||10);
   } else {
-    document.getElementById('tva').value = '10';
-    document.getElementById('tva-multi').value = '10';
-  }
-}
-
-// ── CLIENT TYPE ───────────────────────────────────────────────────────────────
-function setClientType(type) {
-  clientType = type;
-  document.getElementById('btn-bailleur').classList.toggle('active', type === 'bailleur');
-  document.getElementById('btn-particulier').classList.toggle('active', type === 'particulier');
-  document.getElementById('fields-bailleur').style.display = type === 'bailleur' ? 'grid' : 'none';
-  document.getElementById('fields-particulier').style.display = type === 'particulier' ? 'grid' : 'none';
-}
-
-function syncParticulier() {
-  const civ = document.getElementById('clientCivilite').value;
-  const nom = document.getElementById('clientNomPart').value;
-  document.getElementById('clientNom').value = nom;
-  document.getElementById('clientRepresentant').value = civ + ' ' + nom;
-  const a1 = document.getElementById('clientAdr1Part').value;
-  const a2 = document.getElementById('clientAdr2Part').value;
-  const a3 = document.getElementById('clientAdr3Part').value;
-  document.getElementById('clientAdresse1').value = a1;
-  document.getElementById('clientAdresse2').value = a2;
-  document.getElementById('clientAdresse3').value = a3;
-  updateRecap();
-}
-
-// ── TARIF MODE ────────────────────────────────────────────────────────────────
-function setTarifMode(mode) {
-  tarifMode = mode;
-  document.getElementById('btn-simple').classList.toggle('active', mode === 'simple');
-  document.getElementById('btn-multi').classList.toggle('active', mode === 'multi');
-  document.getElementById('tarif-simple').style.display = mode === 'simple' ? 'grid' : 'none';
-  document.getElementById('tarif-multi').style.display = mode === 'multi' ? 'block' : 'none';
-  if (mode === 'multi' && prestationsData.length === 0) addPrestation();
-  updateRecap();
-}
-
-// ── EQUIPEMENTS ───────────────────────────────────────────────────────────────
-function addEquipement() {
-  const id = Date.now();
-  equipements.push(id);
-  const container = document.getElementById('equipements-list');
-  const row = document.createElement('div');
-  row.className = 'presta-row';
-  row.id = 'eq-' + id;
-  row.innerHTML = `
-    <div class="field">
-      <label>Désignation équipement</label>
-      <input type="text" placeholder="ex: Chaudière murale gaz naturel" oninput="updateRecap()">
-    </div>
-    <div class="field">
-      <label>Quantité</label>
-      <input type="number" value="1" min="1">
-    </div>
-    <div class="field">
-      <label>Observations</label>
-      <input type="text" placeholder="Optionnel">
-    </div>
-    <div></div>
-    <button class="btn-remove" onclick="removeRow('eq-${id}')">✕</button>
-  `;
-  container.appendChild(row);
-}
-
-// ── PRESTATIONS ───────────────────────────────────────────────────────────────
-function addPrestation() {
-  const id = Date.now();
-  prestationsData.push(id);
-  const container = document.getElementById('prestations-list');
-  const row = document.createElement('div');
-  row.className = 'presta-row';
-  row.id = 'pr-' + id;
-  row.innerHTML = `
-    <div class="field">
-      <label>Désignation prestation</label>
-      <input type="text" placeholder="ex: CHAUDIERES GAZ" oninput="updateRecap()">
-    </div>
-    <div class="field">
-      <label>Visites / an</label>
-      <input type="text" value="1" placeholder="1">
-    </div>
-    <div class="field">
-      <label>Quantité</label>
-      <input type="number" value="1" min="1" oninput="updateRecap()">
-    </div>
-    <div class="field">
-      <label>Prix unitaire H.T. (€)</label>
-      <input type="number" step="0.01" placeholder="0.00" oninput="updateRecap()">
-    </div>
-    <button class="btn-remove" onclick="removeRow('pr-${id}')">✕</button>
-  `;
-  container.appendChild(row);
-}
-
-function removeRow(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
-  updateRecap();
-}
-
-// ── RECAP ─────────────────────────────────────────────────────────────────────
-function updateRecap() {
-  const grid = document.getElementById('recap-grid');
-  const totalBlock = document.getElementById('total-block');
-  if (!grid) return;
-
-  const typeLabels = {
-    chaudiere: '🔥 Chaudière', vmc: '💨 VMC', multi: '🏢 Multi-équipements',
-    thermodynamique: '💧 Ballon thermodynamique', climatisation: '❄️ Génie climatique',
-    maintenance: '🔧 Maintenance générale'
-  };
-
-  const nom = document.getElementById('clientNom')?.value || '';
-  const resNom = document.getElementById('residenceNom')?.value || '';
-  const duree = document.getElementById('duree')?.value || '';
-  const debut = document.getElementById('dateDebut')?.value || '';
-  const fin = document.getElementById('dateFin')?.value || '';
-
-  grid.innerHTML = `
-    <div class="recap-block">
-      <div class="recap-block-title">Contrat</div>
-      <div class="recap-row"><span class="recap-key">Type</span><span class="recap-val">${typeLabels[selectedType] || '–'}</span></div>
-      <div class="recap-row"><span class="recap-key">Durée</span><span class="recap-val">${duree}</span></div>
-      <div class="recap-row"><span class="recap-key">Du</span><span class="recap-val">${debut}</span></div>
-      <div class="recap-row"><span class="recap-key">Au</span><span class="recap-val">${fin}</span></div>
-    </div>
-    <div class="recap-block">
-      <div class="recap-block-title">Parties</div>
-      <div class="recap-row"><span class="recap-key">Client</span><span class="recap-val">${nom || '–'}</span></div>
-      <div class="recap-row"><span class="recap-key">Site</span><span class="recap-val">${resNom || '–'}</span></div>
-      <div class="recap-row"><span class="recap-key">Prestataire</span><span class="recap-val">SANIT CLIMAT SAS</span></div>
-    </div>
-  `;
-
-  // Total
-  let htTotal = 0;
-  let tvaRate = 10;
-
-  if (tarifMode === 'simple') {
-    htTotal = parseFloat(document.getElementById('montantHT')?.value || 0);
-    tvaRate = parseInt(document.getElementById('tva')?.value || 10);
-  } else {
-    tvaRate = parseInt(document.getElementById('tva-multi')?.value || 10);
-    document.querySelectorAll('#prestations-list .presta-row').forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      const qty = parseFloat(inputs[2]?.value || 1);
-      const prix = parseFloat(inputs[3]?.value || 0);
-      htTotal += qty * prix;
+    tvaR=parseInt(v('tva2')||10);
+    document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
+      const ins=row.querySelectorAll('input');
+      ht+=parseFloat(ins[2]?.value||0)*parseFloat(ins[3]?.value||0);
     });
   }
-
-  const ttc = htTotal * (1 + tvaRate / 100);
-
-  totalBlock.innerHTML = `
-    <div class="total-block">
-      <div>
-        <div class="total-label">Montant du contrat</div>
-        <div class="total-ht">${htTotal.toFixed(2).replace('.', ',')} € H.T. — TVA ${tvaRate}%</div>
-      </div>
-      <div>
-        <div class="total-amount">${ttc.toFixed(2).replace('.', ',')} € T.T.C.</div>
-      </div>
+  return {ht, tvaR, ttc: ht*(1+tvaR/100)};
+}
+function fmt(n){ return n.toFixed(2).replace('.',','); }
+function updR(){
+  const rc=document.getElementById('recap'), tb=document.getElementById('total');
+  if(!rc) return;
+  const {ht,tvaR,ttc}=calcTotal();
+  rc.innerHTML=`
+    <div class="rb">
+      <div class="rb-title">Contrat</div>
+      <div class="rr"><span class="rk">Type</span><span class="rv">${TYPE_LABELS[selType]||'–'}</span></div>
+      <div class="rr"><span class="rk">Durée</span><span class="rv">${v('duree')}</span></div>
+      <div class="rr"><span class="rk">Du</span><span class="rv">${v('dDeb')||'–'}</span></div>
+      <div class="rr"><span class="rk">Au</span><span class="rv">${v('dFin')||'–'}</span></div>
     </div>
-  `;
+    <div class="rb">
+      <div class="rb-title">Parties</div>
+      <div class="rr"><span class="rk">Client</span><span class="rv">${v('cNom')||'–'}</span></div>
+      <div class="rr"><span class="rk">Site</span><span class="rv">${v('rNom')||'–'}</span></div>
+      <div class="rr"><span class="rk">Prestataire</span><span class="rv">SANIT CLIMAT SAS</span></div>
+    </div>`;
+  tb.innerHTML=`
+    <div class="total-bar">
+      <div><div class="tb-label">Montant du contrat</div><div class="tb-ht">${fmt(ht)} € H.T. — TVA ${tvaR} %</div></div>
+      <div class="tb-amount">${fmt(ttc)} € T.T.C.</div>
+    </div>`;
 }
 
-// ── BUILD DATA OBJECT ─────────────────────────────────────────────────────────
-function buildData() {
-  const tvaRate = tarifMode === 'simple'
-    ? document.getElementById('tva').value
-    : document.getElementById('tva-multi').value;
-
-  const data = {
-    typeContrat: selectedType,
-    clientType,
-    clientNom: document.getElementById('clientNom').value,
-    clientRepresentant: document.getElementById('clientRepresentant').value,
-    clientRepresentant2: document.getElementById('clientRepresentant2').value,
-    clientAdresse1: document.getElementById('clientAdresse1').value,
-    clientAdresse2: document.getElementById('clientAdresse2').value,
-    clientAdresse3: document.getElementById('clientAdresse3').value,
-    residenceNom: document.getElementById('residenceNom').value,
-    residenceAdresse: document.getElementById('residenceAdresse').value,
-    duree: document.getElementById('duree').value,
-    dateDebut: document.getElementById('dateDebut').value,
-    dateFin: document.getElementById('dateFin').value,
-    tva: tvaRate,
-    garantiePieces: document.getElementById('garantiePieces').value,
-  };
-
-  if (tarifMode === 'simple') {
-    data.nombreVisites = document.getElementById('nombreVisites').value;
-    data.montantHT = document.getElementById('montantHT').value;
-    data.prestations = [];
-  } else {
-    data.montantHT = '0';
-    data.prestations = [];
-    document.querySelectorAll('#prestations-list .presta-row').forEach(row => {
-      const inputs = row.querySelectorAll('input');
-      data.prestations.push({
-        designation: inputs[0]?.value || '',
-        visites: inputs[1]?.value || '1',
-        quantite: inputs[2]?.value || '1',
-        prixHT: inputs[3]?.value || '0',
-      });
-    });
-  }
-
-  // Équipements
-  data.equipements = [];
-  document.querySelectorAll('#equipements-list .presta-row').forEach(row => {
-    const inputs = row.querySelectorAll('input');
-    data.equipements.push({
-      designation: inputs[0]?.value || '',
-      quantite: inputs[1]?.value || '1',
-      observations: inputs[2]?.value || '',
-    });
+// ════════════════════════════════════════════════════════════
+// DATA COLLECTOR
+// ════════════════════════════════════════════════════════════
+function collectData(){
+  const {ht,tvaR,ttc}=calcTotal();
+  const prestations=[];
+  document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    prestations.push({designation:ins[0]?.value||'',visites:ins[1]?.value||'1',quantite:ins[2]?.value||'1',prixHT:ins[3]?.value||'0'});
   });
-
-  return data;
+  const equipements=[];
+  document.querySelectorAll('#eq-list .eq-row').forEach(row=>{
+    const ins=row.querySelectorAll('input');
+    equipements.push({designation:ins[0]?.value||'',quantite:ins[1]?.value||'1',observations:ins[2]?.value||''});
+  });
+  return {
+    typeContrat:selType, clientType:ct,
+    clientNom:v('cNom'), clientRepresentant:v('cRep'), clientRepresentant2:v('cRep2'),
+    clientAdresse1:v('cAdr1'), clientAdresse2:v('cAdr2'), clientAdresse3:v('cAdr3'),
+    residenceNom:v('rNom'), residenceAdresse:v('rAdr'),
+    tarifMode:tm, nombreVisites:v('nbVis'), montantHT:ht, tva:tvaR, ttc,
+    prestations, garantiePieces:v('garPieces'),
+    duree:v('duree'), dateDebut:v('dDeb'), dateFin:v('dFin'),
+    equipements
+  };
 }
 
-// ── GENERATE ──────────────────────────────────────────────────────────────────
-async function generateContract() {
-  const data = buildData();
-
-  if (!data.clientNom || !data.residenceNom || !data.dateDebut) {
-    alert('Veuillez remplir tous les champs obligatoires (*)');
-    return;
-  }
-
-  const btn = document.getElementById('btn-generate');
-  const statusDiv = document.getElementById('gen-status');
-  const dlArea = document.getElementById('download-area');
-
-  btn.disabled = true;
-  statusDiv.classList.add('show');
-  statusDiv.innerHTML = '<div class="spinner"></div><div style="color:var(--gray);font-size:15px;margin-top:12px;">Génération du contrat Word en cours...</div>';
-  dlArea.style.display = 'none';
+// ════════════════════════════════════════════════════════════
+// DOCX GENERATION — ALL IN BROWSER
+// ════════════════════════════════════════════════════════════
+function generate(){
+  if(!valid(5)) return;
+  const d=collectData();
+  const btn=document.getElementById('btnGen');
+  const st=document.getElementById('status');
+  btn.disabled=true;
+  st.innerHTML='<div class="status"><div class="spinner"></div><p style="color:var(--gray)">Génération du document Word…</p></div>';
 
   try {
-    const response = await fetch('/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      const err = await response.text();
-      throw new Error(err);
-    }
-
-    const blob = await response.blob();
+    const buffer = buildDocx(d);
+    const blob = new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
     const url = URL.createObjectURL(blob);
-    const clientNomSafe = (data.clientNom || 'CONTRAT').replace(/[^a-zA-Z0-9_-]/g, '_').toUpperCase();
-    const filename = `CONTRAT_${clientNomSafe}_${data.dateDebut.replace(/\//g, '-')}.docx`;
-
-    statusDiv.innerHTML = `
-      <div class="success-icon">✓</div>
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:8px;">Contrat généré !</div>
-      <div style="color:var(--gray);font-size:14px;">Le document Word est prêt au téléchargement.</div>
-    `;
-
-    dlArea.style.display = 'flex';
-    dlArea.innerHTML = `
-      <a href="${url}" download="${filename}" class="btn-download btn-dl-word">
-        📄 Télécharger le contrat Word (.docx)
-      </a>
-    `;
-  } catch (e) {
-    statusDiv.innerHTML = `<div style="color:var(--danger);font-size:15px;">❌ Erreur : ${e.message}</div>`;
-    btn.disabled = false;
+    const safe = (d.clientNom||'CONTRAT').replace(/[^a-zA-Z0-9_]/g,'_').toUpperCase();
+    const date = (d.dateDebut||'').replace(/\//g,'-');
+    const fn = `CONTRAT_${safe}_${date}.docx`;
+    st.innerHTML=`
+      <div class="status">
+        <div class="ok-icon">✓</div>
+        <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Contrat généré !</p>
+        <p style="color:var(--gray);font-size:13px;margin-bottom:4px;">Fichier prêt : <strong>${fn}</strong></p>
+        <a href="${url}" download="${fn}" class="dl-btn">📄 Télécharger le contrat Word (.docx)</a>
+      </div>`;
+    btn.disabled=false;
+  } catch(e) {
+    st.innerHTML=`<div class="status"><p style="color:var(--danger)">❌ Erreur : ${e.message}</p></div>`;
+    btn.disabled=false;
+    console.error(e);
   }
+}
+
+// ════════════════════════════════════════════════════════════
+// DOCX BUILDER
+// ════════════════════════════════════════════════════════════
+function buildDocx(d){
+  const {
+    Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
+    AlignmentType, BorderStyle, WidthType, ShadingType, Header, Footer,
+    PageBreak, HeadingLevel
+  } = docx;
+
+  const CYAN='1E88C7', DARK='0D1B2A', GRAY='F4F7FA';
+  const A4W=9638; // content width DXA for A4 1.5cm margins
+  const nb=()=>({style:BorderStyle.NONE,size:0,color:'FFFFFF'});
+  const allNb=()=>({top:nb(),bottom:nb(),left:nb(),right:nb()});
+
+  function hdr(text){
+    return new Table({width:{size:A4W,type:WidthType.DXA},columnWidths:[A4W],
+      rows:[new TableRow({children:[new TableCell({
+        shading:{fill:CYAN,type:ShadingType.CLEAR},
+        margins:{top:80,bottom:80,left:160,right:160},
+        width:{size:A4W,type:WidthType.DXA},borders:allNb(),
+        children:[new Paragraph({children:[new TextRun({text,bold:true,color:'FFFFFF',size:22,font:'Arial'})]})]
+      })]})]
+    });
+  }
+
+  function H1(text){return new Paragraph({spacing:{before:320,after:160},children:[new TextRun({text,bold:true,size:32,color:DARK,font:'Arial'})]});}
+  function H2(text){return new Paragraph({spacing:{before:220,after:100},children:[new TextRun({text,bold:true,size:24,color:DARK,font:'Arial'})]});}
+
+  function P(runs, align=AlignmentType.JUSTIFIED){
+    const children = Array.isArray(runs)?runs:[new TextRun({text:runs,size:20,font:'Arial',color:DARK})];
+    return new Paragraph({alignment:align,spacing:{before:80,after:80},children});
+  }
+
+  function Pbold(text){return P([new TextRun({text,bold:true,size:20,font:'Arial',color:DARK})]);}
+
+  function dotRow(label,value,bold=false){
+    const dots='.'.repeat(Math.max(5,55-label.length));
+    return new Paragraph({spacing:{before:55,after:55},children:[
+      new TextRun({text:label+' ',font:'Arial',size:20,color:'888888'}),
+      new TextRun({text:dots+' ',font:'Arial',size:20,color:'AAAAAA'}),
+      new TextRun({text:value,bold,font:'Arial',size:20,color:DARK}),
+    ]});
+  }
+
+  function Bul(text){return new Paragraph({spacing:{before:40,after:40},indent:{left:720,hanging:360},children:[new TextRun({text:'•  '+text,font:'Arial',size:20,color:DARK})]});}
+  function Ind(text){return new Paragraph({spacing:{before:40,after:40},indent:{left:1080,hanging:360},children:[new TextRun({text:'◦  '+text,font:'Arial',size:20,color:DARK})]});}
+  function Blank(n=1){return Array.from({length:n},()=>new Paragraph({children:[new TextRun({text:'',size:20})]}));}
+  function PB(){return new Paragraph({children:[new PageBreak()]});}
+
+  function priceBox(lines){
+    return new Table({width:{size:7200,type:WidthType.DXA},columnWidths:[7200],
+      rows:[new TableRow({children:[new TableCell({
+        shading:{fill:GRAY,type:ShadingType.CLEAR},
+        margins:{top:140,bottom:140,left:240,right:240},
+        width:{size:7200,type:WidthType.DXA},
+        borders:{top:{style:BorderStyle.SINGLE,size:6,color:CYAN},bottom:{style:BorderStyle.SINGLE,size:6,color:CYAN},left:{style:BorderStyle.SINGLE,size:6,color:CYAN},right:{style:BorderStyle.SINGLE,size:6,color:CYAN}},
+        children:lines.map(l=>new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:l.t,bold:l.b||false,size:l.s||22,font:'Arial',color:DARK})]}))
+      })]})]
+    });
+  }
+
+  function tvaStr(v){return (v*1).toFixed(0);}
+  function fmtE(v){return parseFloat(v).toFixed(2).replace('.',',');}
+  function ttcOf(ht,tva){return fmtE(parseFloat(ht)*(1+parseFloat(tva)/100));}
+
+  // ── TITLE / TYPE ──────────────────────────────────────────
+  const typeTitle = TYPE_TITLES[d.typeContrat]||'Contrat maintenance';
+  const equipDesc = EQUIP_LABEL[d.typeContrat]||'des équipements';
+
+  const children = [];
+
+  // ── COVER PAGE ────────────────────────────────────────────
+  children.push(
+    ...Blank(3),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:600},children:[
+      new TextRun({text:typeTitle,bold:true,size:52,color:CYAN,font:'Arial'})
+    ]}),
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:240},children:[
+      new TextRun({text:'Maîtriser pour mieux préserver !',italics:true,size:28,font:'Arial',color:'666666'})
+    ]}),
+    ...Blank(3),
+    new Paragraph({alignment:AlignmentType.CENTER,children:[
+      new TextRun({text:(d.clientNom||'').toUpperCase(),bold:true,size:60,color:'CCCCCC',font:'Arial'})
+    ]}),
+    ...Blank(1),
+    new Paragraph({alignment:AlignmentType.CENTER,children:[
+      new TextRun({text:(d.residenceNom||d.clientAdresse1||'').toUpperCase(),bold:true,size:32,color:'BBBBBB',font:'Arial'})
+    ]}),
+    ...Blank(5),
+    PB()
+  );
+
+  // ── ART 1 ─────────────────────────────────────────────────
+  children.push(H1('ARTICLE 1 - Désignation des parties'),...Blank(1),hdr('ENTRE'),...Blank(1),P('Les soussignées,'),...Blank(1));
+
+  if(d.clientType==='bailleur'){
+    children.push(
+      dotRow('',d.clientNom,true),
+      dotRow('Représentée par',d.clientRepresentant,true),
+      dotRow('Qui fait élection de domicile à',d.clientAdresse1,false),
+      dotRow('',d.clientAdresse2,false),
+      dotRow('',d.clientAdresse3,false),
+      dotRow('','DU CLIENT',false),
+    );
+  } else {
+    children.push(
+      dotRow('Mr/Mme',d.clientNom,true),
+      dotRow('Qui fait élection de domicile à',d.clientAdresse1,false),
+      dotRow('',d.clientAdresse2,false),
+      dotRow('',d.clientAdresse3,false),
+    );
+  }
+
+  children.push(
+    ...Blank(1),
+    P([new TextRun({text:"Ci-après dénommée ",font:'Arial',size:20}),new TextRun({text:'"le client"',bold:true,font:'Arial',size:20})]),
+    Pbold("D'UNE PART,"),
+    ...Blank(1),hdr('ET'),...Blank(1),
+    dotRow('La Société','SANIT CLIMAT SAS au capital de 15 000 €uros',true),
+    dotRow('Inscrite au RCS sous le n°','802 151 340 Marseille',true),
+    dotRow('Dont le siège social est situé à','280 avenue de Saint Antoine',true),
+    dotRow('','13015 MARSEILLE',true),
+    ...Blank(1),
+    dotRow('Représentée par','Monsieur Rémy GALEA',true),
+    dotRow('En qualité de','Président',true),
+    P([new TextRun({text:"Ci-après dénommée ",font:'Arial',size:20}),new TextRun({text:'"le prestataire"',bold:true,font:'Arial',size:20})]),
+    Pbold('DE SECONDE PART,'),...Blank(1),
+    P([new TextRun({text:"Les soussignées désignés ensemble par ",font:'Arial',size:20}),new TextRun({text:'"les parties"',bold:true,font:'Arial',size:20})]),
+    ...Blank(1),
+    P(`Attendu que ${d.clientRepresentant||d.clientNom||''} (le client)${d.clientRepresentant2?' représenté par '+d.clientRepresentant2:''} souhaite souscrire un contrat d'entretien et de maintenance ${equipDesc} de la résidence ${d.residenceNom||''} située ${d.residenceAdresse||''}.`),
+    ...Blank(1),
+    P("Attendu que la société SANIT CLIMAT (le prestataire) déclare disposer des compétences et des moyens nécessaires pour l'exécution des prestations de service attendus par « le client » et consignées dans le contrat et ses annexes."),
+    ...Blank(1),Pbold('IL EST CONVENU ET ARRETE CE QUI SUIT.'),PB()
+  );
+
+  // ── ART 2 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 2 - Définition'),...Blank(1),
+    P("Par le présent contrat, pour la durée de celui-ci et aux conditions énoncées ci-après, le client confie au prestataire qui accepte, le soin d'assurer en exclusivité l'entretien des installations décrites en annexe, dont il est et reste propriétaire."),
+    ...Blank(1),P("Cette prestation de service implique, pour le prestataire, une obligation de moyens."),
+    ...Blank(1),hdr('DOCUMENTS CONTRACTUELS'),...Blank(1),
+    P("Le présent marché est constitué par les documents énumérés ci-après par ordre de priorité décroissante."),...Blank(1),
+    Pbold('Les pièces particulières'),
+    Bul('Le présent contrat de maintenance,'),
+    Bul('Les annexes au contrat de maintenance :'),
+    Ind('Inventaire des équipements,'),
+    Ind('Le tarif horaire avec les majorations applicables et le forfait de déplacement,'),
+    Ind('La définition des interventions programmées,'),
+    Ind('Dossier des ouvrages exécutés des installations.'),
+    ...Blank(1),Pbold('Les pièces générales'),
+    Bul('Les documents techniques unifiés (D.T.U.) en vigueur,'),
+    Bul('Les normes en vigueur,'),
+    Bul('Les réglementations en vigueur concernant la législation du travail,'),
+    Bul('Le règlement intérieur appliqué pour les bâtiments du client.'),
+    ...Blank(1),
+    P("Les documents applicables sont ceux en vigueur au premier jour du mois de l'établissement du présent contrat."),
+    PB()
+  );
+
+  // ── ART 3 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 3 - Obligations du prestataire'),
+    H2('NATURE DES PRESTATIONS ET EXCLUSIONS'),...Blank(1),
+    hdr("PRESTATIONS D'ENTRETIEN COURANT"),...Blank(1),
+    P("Le service d'entretien courant à la charge du prestataire comprendra :"),...Blank(1),
+    P("L'intervention du personnel qualifié disposant de l'outillage nécessaire à l'ensemble des opérations décrites dans les annexes."),
+    P("Le contrôle par un responsable qualifié du bon fonctionnement général des équipements pris en charge et de l'exécution de la prestation prévue au contrat."),
+    P("Le prestataire devra pouvoir, sur simple demande, justifier auprès du client de l'exécution de ses prestations."),
+    P("Périodiquement, à l'échéance anniversaire, le responsable établira un rapport sur la période écoulée, traitant des principales observations formulées, de leur mise en œuvre et des préconisations du prestataire sur les gros travaux à envisager."),
+    ...Blank(1),
+    new Paragraph({spacing:{before:80,after:80},children:[new TextRun({text:'3.1 Entretien forfaitaire P2',bold:true,underline:{},font:'Arial',size:20})]}),
+    P("Cet entretien couvre l'ensemble des appareils énumérés en pièce jointe, et comprend :"),
+    Bul('1 visite annuelle systématique et préventive dont le détail est défini sur la nomenclature des opérations d'entretien en annexe ;'),
+    Bul("La prise en charge par le prestataire des frais de main-d'œuvre consécutifs aux dépannages demandés expressément par le client ou les utilisateurs."),
+    ...Blank(1),
+  );
+
+  if(d.garantiePieces==='oui'){
+    children.push(
+      new Paragraph({spacing:{before:80,after:80},children:[new TextRun({text:'3.2 Entretien forfaitaire et garantie pièces P2 + P3',bold:true,underline:{},font:'Arial',size:20})]}),
+      P("Cet entretien et garantie pièces ne couvrent que ceux des appareils expressivement visés par ce type d'entretien en Annexe. Il comprend exclusivement :"),
+      Bul("Les prestations prévues pour l'entretien forfaitaire P2 répertoriées à l'alinéa 3.1 ;"),
+      Bul("La prise en charge par le prestataire des frais de réparation ou de remplacement des pièces usagées, excepté les pièces émaillées ou peintes, les châssis, les scellements des appareils et le remplacement complet d'un appareil ;"),
+      Bul("Le détartrage de l'échangeur sanitaire, à l'appréciation du prestataire, à raison d'un par an maximum."),
+      ...Blank(1),
+    );
+  }
+
+  children.push(
+    hdr('LIMITE DE LA PRESTATION'),...Blank(1),
+    P("Le service d'entretien est expressément limité aux matériels et aux opérations précisées dans les annexes. Toute modification de la prestation doit faire l'objet d'un avenant."),
+    P("L'entretien n'est prévu que pour les installations fixes. Les prestations pour les appareils mobiles ne sont pas comprises dans le présent contrat."),
+    P("Ne sont pas couverts par le contrat entretien forfaitaire P2 les pièces ou les appareils de rechange. Ils seront facturés séparément au client."),
+    ...Blank(1),hdr('DEPANNAGES'),...Blank(1),
+    P("En dehors des visites planifiées et pendant les jours et heures œuvrées (de 08h00 à 17h00 du Lundi au vendredi hors week-ends et jours fériés), le prestataire mettra son service de dépannage à la disposition du client sous 8 (Huit) heures."),
+    new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{before:80,after:80},children:[
+      new TextRun({text:'Les dépannages ne sont pas inclus',bold:true,font:'Arial',size:20}),
+      new TextRun({text:" dans le montant forfaitaire annuel, ils feront l'objet d'une facturation séparée.",font:'Arial',size:20}),
+    ]}),
+    ...Blank(1),hdr('FOURNITURES'),...Blank(1),
+    P("Pour assurer l'entretien courant, le prestataire n'aura à sa charge que les ingrédients et consommables nécessaires à sa prestation (huile, graisse, chiffons, petite visserie et boulonnerie)."),
+    ...Blank(1),hdr('TRAVAUX HORS CONTRAT'),...Blank(1),
+    P("Sont exclus du présent contrat et pourront être exécutés par le prestataire après accord écrit du client :"),
+    Bul("La fourniture du matériel et de la main d'œuvre nécessaires au remplacement de pièces usagées ou défectueuses,"),
+    Bul("L'équilibrage de base de l'installation,"),
+    Bul("Les travaux nécessaires à la sécurité de marche des installations et leur mise en conformité,"),
+    Bul("Les travaux de réparation ou remise en bon état de marche des installations (gros entretien),"),
+    Bul("Et en règle générale, tous travaux non explicitement définis dans le présent contrat."),
+    PB()
+  );
+
+  // ── ART 4 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 4 – Obligations du client'),...Blank(1),
+    hdr('CONDUITE DES INSTALLATIONS'),...Blank(1),
+    P("Le client assure normalement la conduite et la surveillance de son installation et toutes les prestations qui en découlent autres que celles à la charge du prestataire."),
+    ...Blank(1),hdr('ENGAGEMENTS DU CLIENT'),...Blank(1),
+    P('Le client s'engage :'),...Blank(1),
+    ...[
+      "A obtenir les certificats de conformité relatifs aux installations et à maintenir ces installations en conformité avec la règlementation sur la sécurité.",
+      "A utiliser les installations dans des conditions normales de fonctionnement, à l'abri de toute malveillance ou action anormale.",
+      "A fournir les combustibles, les fluides et l'électricité nécessaires, en qualité et en quantité, au fonctionnement de ses installations.",
+      "A justifier de toutes assurances utiles garantissant les risques liés à l'existence et à l'exploitation de ses installations.",
+      "A garantir le libre accès des lieux au prestataire.",
+      "A fournir au prestataire les renseignements nécessaires à l'exécution de l'entretien courant, en particulier, plans, schémas, notices des constructeurs.",
+      "A exécuter les travaux de gros entretien préconisés par le prestataire et en particulier ceux nécessaires à la mise en conformité des installations.",
+      "A prendre à sa charge les visites de contrôle par un organisme agréé si la législation l'exige.",
+      "A notifier par écrit au prestataire pendant toute la durée du contrat toutes modifications dans les caractéristiques ou les conditions de distribution de l'eau, de l'électricité ou du combustible employé.",
+    ].map(t=>new Paragraph({indent:{left:360},spacing:{before:55,after:55},children:[new TextRun({text:t,font:'Arial',size:20})]})),
+    PB()
+  );
+
+  // ── ART 5 ─────────────────────────────────────────────────
+  children.push(H1('ARTICLE 5 - Conditions financières'),...Blank(1),hdr('REDEVANCE'),...Blank(1),
+    P("En contrepartie des prestations contractuelles d'entretien courant, le prestataire percevra une redevance annuelle forfaitaire d'un montant de :"),
+    ...Blank(1),
+  );
+
+  // Price box
+  if(d.tarifMode==='multi' && d.prestations.length>0){
+    const lines=[];
+    d.prestations.forEach(p=>{
+      const pht=parseFloat(p.prixHT||0)*parseInt(p.quantite||1);
+      lines.push({t:`${p.visites||'1'} visite(s) annuelle(s)`,b:true,s:20});
+      lines.push({t:`Prestation maintenance ${p.designation} (QTE ${p.quantite})`,b:true,s:22});
+      lines.push({t:`${fmtE(p.prixHT)} €uros H.T. × ${p.quantite} = ${fmtE(pht)} €uros H.T.`,b:true,s:22});
+    });
+    const totHT=d.prestations.reduce((s,p)=>s+parseFloat(p.prixHT||0)*parseInt(p.quantite||1),0);
+    lines.push({t:`Total : ${fmtE(totHT)} €uros H.T. soit ${ttcOf(totHT,d.tva)} €uros T.T.C.`,b:true,s:26});
+    children.push(priceBox(lines));
+  } else {
+    children.push(priceBox([
+      {t:d.nombreVisites||'1 visite annuelle',b:true,s:22},
+      {t:`${fmtE(d.montantHT)} €uros H.T. soit ${ttcOf(d.montantHT,d.tva)} €uros T.T.C.`,b:true,s:28},
+    ]));
+  }
+
+  children.push(
+    ...Blank(1),
+    P(`au taux actuel de T.V.A. de ${tvaStr(d.tva)}%. En cas de variation du taux de T.V.A. ou de création d'une nouvelle taxe, le prix sera toujours basé sur le montant hors taxes auquel seront appliqués les nouveaux taux.`),
+    ...Blank(1),hdr('REVISION DES PRIX'),...Blank(1),
+    P("La redevance hors taxes fera l'objet d'une révision en fonction des variations des indices économiques, selon la formule :"),
+    ...Blank(1),
+    new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:'P = P₀ [(0,80 × ICHT IME / ICHT IME₀) + (0,20 × Fsd2 / Fsd20)]',bold:true,size:22,font:'Arial'})]}),
+    ...Blank(1),hdr('CONDITIONS DE PAIEMENT'),...Blank(1),
+    P("Les prestations forfaitaires sont payables d'avance (redevance annuelle). Les factures seront établies annuellement et adressées par le prestataire au début de chaque année pour la période à venir."),
+    P("Les règlements seront effectués par virement bancaire à date de réception de chaque facture."),
+    P("Les prestations effectuées hors contrat seront facturées en régie sur la base du tarif horaire et déplacement joint en annexe."),
+    ...Blank(1),hdr('DISPOSITIONS PARTICULIERES'),...Blank(1),
+    P("En cas de non-paiement des sommes dues, le contrat pourra être résilié de plein droit, aux torts et griefs du client, après mise en demeure adressée par le prestataire au client, restée infructueuse pendant un délai de 15 jours."),
+    P("Tout retard de paiement entraînera l'exigibilité immédiate de toutes sommes dues, augmentées d'un intérêt calculé au taux d'intérêt légal majoré de cinq points, calculé par jour calendaire de retard."),
+    PB()
+  );
+
+  // ── ART 6 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 6 - Durée du contrat'),...Blank(1),
+    hdr("PERIODE D'EXECUTION DES PRESTATIONS"),...Blank(1),
+    new Paragraph({spacing:{before:80,after:80},children:[
+      new TextRun({text:'Le présent contrat est conclu pour une période de ',font:'Arial',size:20}),
+      new TextRun({text:d.duree,bold:true,font:'Arial',size:20}),
+      new TextRun({text:' allant du ',font:'Arial',size:20}),
+      new TextRun({text:d.dateDebut,bold:true,font:'Arial',size:20}),
+      new TextRun({text:' au ',font:'Arial',size:20}),
+      new TextRun({text:d.dateFin,bold:true,font:'Arial',size:20}),
+    ]}),
+    ...Blank(1),
+    P("A l'arrivée du terme, il se renouvellera d'année en année par tacite reconduction pour des périodes d'un an, sauf dénonciation par l'une ou l'autre des parties notifiées à l'autre par lettre recommandée avec avis de réception avec un préavis de 3 mois minimum avant la date anniversaire."),
+    PB()
+  );
+
+  // ── ART 7 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 7 - Responsabilité du prestataire'),...Blank(1),
+    P("La responsabilité encourue par le prestataire vis-à-vis du client découle d'une obligation de moyens. En conséquence, sa responsabilité sera engagée en cas de faute prouvée à son égard. Le prestataire assumera la responsabilité de tous les dommages matériels, immatériels directs et/ou corporels résultant d'une faute dans l'exécution de ses obligations contractuelles."),
+    ...Blank(1),hdr('ASSURANCE'),...Blank(1),
+    P("Le prestataire déclare être titulaire d'un contrat d'assurance garantissant les conséquences pécuniaires de sa responsabilité civile susceptible d'être engagée à l'occasion de l'exécution du présent contrat."),
+    ...Blank(1),hdr('CAS DE FORCE MAJEURE'),...Blank(1),
+    P("Aucune partie n'est responsable vis-à-vis de l'autre de l'inexécution ou d'un retard dans l'exécution de ses obligations issues des présentes en raison d'un cas de force majeure. Sont considérés comme cas de force majeure toute décision des autorités, guerre, émeute, grève illégale, blocage des transports, catastrophe naturelle ou tout autre évènement en dehors de la volonté des parties."),
+    ...Blank(1),hdr('PRISE EN CHARGE DES INSTALLATIONS'),...Blank(1),
+    P("Le prestataire établira dans un délai de 3 (trois) mois, à compter de la date de démarrage de la prestation, un procès-verbal contradictoire de prise en charge des installations. Ce contrôle permettra au prestataire d'informer le client des réserves éventuelles sur l'état des installations qui lui sont confiées."),
+    ...Blank(1),hdr('CLASSEUR DE SUIVI DE LA PRESTATION'),...Blank(1),
+    P("Dès lors que le « procès verbal contradictoire de prise en charge » des installations est validé par le client, le prestataire met en place sur site un classeur de suivi de la prestation dans lequel sont consignés :"),
+    Bul("Le détail des opérations programmées objets du présent contrat,"),
+    Bul("Les visites systématiques de maintenance préventive avec mention de la date, de la nature des opérations, des changements de pièces effectués,"),
+    Bul("Les modifications et travaux effectués à l'initiative du prestataire ou sur demande du client,"),
+    Bul("Les anomalies de fonctionnement décelées et incidents majeurs."),
+    PB()
+  );
+
+  // ── ART 8 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 8 – Cession – Résiliation Anticipée'),...Blank(1),
+    P("Les présentes dispositions contractuelles sont opposables aux ayants droits à quelque titre que ce soit, locataires ou successeurs éventuels du client."),
+    ...Blank(1),hdr('TRANSFERT DU CONTRAT'),...Blank(1),
+    P("Le présent contrat a été conclu intuitu personae. En conséquence, les droits et obligations découlant du présent contrat ne pourront être transférés, cédés ou apportés par l'une ou l'autre des parties sans l'autorisation expresse préalable de l'autre partie."),
+    ...Blank(1),hdr('RESILIATION ANTICIPEE'),...Blank(1),
+    P("Si le client n'a pas procédé au règlement des redevances dans les délais stipulés au présent contrat, le prestataire pourra, huit jours après avoir effectué une mise en demeure par lettre recommandée restée sans effet, suspendre l'ensemble de ses prestations contractuelles."),
+    P("Toute résiliation anticipée par le client en dehors du cas mentionné ci-dessus donne lieu au dédommagement du prestataire pour le préjudice commercial et financier subi à cause de l'interruption du contrat. Ce dédommagement est fixé à 50% du total des redevances qui auraient été versées jusqu'à la fin du contrat."),
+    PB()
+  );
+
+  // ── ART 9 ─────────────────────────────────────────────────
+  children.push(
+    H1('ARTICLE 9 - Contentieux'),...Blank(1),
+    hdr('REGLEMENT DES LITIGES'),...Blank(1),
+    P("Tout différend portant sur la validité, l'interprétation ou l'exécution du présent contrat qui n'aura pu être résolu à l'amiable entre les parties, sera exclusivement porté devant le Tribunal de Commerce de Marseille (Bouches du Rhône)."),
+    PB()
+  );
+
+  // ── ART 10 SIGNATURES ─────────────────────────────────────
+  children.push(
+    H1('ARTICLE 10 – Signatures des parties'),...Blank(4),
+    new Table({
+      width:{size:A4W,type:WidthType.DXA},columnWidths:[A4W/2,A4W/2],
+      rows:[new TableRow({children:[
+        new TableCell({borders:allNb(),width:{size:A4W/2,type:WidthType.DXA},children:[
+          Pbold('Pour le prestataire :'),
+          ...Blank(3),
+          P('Date : .................................'),
+          ...Blank(2),
+          P('Cachet :'),
+          ...Blank(4),
+          P('Signature :'),
+        ]}),
+        new TableCell({borders:allNb(),width:{size:A4W/2,type:WidthType.DXA},children:[
+          Pbold('Pour le client :'),
+          ...Blank(3),
+          P('Date : .................................'),
+          ...Blank(2),
+          P('Cachet :'),
+          ...Blank(4),
+          P('Signature :'),
+        ]}),
+      ]})]
+    })
+  );
+
+  // ── ANNEXE EQUIPEMENTS (si renseignés) ────────────────────
+  const eqs = d.equipements.filter(e=>e.designation);
+  if(eqs.length>0){
+    children.push(PB(),H1('ANNEXE — LISTE DES ÉQUIPEMENTS'),...Blank(1));
+    const rows=[
+      new TableRow({children:[
+        new TableCell({shading:{fill:CYAN,type:ShadingType.CLEAR},width:{size:5760,type:WidthType.DXA},margins:{top:80,bottom:80,left:120,right:120},children:[new Paragraph({children:[new TextRun({text:'DÉSIGNATION DES ÉQUIPEMENTS',bold:true,color:'FFFFFF',font:'Arial',size:20})]})]}),
+        new TableCell({shading:{fill:CYAN,type:ShadingType.CLEAR},width:{size:1440,type:WidthType.DXA},margins:{top:80,bottom:80,left:120,right:120},children:[new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:'QTÉ',bold:true,color:'FFFFFF',font:'Arial',size:20})]})]}),
+        new TableCell({shading:{fill:CYAN,type:ShadingType.CLEAR},width:{size:2438,type:WidthType.DXA},margins:{top:80,bottom:80,left:120,right:120},children:[new Paragraph({children:[new TextRun({text:'OBSERVATIONS',bold:true,color:'FFFFFF',font:'Arial',size:20})]})]}),
+      ]})
+    ];
+    const cb={style:BorderStyle.SINGLE,size:1,color:'CCCCCC'};
+    const cbs={top:cb,bottom:cb,left:cb,right:cb};
+    eqs.forEach(e=>{
+      rows.push(new TableRow({children:[
+        new TableCell({borders:cbs,width:{size:5760,type:WidthType.DXA},margins:{top:60,bottom:60,left:120,right:120},children:[new Paragraph({children:[new TextRun({text:e.designation,font:'Arial',size:20})]})] }),
+        new TableCell({borders:cbs,width:{size:1440,type:WidthType.DXA},margins:{top:60,bottom:60,left:120,right:120},children:[new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:e.quantite,font:'Arial',size:20})]})]}),
+        new TableCell({borders:cbs,width:{size:2438,type:WidthType.DXA},margins:{top:60,bottom:60,left:120,right:120},children:[new Paragraph({children:[new TextRun({text:e.observations||'',font:'Arial',size:20})]})]}),
+      ]}));
+    });
+    children.push(new Table({width:{size:A4W,type:WidthType.DXA},columnWidths:[5760,1440,2438],rows}));
+  }
+
+  // ── BUILD DOC ─────────────────────────────────────────────
+  const doc = new Document({
+    styles:{default:{document:{run:{font:'Arial',size:20,color:DARK}}}},
+    sections:[{
+      properties:{page:{size:{width:11906,height:16838},margin:{top:1134,right:1134,bottom:1134,left:1134}}},
+      headers:{default:new Header({children:[
+        new Table({width:{size:A4W,type:WidthType.DXA},columnWidths:[A4W],
+          rows:[new TableRow({children:[new TableCell({
+            shading:{fill:CYAN,type:ShadingType.CLEAR},
+            margins:{top:60,bottom:60,left:160,right:160},
+            width:{size:A4W,type:WidthType.DXA},borders:allNb(),
+            children:[new Paragraph({children:[new TextRun({text:'SANIT CLIMAT',bold:true,color:'FFFFFF',size:22,font:'Arial'})]})]
+          })]})]
+        })
+      ]})},
+      footers:{default:new Footer({children:[
+        new Paragraph({
+          border:{top:{style:BorderStyle.SINGLE,size:4,color:CYAN}},
+          spacing:{before:60},
+          children:[new TextRun({text:'07.68.63.34.20    contact@sanit-climat.fr    280 avenue de Saint Antoine  13015 MARSEILLE',font:'Arial',size:16,color:'999999'})]
+        })
+      ]})},
+      children
+    }]
+  });
+
+  // Packer sync via ArrayBuffer
+  return docx.Packer.toBuffer(doc);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-addEquipement();
-updateRecap();
+addEq();
+updR();
 </script>
 </body>
 </html>
