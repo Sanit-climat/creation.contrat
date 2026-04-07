@@ -376,18 +376,18 @@ function setStep(n){
   for(let i=1;i<=5;i++){
     document.getElementById('p'+i).classList.toggle('active',i===n);
     const s=document.getElementById('s'+i);
-    s.className='step'+(i===n?' active\':i<n?' done':\'');
+    s.className='step'+(i===n?' active':i<n?' done':'');
   }
-  window.scrollTo({top:0,behavior:'smooth\'});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 function valid(n){
   if(n===1&&!selType){ alert('Veuillez sélectionner un type de contrat.'); return false; }
   if(n===2){
-    const nom = ct==='bailleur\'?v(\'cNom'):v('cNomP');
+    const nom = ct==='bailleur'?v('cNom'):v('cNomP');
     if(!nom){ alert('Veuillez renseigner le nom du client.'); return false; }
   }
   if(n===3&&!v('rNom')){ alert('Veuillez renseigner le nom de la résidence/site.'); return false; }
-  if(n===4&&tm==='simple\'&&!v(\'mHT')){ alert('Veuillez saisir le montant H.T.'); return false; }
+  if(n===4&&tm==='simple'&&!v('mHT')){ alert('Veuillez saisir le montant H.T.'); return false; }
   if(n===5&&(!v('dDeb')||!v('dFin'))){ alert('Veuillez saisir les dates de début et fin.'); return false; }
   return true;
 }
@@ -401,15 +401,15 @@ function pickType(el){
   el.classList.add('sel'); selType=el.dataset.t;
   // auto TVA
   const is20 = selType==='climatisation';
-  document.getElementById('tva').value = is20?'20\':\'10';
-  document.getElementById('tva2').value = is20?'20\':\'10';
+  document.getElementById('tva').value = is20?'20':'10';
+  document.getElementById('tva2').value = is20?'20':'10';
 }
 function setCT(type){
   ct=type;
   document.getElementById('tb-bail').classList.toggle('on',type==='bailleur');
   document.getElementById('tb-part').classList.toggle('on',type==='particulier');
-  document.getElementById('f-bail').style.display=type==='bailleur\'?\'grid\':\'none';
-  document.getElementById('f-part').style.display=type==='particulier\'?\'grid\':\'none';
+  document.getElementById('f-bail').style.display=type==='bailleur'?'grid':'none';
+  document.getElementById('f-part').style.display=type==='particulier'?'grid':'none';
 }
 function syncP(){
   const civ=v('cCiv'), nom=v('cNomP');
@@ -428,9 +428,9 @@ function setTM(m){
   tm=m;
   document.getElementById('tb-sim').classList.toggle('on',m==='simple');
   document.getElementById('tb-mul').classList.toggle('on',m==='multi');
-  document.getElementById('t-sim').style.display=m==='simple\'?\'grid\':\'none';
-  document.getElementById('t-mul').style.display=m==='multi\'?\'block\':\'none';
-  if(m==='multi\'&&document.getElementById(\'pr-list').children.length===0) addPr();
+  document.getElementById('t-sim').style.display=m==='simple'?'grid':'none';
+  document.getElementById('t-mul').style.display=m==='multi'?'block':'none';
+  if(m==='multi'&&document.getElementById('pr-list').children.length===0) addPr();
   updR();
 }
 
@@ -487,15 +487,15 @@ function updR(){
   rc.innerHTML=`
     <div class="rb">
       <div class="rb-title">Contrat</div>
-      <div class="rr"><span class="rk">Type</span><span class="rv">${TYPE_LABELS[selType]||'–\'}</span></div>
+      <div class="rr"><span class="rk">Type</span><span class="rv">${TYPE_LABELS[selType]||'–'}</span></div>
       <div class="rr"><span class="rk">Durée</span><span class="rv">${v('duree')}</span></div>
-      <div class="rr"><span class="rk">Du</span><span class="rv">${v('dDeb')||'–\'}</span></div>
-      <div class="rr"><span class="rk">Au</span><span class="rv">${v('dFin')||'–\'}</span></div>
+      <div class="rr"><span class="rk">Du</span><span class="rv">${v('dDeb')||'–'}</span></div>
+      <div class="rr"><span class="rk">Au</span><span class="rv">${v('dFin')||'–'}</span></div>
     </div>
     <div class="rb">
       <div class="rb-title">Parties</div>
-      <div class="rr"><span class="rk">Client</span><span class="rv">${v('cNom')||'–\'}</span></div>
-      <div class="rr"><span class="rk">Site</span><span class="rv">${v('rNom')||'–\'}</span></div>
+      <div class="rr"><span class="rk">Client</span><span class="rv">${v('cNom')||'–'}</span></div>
+      <div class="rr"><span class="rk">Site</span><span class="rv">${v('rNom')||'–'}</span></div>
       <div class="rr"><span class="rk">Prestataire</span><span class="rv">SANIT CLIMAT SAS</span></div>
     </div>`;
   tb.innerHTML=`
@@ -513,12 +513,12 @@ function collectData(){
   const prestations=[];
   document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
     const ins=row.querySelectorAll('input');
-    prestations.push({designation:ins[0]?.value||'',visites:ins[1]?.value||'1',quantite:ins[2]?.value||'1',prixHT:ins[3]?.value||'0\'});
+    prestations.push({designation:ins[0]?.value||'',visites:ins[1]?.value||'1',quantite:ins[2]?.value||'1',prixHT:ins[3]?.value||'0'});
   });
   const equipements=[];
   document.querySelectorAll('#eq-list .eq-row').forEach(row=>{
     const ins=row.querySelectorAll('input');
-    equipements.push({designation:ins[0]?.value||'',quantite:ins[1]?.value||'1',observations:ins[2]?.value||'\'});
+    equipements.push({designation:ins[0]?.value||'',quantite:ins[1]?.value||'1',observations:ins[2]?.value||''});
   });
   return {
     typeContrat:selType, clientType:ct,
@@ -545,7 +545,7 @@ function generate(){
 
   try {
     const buffer = buildDocx(d);
-    const blob = new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document\'});
+    const blob = new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
     const url = URL.createObjectURL(blob);
     const safe = (d.clientNom||'CONTRAT').replace(/[^a-zA-Z0-9_]/g,'_').toUpperCase();
     const date = (d.dateDebut||'').replace(/\//g,'-');
@@ -577,7 +577,7 @@ function buildDocx(d){
 
   const CYAN='1E88C7', DARK='0D1B2A', GRAY='F4F7FA';
   const A4W=9638; // content width DXA for A4 1.5cm margins
-  const nb=()=>({style:BorderStyle.NONE,size:0,color:'FFFFFF\'});
+  const nb=()=>({style:BorderStyle.NONE,size:0,color:'FFFFFF'});
   const allNb=()=>({top:nb(),bottom:nb(),left:nb(),right:nb()});
 
   function hdr(text){
@@ -586,13 +586,13 @@ function buildDocx(d){
         shading:{fill:CYAN,type:ShadingType.CLEAR},
         margins:{top:80,bottom:80,left:160,right:160},
         width:{size:A4W,type:WidthType.DXA},borders:allNb(),
-        children:[new Paragraph({children:[new TextRun({text,bold:true,color:'FFFFFF',size:22,font:'Arial\'})]})]
+        children:[new Paragraph({children:[new TextRun({text,bold:true,color:'FFFFFF',size:22,font:'Arial'})]})]
       })]})]
     });
   }
 
-  function H1(text){return new Paragraph({spacing:{before:320,after:160},children:[new TextRun({text,bold:true,size:32,color:DARK,font:'Arial\'})]});}
-  function H2(text){return new Paragraph({spacing:{before:220,after:100},children:[new TextRun({text,bold:true,size:24,color:DARK,font:'Arial\'})]});}
+  function H1(text){return new Paragraph({spacing:{before:320,after:160},children:[new TextRun({text,bold:true,size:32,color:DARK,font:'Arial'})]});}
+  function H2(text){return new Paragraph({spacing:{before:220,after:100},children:[new TextRun({text,bold:true,size:24,color:DARK,font:'Arial'})]});}
 
   function P(runs, align=AlignmentType.JUSTIFIED){
     const children = Array.isArray(runs)?runs:[new TextRun({text:runs,size:20,font:'Arial',color:DARK})];
@@ -602,10 +602,10 @@ function buildDocx(d){
   function Pbold(text){return P([new TextRun({text,bold:true,size:20,font:'Arial',color:DARK})]);}
 
   function dotRow(label,value,bold=false){
-    const dots='.\'.repeat(Math.max(5,55-label.length));
+    const dots='.'.repeat(Math.max(5,55-label.length));
     return new Paragraph({spacing:{before:55,after:55},children:[
-      new TextRun({text:label+' ',font:'Arial',size:20,color:'888888\'}),
-      new TextRun({text:dots+' ',font:'Arial',size:20,color:'AAAAAA\'}),
+      new TextRun({text:label+' ',font:'Arial',size:20,color:'888888'}),
+      new TextRun({text:dots+' ',font:'Arial',size:20,color:'AAAAAA'}),
       new TextRun({text:value,bold,font:'Arial',size:20,color:DARK}),
     ]});
   }
@@ -641,18 +641,18 @@ function buildDocx(d){
   children.push(
     ...Blank(3),
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:600},children:[
-      new TextRun({text:typeTitle,bold:true,size:52,color:CYAN,font:'Arial\'})
+      new TextRun({text:typeTitle,bold:true,size:52,color:CYAN,font:'Arial'})
     ]}),
     new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:240},children:[
-      new TextRun({text:'Maîtriser pour mieux préserver !',italics:true,size:28,font:'Arial',color:'666666\'})
+      new TextRun({text:'Maîtriser pour mieux préserver !',italics:true,size:28,font:'Arial',color:'666666'})
     ]}),
     ...Blank(3),
     new Paragraph({alignment:AlignmentType.CENTER,children:[
-      new TextRun({text:(d.clientNom||'').toUpperCase(),bold:true,size:60,color:'CCCCCC',font:'Arial\'})
+      new TextRun({text:(d.clientNom||'').toUpperCase(),bold:true,size:60,color:'CCCCCC',font:'Arial'})
     ]}),
     ...Blank(1),
     new Paragraph({alignment:AlignmentType.CENTER,children:[
-      new TextRun({text:(d.residenceNom||d.clientAdresse1||'').toUpperCase(),bold:true,size:32,color:'BBBBBB',font:'Arial\'})
+      new TextRun({text:(d.residenceNom||d.clientAdresse1||'').toUpperCase(),bold:true,size:32,color:'BBBBBB',font:'Arial'})
     ]}),
     ...Blank(5),
     PB()
@@ -695,7 +695,7 @@ function buildDocx(d){
     Pbold('DE SECONDE PART,'),...Blank(1),
     P([new TextRun({text:"Les soussignées désignés ensemble par ",font:'Arial',size:20}),new TextRun({text:'"les parties"',bold:true,font:'Arial',size:20})]),
     ...Blank(1),
-    P(`Attendu que ${d.clientRepresentant||d.clientNom||'\'} (le client)${d.clientRepresentant2?' représenté par '+d.clientRepresentant2:\'\'} souhaite souscrire un contrat d\'entretien et de maintenance ${equipDesc} de la résidence ${d.residenceNom||\'\'} située ${d.residenceAdresse||\'\'}.`),
+    P(`Attendu que ${d.clientRepresentant||d.clientNom||''} (le client)${d.clientRepresentant2?' représenté par '+d.clientRepresentant2:''} souhaite souscrire un contrat d'entretien et de maintenance ${equipDesc} de la résidence ${d.residenceNom||''} située ${d.residenceAdresse||''}.`),
     ...Blank(1),
     P("Attendu que la société SANIT CLIMAT (le prestataire) déclare disposer des compétences et des moyens nécessaires pour l'exécution des prestations de service attendus par « le client » et consignées dans le contrat et ses annexes."),
     ...Blank(1),Pbold('IL EST CONVENU ET ARRETE CE QUI SUIT.'),PB()
@@ -704,7 +704,7 @@ function buildDocx(d){
   // ── ART 2 ─────────────────────────────────────────────────
   children.push(
     H1('ARTICLE 2 - Définition'),...Blank(1),
-    P("Par le présent contrat, pour la durée de celui-ci et aux conditions énoncées ci-après, le client confie au prestataire qui accepte, le soin d'assurer en exclusivité l\'entretien des installations décrites en annexe, dont il est et reste propriétaire."),
+    P("Par le présent contrat, pour la durée de celui-ci et aux conditions énoncées ci-après, le client confie au prestataire qui accepte, le soin d'assurer en exclusivité l'entretien des installations décrites en annexe, dont il est et reste propriétaire."),
     ...Blank(1),P("Cette prestation de service implique, pour le prestataire, une obligation de moyens."),
     ...Blank(1),hdr('DOCUMENTS CONTRACTUELS'),...Blank(1),
     P("Le présent marché est constitué par les documents énumérés ci-après par ordre de priorité décroissante."),...Blank(1),
@@ -731,7 +731,7 @@ function buildDocx(d){
     H2('NATURE DES PRESTATIONS ET EXCLUSIONS'),...Blank(1),
     hdr("PRESTATIONS D'ENTRETIEN COURANT"),...Blank(1),
     P("Le service d'entretien courant à la charge du prestataire comprendra :"),...Blank(1),
-    P("L'intervention du personnel qualifié disposant de l\'outillage nécessaire à l\'ensemble des opérations décrites dans les annexes."),
+    P("L'intervention du personnel qualifié disposant de l'outillage nécessaire à l'ensemble des opérations décrites dans les annexes."),
     P("Le contrôle par un responsable qualifié du bon fonctionnement général des équipements pris en charge et de l'exécution de la prestation prévue au contrat."),
     P("Le prestataire devra pouvoir, sur simple demande, justifier auprès du client de l'exécution de ses prestations."),
     P("Périodiquement, à l'échéance anniversaire, le responsable établira un rapport sur la période écoulée, traitant des principales observations formulées, de leur mise en œuvre et des préconisations du prestataire sur les gros travaux à envisager."),
@@ -747,30 +747,30 @@ function buildDocx(d){
     children.push(
       new Paragraph({spacing:{before:80,after:80},children:[new TextRun({text:'3.2 Entretien forfaitaire et garantie pièces P2 + P3',bold:true,underline:{},font:'Arial',size:20})]}),
       P("Cet entretien et garantie pièces ne couvrent que ceux des appareils expressivement visés par ce type d'entretien en Annexe. Il comprend exclusivement :"),
-      Bul("Les prestations prévues pour l'entretien forfaitaire P2 répertoriées à l\'alinéa 3.1 ;"),
+      Bul("Les prestations prévues pour l'entretien forfaitaire P2 répertoriées à l'alinéa 3.1 ;"),
       Bul("La prise en charge par le prestataire des frais de réparation ou de remplacement des pièces usagées, excepté les pièces émaillées ou peintes, les châssis, les scellements des appareils et le remplacement complet d'un appareil ;"),
-      Bul("Le détartrage de l'échangeur sanitaire, à l\'appréciation du prestataire, à raison d\'un par an maximum."),
+      Bul("Le détartrage de l'échangeur sanitaire, à l'appréciation du prestataire, à raison d'un par an maximum."),
       ...Blank(1),
     );
   }
 
   children.push(
     hdr('LIMITE DE LA PRESTATION'),...Blank(1),
-    P("Le service d'entretien est expressément limité aux matériels et aux opérations précisées dans les annexes. Toute modification de la prestation doit faire l\'objet d\'un avenant."),
-    P("L'entretien n\'est prévu que pour les installations fixes. Les prestations pour les appareils mobiles ne sont pas comprises dans le présent contrat."),
+    P("Le service d'entretien est expressément limité aux matériels et aux opérations précisées dans les annexes. Toute modification de la prestation doit faire l'objet d'un avenant."),
+    P("L'entretien n'est prévu que pour les installations fixes. Les prestations pour les appareils mobiles ne sont pas comprises dans le présent contrat."),
     P("Ne sont pas couverts par le contrat entretien forfaitaire P2 les pièces ou les appareils de rechange. Ils seront facturés séparément au client."),
     ...Blank(1),hdr('DEPANNAGES'),...Blank(1),
     P("En dehors des visites planifiées et pendant les jours et heures œuvrées (de 08h00 à 17h00 du Lundi au vendredi hors week-ends et jours fériés), le prestataire mettra son service de dépannage à la disposition du client sous 8 (Huit) heures."),
     new Paragraph({alignment:AlignmentType.JUSTIFIED,spacing:{before:80,after:80},children:[
       new TextRun({text:'Les dépannages ne sont pas inclus',bold:true,font:'Arial',size:20}),
-      new TextRun({text:" dans le montant forfaitaire annuel, ils feront l'objet d\'une facturation séparée.",font:\'Arial',size:20}),
+      new TextRun({text:" dans le montant forfaitaire annuel, ils feront l'objet d'une facturation séparée.",font:'Arial',size:20}),
     ]}),
     ...Blank(1),hdr('FOURNITURES'),...Blank(1),
-    P("Pour assurer l'entretien courant, le prestataire n\'aura à sa charge que les ingrédients et consommables nécessaires à sa prestation (huile, graisse, chiffons, petite visserie et boulonnerie)."),
+    P("Pour assurer l'entretien courant, le prestataire n'aura à sa charge que les ingrédients et consommables nécessaires à sa prestation (huile, graisse, chiffons, petite visserie et boulonnerie)."),
     ...Blank(1),hdr('TRAVAUX HORS CONTRAT'),...Blank(1),
     P("Sont exclus du présent contrat et pourront être exécutés par le prestataire après accord écrit du client :"),
     Bul("La fourniture du matériel et de la main d'œuvre nécessaires au remplacement de pièces usagées ou défectueuses,"),
-    Bul("L'équilibrage de base de l\'installation,"),
+    Bul("L'équilibrage de base de l'installation,"),
     Bul("Les travaux nécessaires à la sécurité de marche des installations et leur mise en conformité,"),
     Bul("Les travaux de réparation ou remise en bon état de marche des installations (gros entretien),"),
     Bul("Et en règle générale, tous travaux non explicitement définis dans le présent contrat."),
@@ -788,19 +788,19 @@ function buildDocx(d){
       "A obtenir les certificats de conformité relatifs aux installations et à maintenir ces installations en conformité avec la règlementation sur la sécurité.",
       "A utiliser les installations dans des conditions normales de fonctionnement, à l'abri de toute malveillance ou action anormale.",
       "A fournir les combustibles, les fluides et l'électricité nécessaires, en qualité et en quantité, au fonctionnement de ses installations.",
-      "A justifier de toutes assurances utiles garantissant les risques liés à l'existence et à l\'exploitation de ses installations.",
+      "A justifier de toutes assurances utiles garantissant les risques liés à l'existence et à l'exploitation de ses installations.",
       "A garantir le libre accès des lieux au prestataire.",
-      "A fournir au prestataire les renseignements nécessaires à l'exécution de l\'entretien courant, en particulier, plans, schémas, notices des constructeurs.",
+      "A fournir au prestataire les renseignements nécessaires à l'exécution de l'entretien courant, en particulier, plans, schémas, notices des constructeurs.",
       "A exécuter les travaux de gros entretien préconisés par le prestataire et en particulier ceux nécessaires à la mise en conformité des installations.",
       "A prendre à sa charge les visites de contrôle par un organisme agréé si la législation l'exige.",
-      "A notifier par écrit au prestataire pendant toute la durée du contrat toutes modifications dans les caractéristiques ou les conditions de distribution de l'eau, de l\'électricité ou du combustible employé.",
+      "A notifier par écrit au prestataire pendant toute la durée du contrat toutes modifications dans les caractéristiques ou les conditions de distribution de l'eau, de l'électricité ou du combustible employé.",
     ].map(t=>new Paragraph({indent:{left:360},spacing:{before:55,after:55},children:[new TextRun({text:t,font:'Arial',size:20})]})),
     PB()
   );
 
   // ── ART 5 ─────────────────────────────────────────────────
   children.push(H1('ARTICLE 5 - Conditions financières'),...Blank(1),hdr('REDEVANCE'),...Blank(1),
-    P("En contrepartie des prestations contractuelles d'entretien courant, le prestataire percevra une redevance annuelle forfaitaire d\'un montant de :"),
+    P("En contrepartie des prestations contractuelles d'entretien courant, le prestataire percevra une redevance annuelle forfaitaire d'un montant de :"),
     ...Blank(1),
   );
 
@@ -809,7 +809,7 @@ function buildDocx(d){
     const lines=[];
     d.prestations.forEach(p=>{
       const pht=parseFloat(p.prixHT||0)*parseInt(p.quantite||1);
-      lines.push({t:`${p.visites||'1\'} visite(s) annuelle(s)`,b:true,s:20});
+      lines.push({t:`${p.visites||'1'} visite(s) annuelle(s)`,b:true,s:20});
       lines.push({t:`Prestation maintenance ${p.designation} (QTE ${p.quantite})`,b:true,s:22});
       lines.push({t:`${fmtE(p.prixHT)} €uros H.T. × ${p.quantite} = ${fmtE(pht)} €uros H.T.`,b:true,s:22});
     });
@@ -827,16 +827,16 @@ function buildDocx(d){
     ...Blank(1),
     P(`au taux actuel de T.V.A. de ${tvaStr(d.tva)}%. En cas de variation du taux de T.V.A. ou de création d'une nouvelle taxe, le prix sera toujours basé sur le montant hors taxes auquel seront appliqués les nouveaux taux.`),
     ...Blank(1),hdr('REVISION DES PRIX'),...Blank(1),
-    P("La redevance hors taxes fera l'objet d\'une révision en fonction des variations des indices économiques, selon la formule :"),
+    P("La redevance hors taxes fera l'objet d'une révision en fonction des variations des indices économiques, selon la formule :"),
     ...Blank(1),
-    new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:'P = P₀ [(0,80 × ICHT IME / ICHT IME₀) + (0,20 × Fsd2 / Fsd20)]',bold:true,size:22,font:'Arial\'})]}),
+    new Paragraph({alignment:AlignmentType.CENTER,children:[new TextRun({text:'P = P₀ [(0,80 × ICHT IME / ICHT IME₀) + (0,20 × Fsd2 / Fsd20)]',bold:true,size:22,font:'Arial'})]}),
     ...Blank(1),hdr('CONDITIONS DE PAIEMENT'),...Blank(1),
     P("Les prestations forfaitaires sont payables d'avance (redevance annuelle). Les factures seront établies annuellement et adressées par le prestataire au début de chaque année pour la période à venir."),
     P("Les règlements seront effectués par virement bancaire à date de réception de chaque facture."),
     P("Les prestations effectuées hors contrat seront facturées en régie sur la base du tarif horaire et déplacement joint en annexe."),
     ...Blank(1),hdr('DISPOSITIONS PARTICULIERES'),...Blank(1),
     P("En cas de non-paiement des sommes dues, le contrat pourra être résilié de plein droit, aux torts et griefs du client, après mise en demeure adressée par le prestataire au client, restée infructueuse pendant un délai de 15 jours."),
-    P("Tout retard de paiement entraînera l'exigibilité immédiate de toutes sommes dues, augmentées d\'un intérêt calculé au taux d\'intérêt légal majoré de cinq points, calculé par jour calendaire de retard."),
+    P("Tout retard de paiement entraînera l'exigibilité immédiate de toutes sommes dues, augmentées d'un intérêt calculé au taux d'intérêt légal majoré de cinq points, calculé par jour calendaire de retard."),
     PB()
   );
 
@@ -853,20 +853,20 @@ function buildDocx(d){
       new TextRun({text:d.dateFin,bold:true,font:'Arial',size:20}),
     ]}),
     ...Blank(1),
-    P("A l'arrivée du terme, il se renouvellera d\'année en année par tacite reconduction pour des périodes d\'un an, sauf dénonciation par l\'une ou l\'autre des parties notifiées à l\'autre par lettre recommandée avec avis de réception avec un préavis de 3 mois minimum avant la date anniversaire."),
+    P("A l'arrivée du terme, il se renouvellera d'année en année par tacite reconduction pour des périodes d'un an, sauf dénonciation par l'une ou l'autre des parties notifiées à l'autre par lettre recommandée avec avis de réception avec un préavis de 3 mois minimum avant la date anniversaire."),
     PB()
   );
 
   // ── ART 7 ─────────────────────────────────────────────────
   children.push(
     H1('ARTICLE 7 - Responsabilité du prestataire'),...Blank(1),
-    P("La responsabilité encourue par le prestataire vis-à-vis du client découle d'une obligation de moyens. En conséquence, sa responsabilité sera engagée en cas de faute prouvée à son égard. Le prestataire assumera la responsabilité de tous les dommages matériels, immatériels directs et/ou corporels résultant d\'une faute dans l\'exécution de ses obligations contractuelles."),
+    P("La responsabilité encourue par le prestataire vis-à-vis du client découle d'une obligation de moyens. En conséquence, sa responsabilité sera engagée en cas de faute prouvée à son égard. Le prestataire assumera la responsabilité de tous les dommages matériels, immatériels directs et/ou corporels résultant d'une faute dans l'exécution de ses obligations contractuelles."),
     ...Blank(1),hdr('ASSURANCE'),...Blank(1),
-    P("Le prestataire déclare être titulaire d'un contrat d\'assurance garantissant les conséquences pécuniaires de sa responsabilité civile susceptible d\'être engagée à l\'occasion de l\'exécution du présent contrat."),
+    P("Le prestataire déclare être titulaire d'un contrat d'assurance garantissant les conséquences pécuniaires de sa responsabilité civile susceptible d'être engagée à l'occasion de l'exécution du présent contrat."),
     ...Blank(1),hdr('CAS DE FORCE MAJEURE'),...Blank(1),
-    P("Aucune partie n'est responsable vis-à-vis de l\'autre de l\'inexécution ou d\'un retard dans l\'exécution de ses obligations issues des présentes en raison d\'un cas de force majeure. Sont considérés comme cas de force majeure toute décision des autorités, guerre, émeute, grève illégale, blocage des transports, catastrophe naturelle ou tout autre évènement en dehors de la volonté des parties."),
+    P("Aucune partie n'est responsable vis-à-vis de l'autre de l'inexécution ou d'un retard dans l'exécution de ses obligations issues des présentes en raison d'un cas de force majeure. Sont considérés comme cas de force majeure toute décision des autorités, guerre, émeute, grève illégale, blocage des transports, catastrophe naturelle ou tout autre évènement en dehors de la volonté des parties."),
     ...Blank(1),hdr('PRISE EN CHARGE DES INSTALLATIONS'),...Blank(1),
-    P("Le prestataire établira dans un délai de 3 (trois) mois, à compter de la date de démarrage de la prestation, un procès-verbal contradictoire de prise en charge des installations. Ce contrôle permettra au prestataire d'informer le client des réserves éventuelles sur l\'état des installations qui lui sont confiées."),
+    P("Le prestataire établira dans un délai de 3 (trois) mois, à compter de la date de démarrage de la prestation, un procès-verbal contradictoire de prise en charge des installations. Ce contrôle permettra au prestataire d'informer le client des réserves éventuelles sur l'état des installations qui lui sont confiées."),
     ...Blank(1),hdr('CLASSEUR DE SUIVI DE LA PRESTATION'),...Blank(1),
     P("Dès lors que le « procès verbal contradictoire de prise en charge » des installations est validé par le client, le prestataire met en place sur site un classeur de suivi de la prestation dans lequel sont consignés :"),
     Bul("Le détail des opérations programmées objets du présent contrat,"),
@@ -881,10 +881,10 @@ function buildDocx(d){
     H1('ARTICLE 8 – Cession – Résiliation Anticipée'),...Blank(1),
     P("Les présentes dispositions contractuelles sont opposables aux ayants droits à quelque titre que ce soit, locataires ou successeurs éventuels du client."),
     ...Blank(1),hdr('TRANSFERT DU CONTRAT'),...Blank(1),
-    P("Le présent contrat a été conclu intuitu personae. En conséquence, les droits et obligations découlant du présent contrat ne pourront être transférés, cédés ou apportés par l'une ou l\'autre des parties sans l\'autorisation expresse préalable de l\'autre partie."),
+    P("Le présent contrat a été conclu intuitu personae. En conséquence, les droits et obligations découlant du présent contrat ne pourront être transférés, cédés ou apportés par l'une ou l'autre des parties sans l'autorisation expresse préalable de l'autre partie."),
     ...Blank(1),hdr('RESILIATION ANTICIPEE'),...Blank(1),
-    P("Si le client n'a pas procédé au règlement des redevances dans les délais stipulés au présent contrat, le prestataire pourra, huit jours après avoir effectué une mise en demeure par lettre recommandée restée sans effet, suspendre l\'ensemble de ses prestations contractuelles."),
-    P("Toute résiliation anticipée par le client en dehors du cas mentionné ci-dessus donne lieu au dédommagement du prestataire pour le préjudice commercial et financier subi à cause de l'interruption du contrat. Ce dédommagement est fixé à 50% du total des redevances qui auraient été versées jusqu\'à la fin du contrat."),
+    P("Si le client n'a pas procédé au règlement des redevances dans les délais stipulés au présent contrat, le prestataire pourra, huit jours après avoir effectué une mise en demeure par lettre recommandée restée sans effet, suspendre l'ensemble de ses prestations contractuelles."),
+    P("Toute résiliation anticipée par le client en dehors du cas mentionné ci-dessus donne lieu au dédommagement du prestataire pour le préjudice commercial et financier subi à cause de l'interruption du contrat. Ce dédommagement est fixé à 50% du total des redevances qui auraient été versées jusqu'à la fin du contrat."),
     PB()
   );
 
@@ -892,7 +892,7 @@ function buildDocx(d){
   children.push(
     H1('ARTICLE 9 - Contentieux'),...Blank(1),
     hdr('REGLEMENT DES LITIGES'),...Blank(1),
-    P("Tout différend portant sur la validité, l'interprétation ou l\'exécution du présent contrat qui n\'aura pu être résolu à l\'amiable entre les parties, sera exclusivement porté devant le Tribunal de Commerce de Marseille (Bouches du Rhône)."),
+    P("Tout différend portant sur la validité, l'interprétation ou l'exécution du présent contrat qui n'aura pu être résolu à l'amiable entre les parties, sera exclusivement porté devant le Tribunal de Commerce de Marseille (Bouches du Rhône)."),
     PB()
   );
 
@@ -935,7 +935,7 @@ function buildDocx(d){
         new TableCell({shading:{fill:CYAN,type:ShadingType.CLEAR},width:{size:2438,type:WidthType.DXA},margins:{top:80,bottom:80,left:120,right:120},children:[new Paragraph({children:[new TextRun({text:'OBSERVATIONS',bold:true,color:'FFFFFF',font:'Arial',size:20})]})]}),
       ]})
     ];
-    const cb={style:BorderStyle.SINGLE,size:1,color:'CCCCCC\'};
+    const cb={style:BorderStyle.SINGLE,size:1,color:'CCCCCC'};
     const cbs={top:cb,bottom:cb,left:cb,right:cb};
     eqs.forEach(e=>{
       rows.push(new TableRow({children:[
@@ -958,7 +958,7 @@ function buildDocx(d){
             shading:{fill:CYAN,type:ShadingType.CLEAR},
             margins:{top:60,bottom:60,left:160,right:160},
             width:{size:A4W,type:WidthType.DXA},borders:allNb(),
-            children:[new Paragraph({children:[new TextRun({text:'SANIT CLIMAT',bold:true,color:'FFFFFF',size:22,font:'Arial\'})]})]
+            children:[new Paragraph({children:[new TextRun({text:'SANIT CLIMAT',bold:true,color:'FFFFFF',size:22,font:'Arial'})]})]
           })]})]
         })
       ]})},
@@ -966,7 +966,7 @@ function buildDocx(d){
         new Paragraph({
           border:{top:{style:BorderStyle.SINGLE,size:4,color:CYAN}},
           spacing:{before:60},
-          children:[new TextRun({text:'07.68.63.34.20    contact@sanit-climat.fr    280 avenue de Saint Antoine  13015 MARSEILLE',font:'Arial',size:16,color:'999999\'})]
+          children:[new TextRun({text:'07.68.63.34.20    contact@sanit-climat.fr    280 avenue de Saint Antoine  13015 MARSEILLE',font:'Arial',size:16,color:'999999'})]
         })
       ]})},
       children
