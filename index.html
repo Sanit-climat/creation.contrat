@@ -21089,7 +21089,7 @@ function buildDocx(d){
     }]
   });
 
-  return await docx.Packer.toBuffer(doc);
+  return docx.Packer.toBuffer(doc);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
