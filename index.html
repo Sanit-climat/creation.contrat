@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanit Climat – Générateur de Contrats</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --cyan: #1E88C7;
+    --cyan-dark: #1565A0;
+    --cyan-light: #E3F2FD;
+    --dark: #0D1B2A;
+    --mid: #2C3E50;
+    --gray: #6B7A8D;
+    --light: #F5F8FA;
+    --white: #FFFFFF;
+    --success: #27AE60;
+    --danger: #E74C3C;
+    --border: #D5E3EE;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(30,136,199,0.10);
+    --shadow-lg: 0 12px 48px rgba(30,136,199,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────── */
+  header {
+    background: var(--dark);
+    color: var(--white);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--cyan);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .logo-sub {
+    font-size: 11px;
+    color: var(--cyan);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .header-badge {
+    background: var(--cyan);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── MAIN LAYOUT ────────────────────────────────────── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .page-sub {
+    color: var(--gray);
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+
+  /* ── STEPS PROGRESS ─────────────────────────────────── */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 40px;
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 6px;
+    box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  .step {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .step.active {
+    background: var(--cyan);
+    color: white;
+  }
+  .step.done {
+    background: var(--cyan-light);
+    color: var(--cyan-dark);
+  }
+  .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step.active .step-num { background: rgba(255,255,255,0.3); }
+  .step.done .step-num { background: var(--cyan); color: white; }
+
+  /* ── FORM PANELS ────────────────────────────────────── */
+  .panel {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .panel.active { display: block; }
+
+  .panel-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 24px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .panel-title-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--cyan-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── FORM ELEMENTS ──────────────────────────────────── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.full { grid-template-columns: 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field.span2 { grid-column: span 2; }
+  .field.span3 { grid-column: span 3; }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  input, select, textarea {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--white);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--cyan);
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* ── TYPE CARDS ─────────────────────────────────────── */
+  .type-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .type-card {
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+  }
+  .type-card:hover { border-color: var(--cyan); background: var(--cyan-light); }
+  .type-card.selected { border-color: var(--cyan); background: var(--cyan-light); }
+  .type-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    color: var(--cyan);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .type-card-icon { font-size: 28px; margin-bottom: 8px; }
+  .type-card-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--dark);
+    line-height: 1.3;
+  }
+  .type-card-sub {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 4px;
+  }
+
+  /* ── PRESTATION ROWS ────────────────────────────────── */
+  .prestations-list { display: flex; flex-direction: column; gap: 12px; }
+  .presta-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 36px;
+    gap: 10px;
+    align-items: end;
+    background: var(--light);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .presta-row label { font-size: 11px; }
+  .btn-remove {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #FFE5E5;
+    color: var(--danger);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    align-self: flex-end;
+  }
+  .btn-remove:hover { background: var(--danger); color: white; }
+
+  .btn-add-presta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 2px dashed var(--cyan);
+    background: transparent;
+    color: var(--cyan);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.15s;
+    width: fit-content;
+  }
+  .btn-add-presta:hover { background: var(--cyan-light); }
+
+  /* ── NAV BUTTONS ────────────────────────────────────── */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 16px;
+  }
+  .btn {
+    padding: 12px 32px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--cyan);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--cyan-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn-secondary {
+    background: var(--light);
+    color: var(--mid);
+    border: 2px solid var(--border);
+  }
+  .btn-secondary:hover { background: var(--border); }
+  .btn-success {
+    background: var(--success);
+    color: white;
+    padding: 14px 40px;
+    font-size: 15px;
+  }
+  .btn-success:hover { background: #219653; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.3); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* ── RECAP ──────────────────────────────────────────── */
+  .recap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .recap-block {
+    background: var(--light);
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 4px solid var(--cyan);
+  }
+  .recap-block-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .recap-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+    gap: 10px;
+  }
+  .recap-key { color: var(--gray); }
+  .recap-val { font-weight: 600; color: var(--dark); text-align: right; }
+
+  .total-block {
+    background: var(--cyan);
+    color: white;
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .total-label { font-size: 14px; opacity: 0.9; }
+  .total-amount { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+  .total-ht { font-size: 12px; opacity: 0.8; }
+
+  /* ── LOADING / SUCCESS ──────────────────────────────── */
+  .gen-status {
+    display: none;
+    text-align: center;
+    padding: 40px;
+  }
+  .gen-status.show { display: block; }
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+    animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+  .download-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .btn-download {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-dl-word { background: #2B579A; color: white; }
+  .btn-dl-word:hover { background: #1e4080; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43,87,154,0.4); }
+
+  /* ── DIVIDER ────────────────────────────────────────── */
+  .divider {
+    border: none;
+    border-top: 2px solid var(--border);
+    margin: 24px 0;
+  }
+
+  .section-sub {
+    font-size: 12px;
+    color: var(--gray);
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--cyan-light);
+    border-radius: 6px;
+    border-left: 3px solid var(--cyan);
+  }
+
+  /* ── TOGGLE CLIENT TYPE ─────────────────────────────── */
+  .toggle-group {
+    display: flex;
+    gap: 0;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    width: fit-content;
+  }
+  .toggle-btn {
+    padding: 10px 20px;
+    border: none;
+    background: var(--white);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+    transition: all 0.15s;
+  }
+  .toggle-btn.active {
+    background: var(--cyan);
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.cols3 { grid-template-columns: 1fr; }
+    .field.span2, .field.span3 { grid-column: span 1; }
+    .type-cards { grid-template-columns: repeat(2, 1fr); }
+    .presta-row { grid-template-columns: 1fr 1fr; }
+    .recap-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🔥</div>
+    <div>
+      <div class="logo-text">Sanit Climat</div>
+      <div class="logo-sub">Générateur de contrats</div>
+    </div>
+  </div>
+  <div class="header-badge">v2.0 — Marseille</div>
+</header>
+
+<div class="container">
+  <div class="page-title">Nouveau contrat de maintenance</div>
+  <div class="page-sub">Renseignez les informations ci-dessous pour générer le contrat complet en Word.</div>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step active" id="step-1" onclick="goStep(1)">
+      <div class="step-num">1</div>Type de contrat
+    </div>
+    <div class="step" id="step-2" onclick="goStep(2)">
+      <div class="step-num">2</div>Informations client
+    </div>
+    <div class="step" id="step-3" onclick="goStep(3)">
+      <div class="step-num">3</div>Site & équipements
+    </div>
+    <div class="step" id="step-4" onclick="goStep(4)">
+      <div class="step-num">4</div>Tarification
+    </div>
+    <div class="step" id="step-5" onclick="goStep(5)">
+      <div class="step-num">5</div>Durée & récap
+    </div>
+  </div>
+
+  <!-- STEP 1: Type de contrat -->
+  <div class="panel active" id="panel-1">
+    <div class="panel-title">
+      <div class="panel-title-icon">📋</div>
+      Choisissez le type de contrat
+    </div>
+    <div class="type-cards">
+      <div class="type-card" data-type="chaudiere" onclick="selectType(this)">
+        <div class="type-card-icon">🔥</div>
+        <div class="type-card-label">Chaudière</div>
+        <div class="type-card-sub">Entretien chaudières gaz</div>
+      </div>
+      <div class="type-card" data-type="vmc" onclick="selectType(this)">
+        <div class="type-card-icon">💨</div>
+        <div class="type-card-label">VMC</div>
+        <div class="type-card-sub">Moteurs VMC</div>
+      </div>
+      <div class="type-card" data-type="multi" onclick="selectType(this)">
+        <div class="type-card-icon">🏢</div>
+        <div class="type-card-label">Multi-équipements</div>
+        <div class="type-card-sub">VMC + Chaudières + Ramonage</div>
+      </div>
+      <div class="type-card" data-type="thermodynamique" onclick="selectType(this)">
+        <div class="type-card-icon">💧</div>
+        <div class="type-card-label">Ballon thermodynamique</div>
+        <div class="type-card-sub">Chauffe-eau thermodynamique</div>
+      </div>
+      <div class="type-card" data-type="climatisation" onclick="selectType(this)">
+        <div class="type-card-icon">❄️</div>
+        <div class="type-card-label">Génie climatique</div>
+        <div class="type-card-sub">Climatisation / split</div>
+      </div>
+      <div class="type-card" data-type="maintenance" onclick="selectType(this)">
+        <div class="type-card-icon">🔧</div>
+        <div class="type-card-label">Maintenance générale</div>
+        <div class="type-card-sub">Autre équipement</div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <div></div>
+      <button class="btn btn-primary" onclick="nextStep(1)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Client -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">
+      <div class="panel-title-icon">👤</div>
+      Informations client
+    </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <label>Type de client</label>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="btn-bailleur" onclick="setClientType('bailleur')">Bailleur / SDC / Syndic</button>
+        <button class="toggle-btn" id="btn-particulier" onclick="setClientType('particulier')">Particulier</button>
+      </div>
+    </div>
+
+    <div id="fields-bailleur" class="form-grid">
+      <div class="field span2">
+        <label>Nom du Syndicat / SDC *</label>
+        <input type="text" id="clientNom" placeholder="ex: SDC DEBUSSY" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Représenté par (Bailleur) *</label>
+        <input type="text" id="clientRepresentant" placeholder="ex: LOGIS MEDITERRANEE" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Représentant physique</label>
+        <input type="text" id="clientRepresentant2" placeholder="ex: M. Bernard RANVIER (DGD)">
+      </div>
+      <div class="field">
+        <label>Adresse ligne 1 *</label>
+        <input type="text" id="clientAdresse1" placeholder="ex: Résidence HYDE PARK" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Adresse ligne 2</label>
+        <input type="text" id="clientAdresse2" placeholder="ex: 180 avenue Jules Cantini">
+      </div>
+      <div class="field">
+        <label>Code postal + Ville *</label>
+        <input type="text" id="clientAdresse3" placeholder="ex: 13295 MARSEILLE CDX 08" oninput="updateRecap()">
+      </div>
+    </div>
+
+    <div id="fields-particulier" class="form-grid" style="display:none;">
+      <div class="field">
+        <label>Civilité</label>
+        <select id="clientCivilite">
+          <option value="Mr">Mr</option>
+          <option value="Mme">Mme</option>
+          <option value="M. et Mme">M. et Mme</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nom *</label>
+        <input type="text" id="clientNomPart" placeholder="ex: ARMAGANIAN" oninput="syncParticulier()">
+      </div>
+      <div class="field span2">
+        <label>Adresse ligne 1 *</label>
+        <input type="text" id="clientAdr1Part" placeholder="ex: Lotissement Les CARDELINES" oninput="syncParticulier()">
+      </div>
+      <div class="field">
+        <label>Complément adresse</label>
+        <input type="text" id="clientAdr2Part" placeholder="ex: N° 14" oninput="syncParticulier()">
+      </div>
+      <div class="field">
+        <label>Code postal + Ville *</label>
+        <input type="text" id="clientAdr3Part" placeholder="ex: 13170 LES PENNES MIRABEAU" oninput="syncParticulier()">
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevStep(2)">← Précédent</button>
+      <button class="btn btn-primary" onclick="nextStep(2)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Site & équipements -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">
+      <div class="panel-title-icon">🏗️</div>
+      Site & équipements
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Nom de la résidence / site *</label>
+        <input type="text" id="residenceNom" placeholder="ex: Résidence LES BARTAVELLES" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Adresse du site *</label>
+        <input type="text" id="residenceAdresse" placeholder="ex: 63 Chemin du Bon Civet 13400 AUBAGNE">
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="section-sub">📦 Listez les équipements à entretenir (pour l'annexe de liste)</div>
+
+    <div id="equipements-list" class="prestations-list">
+      <!-- Dynamically generated -->
+    </div>
+    <button class="btn-add-presta" onclick="addEquipement()">+ Ajouter un équipement</button>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevStep(3)">← Précédent</button>
+      <button class="btn btn-primary" onclick="nextStep(3)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Tarification -->
+  <div class="panel" id="panel-4">
+    <div class="panel-title">
+      <div class="panel-title-icon">💰</div>
+      Tarification
+    </div>
+
+    <div class="field" style="margin-bottom: 20px;">
+      <label>Mode de tarification</label>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="btn-simple" onclick="setTarifMode('simple')">Montant global</button>
+        <button class="toggle-btn" id="btn-multi" onclick="setTarifMode('multi')">Détail par prestation</button>
+      </div>
+    </div>
+
+    <!-- Simple -->
+    <div id="tarif-simple" class="form-grid">
+      <div class="field">
+        <label>Nombre de visites annuelles</label>
+        <input type="text" id="nombreVisites" value="1 visite annuelle" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Montant H.T. (€) *</label>
+        <input type="number" id="montantHT" placeholder="ex: 9944.48" step="0.01" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Taux TVA (%)</label>
+        <select id="tva" onchange="updateRecap()">
+          <option value="10">10% (travaux résidentiels)</option>
+          <option value="20">20% (climatisation)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Multi prestations -->
+    <div id="tarif-multi" style="display:none;">
+      <div id="prestations-list" class="prestations-list"></div>
+      <button class="btn-add-presta" style="margin-top: 12px;" onclick="addPrestation()">+ Ajouter une prestation</button>
+      <div class="field" style="margin-top: 16px; max-width: 200px;">
+        <label>Taux TVA (%)</label>
+        <select id="tva-multi" onchange="updateRecap()">
+          <option value="10">10%</option>
+          <option value="20">20%</option>
+        </select>
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="field" style="max-width: 400px;">
+      <label>Garantie pièces P2+P3 (chaudières) ?</label>
+      <select id="garantiePieces">
+        <option value="non">Non — Entretien forfaitaire P2 uniquement</option>
+        <option value="oui">Oui — Entretien P2 + Garantie pièces P3</option>
+      </select>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevStep(4)">← Précédent</button>
+      <button class="btn btn-primary" onclick="nextStep(4)">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Durée & récap -->
+  <div class="panel" id="panel-5">
+    <div class="panel-title">
+      <div class="panel-title-icon">📅</div>
+      Durée & récapitulatif
+    </div>
+
+    <div class="form-grid cols3">
+      <div class="field">
+        <label>Durée du contrat</label>
+        <select id="duree" onchange="updateRecap()">
+          <option value="1 an">1 an</option>
+          <option value="3 ans">3 ans</option>
+          <option value="5 ans">5 ans</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Date de début *</label>
+        <input type="text" id="dateDebut" placeholder="ex: 01/03/2025" oninput="updateRecap()">
+      </div>
+      <div class="field">
+        <label>Date de fin *</label>
+        <input type="text" id="dateFin" placeholder="ex: 28/02/2026" oninput="updateRecap()">
+      </div>
+    </div>
+
+    <hr class="divider">
+    <div class="panel-title" style="font-size: 16px; margin-bottom: 16px;">
+      <div class="panel-title-icon">✅</div>
+      Récapitulatif
+    </div>
+
+    <div class="recap-grid" id="recap-grid"></div>
+    <div id="total-block"></div>
+
+    <div id="gen-status" class="gen-status">
+      <div class="spinner" id="gen-spinner"></div>
+      <div id="gen-message" style="color: var(--gray); font-size: 15px;">Génération en cours...</div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-secondary" onclick="prevStep(5)">← Précédent</button>
+      <button class="btn btn-success" id="btn-generate" onclick="generateContract()">
+        📄 Générer le contrat Word
+      </button>
+    </div>
+
+    <div id="download-area" style="display:none;" class="download-buttons"></div>
+  </div>
+
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let currentStep = 1;
+let clientType = 'bailleur';
+let tarifMode = 'simple';
+let selectedType = null;
+let equipements = [];
+let prestations = [];
+let prestationsData = [];
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function goStep(n) {
+  if (n > currentStep) return; // Only go back
+  setStep(n);
+}
+
+function nextStep(from) {
+  if (!validateStep(from)) return;
+  setStep(from + 1);
+  if (from + 1 === 5) updateRecap();
+}
+
+function prevStep(from) {
+  setStep(from - 1);
+}
+
+function setStep(n) {
+  currentStep = n;
+  for (let i = 1; i <= 5; i++) {
+    const panel = document.getElementById('panel-' + i);
+    const step = document.getElementById('step-' + i);
+    panel.classList.toggle('active', i === n);
+    step.classList.remove('active', 'done');
+    if (i === n) step.classList.add('active');
+    else if (i < n) step.classList.add('done');
+  }
+}
+
+function validateStep(n) {
+  if (n === 1 && !selectedType) {
+    alert('Veuillez sélectionner un type de contrat.');
+    return false;
+  }
+  if (n === 2) {
+    if (clientType === 'bailleur' && !document.getElementById('clientNom').value.trim()) {
+      alert('Veuillez renseigner le nom du client.');
+      return false;
+    }
+    if (clientType === 'particulier' && !document.getElementById('clientNomPart').value.trim()) {
+      alert('Veuillez renseigner le nom du client.');
+      return false;
+    }
+  }
+  return true;
+}
+
+// ── TYPE SELECTION ────────────────────────────────────────────────────────────
+function selectType(el) {
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedType = el.dataset.type;
+  // Auto-set TVA
+  if (selectedType === 'climatisation') {
+    document.getElementById('tva').value = '20';
+    document.getElementById('tva-multi').value = '20';
+  } else {
+    document.getElementById('tva').value = '10';
+    document.getElementById('tva-multi').value = '10';
+  }
+}
+
+// ── CLIENT TYPE ───────────────────────────────────────────────────────────────
+function setClientType(type) {
+  clientType = type;
+  document.getElementById('btn-bailleur').classList.toggle('active', type === 'bailleur');
+  document.getElementById('btn-particulier').classList.toggle('active', type === 'particulier');
+  document.getElementById('fields-bailleur').style.display = type === 'bailleur' ? 'grid' : 'none';
+  document.getElementById('fields-particulier').style.display = type === 'particulier' ? 'grid' : 'none';
+}
+
+function syncParticulier() {
+  const civ = document.getElementById('clientCivilite').value;
+  const nom = document.getElementById('clientNomPart').value;
+  document.getElementById('clientNom').value = nom;
+  document.getElementById('clientRepresentant').value = civ + ' ' + nom;
+  const a1 = document.getElementById('clientAdr1Part').value;
+  const a2 = document.getElementById('clientAdr2Part').value;
+  const a3 = document.getElementById('clientAdr3Part').value;
+  document.getElementById('clientAdresse1').value = a1;
+  document.getElementById('clientAdresse2').value = a2;
+  document.getElementById('clientAdresse3').value = a3;
+  updateRecap();
+}
+
+// ── TARIF MODE ────────────────────────────────────────────────────────────────
+function setTarifMode(mode) {
+  tarifMode = mode;
+  document.getElementById('btn-simple').classList.toggle('active', mode === 'simple');
+  document.getElementById('btn-multi').classList.toggle('active', mode === 'multi');
+  document.getElementById('tarif-simple').style.display = mode === 'simple' ? 'grid' : 'none';
+  document.getElementById('tarif-multi').style.display = mode === 'multi' ? 'block' : 'none';
+  if (mode === 'multi' && prestationsData.length === 0) addPrestation();
+  updateRecap();
+}
+
+// ── EQUIPEMENTS ───────────────────────────────────────────────────────────────
+function addEquipement() {
+  const id = Date.now();
+  equipements.push(id);
+  const container = document.getElementById('equipements-list');
+  const row = document.createElement('div');
+  row.className = 'presta-row';
+  row.id = 'eq-' + id;
+  row.innerHTML = `
+    <div class="field">
+      <label>Désignation équipement</label>
+      <input type="text" placeholder="ex: Chaudière murale gaz naturel" oninput="updateRecap()">
+    </div>
+    <div class="field">
+      <label>Quantité</label>
+      <input type="number" value="1" min="1">
+    </div>
+    <div class="field">
+      <label>Observations</label>
+      <input type="text" placeholder="Optionnel">
+    </div>
+    <div></div>
+    <button class="btn-remove" onclick="removeRow('eq-${id}')">✕</button>
+  `;
+  container.appendChild(row);
+}
+
+// ── PRESTATIONS ───────────────────────────────────────────────────────────────
+function addPrestation() {
+  const id = Date.now();
+  prestationsData.push(id);
+  const container = document.getElementById('prestations-list');
+  const row = document.createElement('div');
+  row.className = 'presta-row';
+  row.id = 'pr-' + id;
+  row.innerHTML = `
+    <div class="field">
+      <label>Désignation prestation</label>
+      <input type="text" placeholder="ex: CHAUDIERES GAZ" oninput="updateRecap()">
+    </div>
+    <div class="field">
+      <label>Visites / an</label>
+      <input type="text" value="1" placeholder="1">
+    </div>
+    <div class="field">
+      <label>Quantité</label>
+      <input type="number" value="1" min="1" oninput="updateRecap()">
+    </div>
+    <div class="field">
+      <label>Prix unitaire H.T. (€)</label>
+      <input type="number" step="0.01" placeholder="0.00" oninput="updateRecap()">
+    </div>
+    <button class="btn-remove" onclick="removeRow('pr-${id}')">✕</button>
+  `;
+  container.appendChild(row);
+}
+
+function removeRow(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+  updateRecap();
+}
+
+// ── RECAP ─────────────────────────────────────────────────────────────────────
+function updateRecap() {
+  const grid = document.getElementById('recap-grid');
+  const totalBlock = document.getElementById('total-block');
+  if (!grid) return;
+
+  const typeLabels = {
+    chaudiere: '🔥 Chaudière', vmc: '💨 VMC', multi: '🏢 Multi-équipements',
+    thermodynamique: '💧 Ballon thermodynamique', climatisation: '❄️ Génie climatique',
+    maintenance: '🔧 Maintenance générale'
+  };
+
+  const nom = document.getElementById('clientNom')?.value || '';
+  const resNom = document.getElementById('residenceNom')?.value || '';
+  const duree = document.getElementById('duree')?.value || '';
+  const debut = document.getElementById('dateDebut')?.value || '';
+  const fin = document.getElementById('dateFin')?.value || '';
+
+  grid.innerHTML = `
+    <div class="recap-block">
+      <div class="recap-block-title">Contrat</div>
+      <div class="recap-row"><span class="recap-key">Type</span><span class="recap-val">${typeLabels[selectedType] || '–'}</span></div>
+      <div class="recap-row"><span class="recap-key">Durée</span><span class="recap-val">${duree}</span></div>
+      <div class="recap-row"><span class="recap-key">Du</span><span class="recap-val">${debut}</span></div>
+      <div class="recap-row"><span class="recap-key">Au</span><span class="recap-val">${fin}</span></div>
+    </div>
+    <div class="recap-block">
+      <div class="recap-block-title">Parties</div>
+      <div class="recap-row"><span class="recap-key">Client</span><span class="recap-val">${nom || '–'}</span></div>
+      <div class="recap-row"><span class="recap-key">Site</span><span class="recap-val">${resNom || '–'}</span></div>
+      <div class="recap-row"><span class="recap-key">Prestataire</span><span class="recap-val">SANIT CLIMAT SAS</span></div>
+    </div>
+  `;
+
+  // Total
+  let htTotal = 0;
+  let tvaRate = 10;
+
+  if (tarifMode === 'simple') {
+    htTotal = parseFloat(document.getElementById('montantHT')?.value || 0);
+    tvaRate = parseInt(document.getElementById('tva')?.value || 10);
+  } else {
+    tvaRate = parseInt(document.getElementById('tva-multi')?.value || 10);
+    document.querySelectorAll('#prestations-list .presta-row').forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      const qty = parseFloat(inputs[2]?.value || 1);
+      const prix = parseFloat(inputs[3]?.value || 0);
+      htTotal += qty * prix;
+    });
+  }
+
+  const ttc = htTotal * (1 + tvaRate / 100);
+
+  totalBlock.innerHTML = `
+    <div class="total-block">
+      <div>
+        <div class="total-label">Montant du contrat</div>
+        <div class="total-ht">${htTotal.toFixed(2).replace('.', ',')} € H.T. — TVA ${tvaRate}%</div>
+      </div>
+      <div>
+        <div class="total-amount">${ttc.toFixed(2).replace('.', ',')} € T.T.C.</div>
+      </div>
+    </div>
+  `;
+}
+
+// ── BUILD DATA OBJECT ─────────────────────────────────────────────────────────
+function buildData() {
+  const tvaRate = tarifMode === 'simple'
+    ? document.getElementById('tva').value
+    : document.getElementById('tva-multi').value;
+
+  const data = {
+    typeContrat: selectedType,
+    clientType,
+    clientNom: document.getElementById('clientNom').value,
+    clientRepresentant: document.getElementById('clientRepresentant').value,
+    clientRepresentant2: document.getElementById('clientRepresentant2').value,
+    clientAdresse1: document.getElementById('clientAdresse1').value,
+    clientAdresse2: document.getElementById('clientAdresse2').value,
+    clientAdresse3: document.getElementById('clientAdresse3').value,
+    residenceNom: document.getElementById('residenceNom').value,
+    residenceAdresse: document.getElementById('residenceAdresse').value,
+    duree: document.getElementById('duree').value,
+    dateDebut: document.getElementById('dateDebut').value,
+    dateFin: document.getElementById('dateFin').value,
+    tva: tvaRate,
+    garantiePieces: document.getElementById('garantiePieces').value,
+  };
+
+  if (tarifMode === 'simple') {
+    data.nombreVisites = document.getElementById('nombreVisites').value;
+    data.montantHT = document.getElementById('montantHT').value;
+    data.prestations = [];
+  } else {
+    data.montantHT = '0';
+    data.prestations = [];
+    document.querySelectorAll('#prestations-list .presta-row').forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      data.prestations.push({
+        designation: inputs[0]?.value || '',
+        visites: inputs[1]?.value || '1',
+        quantite: inputs[2]?.value || '1',
+        prixHT: inputs[3]?.value || '0',
+      });
+    });
+  }
+
+  // Équipements
+  data.equipements = [];
+  document.querySelectorAll('#equipements-list .presta-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    data.equipements.push({
+      designation: inputs[0]?.value || '',
+      quantite: inputs[1]?.value || '1',
+      observations: inputs[2]?.value || '',
+    });
+  });
+
+  return data;
+}
+
+// ── GENERATE ──────────────────────────────────────────────────────────────────
+async function generateContract() {
+  const data = buildData();
+
+  if (!data.clientNom || !data.residenceNom || !data.dateDebut) {
+    alert('Veuillez remplir tous les champs obligatoires (*)');
+    return;
+  }
+
+  const btn = document.getElementById('btn-generate');
+  const statusDiv = document.getElementById('gen-status');
+  const dlArea = document.getElementById('download-area');
+
+  btn.disabled = true;
+  statusDiv.classList.add('show');
+  statusDiv.innerHTML = '<div class="spinner"></div><div style="color:var(--gray);font-size:15px;margin-top:12px;">Génération du contrat Word en cours...</div>';
+  dlArea.style.display = 'none';
+
+  try {
+    const response = await fetch('/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(err);
+    }
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const clientNomSafe = (data.clientNom || 'CONTRAT').replace(/[^a-zA-Z0-9_-]/g, '_').toUpperCase();
+    const filename = `CONTRAT_${clientNomSafe}_${data.dateDebut.replace(/\//g, '-')}.docx`;
+
+    statusDiv.innerHTML = `
+      <div class="success-icon">✓</div>
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:20px;margin-bottom:8px;">Contrat généré !</div>
+      <div style="color:var(--gray);font-size:14px;">Le document Word est prêt au téléchargement.</div>
+    `;
+
+    dlArea.style.display = 'flex';
+    dlArea.innerHTML = `
+      <a href="${url}" download="${filename}" class="btn-download btn-dl-word">
+        📄 Télécharger le contrat Word (.docx)
+      </a>
+    `;
+  } catch (e) {
+    statusDiv.innerHTML = `<div style="color:var(--danger);font-size:15px;">❌ Erreur : ${e.message}</div>`;
+    btn.disabled = false;
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+addEquipement();
+updateRecap();
+</script>
+</body>
+</html>
