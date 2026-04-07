@@ -20305,6 +20305,16 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
 .rappel-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; background:#FEF9E7; color:#F39C12; border:1px solid #F39C12; border-radius:12px; padding:2px 10px; font-weight:600; }
 .rappel-urgent { background:#FDEDEC !important; color:var(--danger) !important; border-color:var(--danger) !important; }
 
+.tarif-card { background:white; border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 20px; margin-bottom:10px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; transition:all .2s; border-left:4px solid var(--border); }
+.tarif-card:hover { box-shadow:0 6px 30px rgba(30,136,199,0.15); }
+.tarif-card .tc-cat { font-size:20px; flex-shrink:0; }
+.tarif-card .tc-info { flex:1; min-width:160px; }
+.tarif-card .tc-label-main { font-weight:700; font-size:15px; margin-bottom:2px; }
+.tarif-card .tc-note { font-size:12px; color:var(--gray); }
+.tarif-card .tc-prix { font-family:'Syne',sans-serif; font-weight:800; font-size:20px; color:var(--cyan); white-space:nowrap; }
+.tarif-card .tc-ht { font-size:11px; color:var(--gray); }
+.tarif-actions { display:flex; gap:8px; }
+
 @media(max-width:720px) {
   .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
   .field.s2, .field.s3 { grid-column: span 1; }
@@ -20543,6 +20553,84 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     </div>
   </div>
 </div><!-- /view-suivi -->
+
+<!-- ══ VUE TARIFS ══ -->
+<div id="view-tarifs" class="view-section" style="display:none;">
+  <div class="container">
+    <div class="page-title">Grille des <span>tarifs</span></div>
+    <div class="page-sub">Enregistrez vos tarifs de référence pour les réutiliser lors de la création d'un contrat</div>
+
+    <!-- Catégories -->
+    <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+      <select id="tarif-categorie-filter" onchange="renderTarifs()" style="padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;">
+        <option value="">Toutes les catégories</option>
+        <option value="chaudiere">🔥 Chaudière</option>
+        <option value="vmc">💨 VMC</option>
+        <option value="multi">🏢 Multi-équipements</option>
+        <option value="thermodynamique">💧 Ballon thermodynamique</option>
+        <option value="climatisation">❄️ Génie climatique</option>
+        <option value="maintenance">🔧 Maintenance générale</option>
+        <option value="autre">📦 Autre</option>
+      </select>
+      <input id="tarif-search" placeholder="🔍 Rechercher une prestation..." oninput="renderTarifs()" style="flex:1;min-width:200px;padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;">
+    </div>
+
+    <!-- Formulaire ajout/édition tarif -->
+    <div class="panel" id="tarif-form-panel" style="margin-bottom:20px;">
+      <div class="panel-title"><div class="panel-icon">➕</div><span id="tarif-form-title">Nouveau tarif</span></div>
+      <div class="form-grid g3" style="margin-bottom:16px;">
+        <div class="field">
+          <label>Désignation *</label>
+          <input id="tf-label" placeholder="ex: Chaudière murale gaz — entretien annuel">
+        </div>
+        <div class="field">
+          <label>Catégorie</label>
+          <select id="tf-cat">
+            <option value="chaudiere">🔥 Chaudière</option>
+            <option value="vmc">💨 VMC</option>
+            <option value="multi">🏢 Multi-équipements</option>
+            <option value="thermodynamique">💧 Ballon thermodynamique</option>
+            <option value="climatisation">❄️ Génie climatique</option>
+            <option value="maintenance">🔧 Maintenance générale</option>
+            <option value="autre">📦 Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Prix unitaire H.T. (€) *</label>
+          <input id="tf-prix" type="number" step="0.01" placeholder="ex: 120.00">
+        </div>
+        <div class="field">
+          <label>TVA (%)</label>
+          <select id="tf-tva">
+            <option value="10">10 %</option>
+            <option value="20">20 %</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Visites/an</label>
+          <input id="tf-visites" value="1" placeholder="1">
+        </div>
+        <div class="field">
+          <label>Note interne</label>
+          <input id="tf-note" placeholder="ex: résidentiel standard">
+        </div>
+      </div>
+      <input type="hidden" id="tf-edit-id">
+      <div style="display:flex;gap:10px;">
+        <button onclick="saveTarif()" class="btn btn-p" style="min-width:160px;">💾 Enregistrer le tarif</button>
+        <button onclick="cancelEditTarif()" id="tf-cancel" class="btn btn-s" style="display:none;">Annuler</button>
+      </div>
+    </div>
+
+    <!-- Liste des tarifs -->
+    <div id="tarifs-list"></div>
+    <div id="tarifs-empty" style="text-align:center;padding:60px 20px;color:var(--gray);display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">💶</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Aucun tarif enregistré</div>
+      <div style="font-size:14px;">Ajoutez vos premiers tarifs de référence ci-dessus.</div>
+    </div>
+  </div>
+</div><!-- /view-tarifs -->
 
 <script>
 // ════════════════════════════════════════════════════════════
@@ -21486,6 +21574,301 @@ const _origGenerate = generate;
 
 // Lancer les vérifications de rappels au démarrage
 setTimeout(scheduleRappels, 2000);
+
+// ════════════════════════════════════════════════════════════
+// MODIFIER / DUPLIQUER UN CONTRAT
+// ════════════════════════════════════════════════════════════
+let editingContractId = null;
+
+function fillFormFromData(d){
+  // Step 1 : type
+  const tc = document.querySelector(`.tc[data-t="${d.typeContrat}"]`);
+  if(tc) pickType(tc);
+
+  // Step 2 : client
+  setCT(d.clientType||'bailleur');
+  const sv = (id, val) => { const el=document.getElementById(id); if(el) el.value=val||''; };
+  sv('cNom', d.clientNom); sv('cRep', d.clientRepresentant); sv('cRep2', d.clientRepresentant2);
+  sv('cAdr1', d.clientAdresse1); sv('cAdr2', d.clientAdresse2); sv('cAdr3', d.clientAdresse3);
+  // particulier
+  sv('cNomP', d.clientNom); sv('cA1P', d.clientAdresse1); sv('cA2P', d.clientAdresse2); sv('cA3P', d.clientAdresse3);
+
+  // Step 3 : site
+  sv('rNom', d.residenceNom); sv('rAdr', d.residenceAdresse);
+  // Photo et logo
+  sitePhotoB64 = d.sitePhoto||null;
+  clientLogoB64 = d.clientLogo||null;
+  if(sitePhotoB64){ document.getElementById('photoImg').src=sitePhotoB64; document.getElementById('photoPreview').style.display='block'; }
+  if(clientLogoB64){ document.getElementById('logoImg').src=clientLogoB64; document.getElementById('logoPreview').style.display='block'; }
+
+  // Step 4 : tarif
+  const mode = d.tarifMode||'simple';
+  setTM(mode);
+  if(mode==='simple'){
+    sv('nbVis', d.nombreVisites); sv('mHT', d.montantHT); 
+    sv('tva', d.tva); sv('tva2', d.tva);
+  } else {
+    // Vider et remplir les lignes de prestation
+    document.getElementById('pr-list').innerHTML=''; prIdCtr=0;
+    (d.prestations||[]).forEach(p=>{
+      addPr();
+      const rows = document.querySelectorAll('#pr-list .pr-row');
+      const row = rows[rows.length-1];
+      const ins = row.querySelectorAll('input');
+      if(ins[0]) ins[0].value = p.designation||'';
+      if(ins[1]) ins[1].value = p.visites||'1';
+      if(ins[2]) ins[2].value = p.quantite||'1';
+      if(ins[3]) ins[3].value = p.prixHT||'0';
+    });
+    sv('tva2', d.tva);
+  }
+  sv('garPieces', d.garantiePieces);
+
+  // Équipements
+  document.getElementById('eq-list').innerHTML=''; eqIdCtr=0;
+  (d.equipements||[]).forEach(eq=>{
+    addEq();
+    const rows = document.querySelectorAll('#eq-list .eq-row');
+    const row = rows[rows.length-1];
+    const ins = row.querySelectorAll('input');
+    if(ins[0]) ins[0].value = eq.designation||'';
+    if(ins[1]) ins[1].value = eq.quantite||'1';
+    if(ins[2]) ins[2].value = eq.observations||'';
+  });
+
+  // Step 5 : durée
+  sv('duree', d.duree); sv('dDeb', d.dateDebut); sv('dFin', d.dateFin);
+
+  updR();
+}
+
+function editContract(id){
+  const arr = loadContracts();
+  const c = arr.find(x=>x.id===id);
+  if(!c || !c.formData){ alert('Données du formulaire non disponibles pour ce contrat.'); return; }
+  editingContractId = id;
+  fillFormFromData(c.formData);
+  showView('new');
+  setStep(1);
+  // Afficher bandeau "Mode édition"
+  let banner = document.getElementById('edit-banner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'edit-banner';
+    banner.style.cssText = 'background:#FEF9E7;border:2px solid #F39C12;border-radius:10px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:600;color:#B7770D;';
+    banner.innerHTML = '✏️ Mode édition — ce contrat sera mis à jour après génération. <button onclick="cancelEdit()" style="margin-left:auto;padding:5px 14px;border:2px solid #F39C12;border-radius:8px;background:white;color:#F39C12;cursor:pointer;font-weight:600;">Annuler</button>';
+    document.querySelector('.container').insertBefore(banner, document.querySelector('.steps'));
+  }
+  banner.style.display='flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function cancelEdit(){
+  editingContractId = null;
+  const b = document.getElementById('edit-banner');
+  if(b) b.style.display='none';
+}
+
+function duplicateContract(id){
+  const arr = loadContracts();
+  const c = arr.find(x=>x.id===id);
+  if(!c || !c.formData){ alert('Données du formulaire non disponibles pour ce contrat.'); return; }
+  fillFormFromData(c.formData);
+  editingContractId = null; // pas de mise à jour — nouveau contrat
+  showView('new');
+  setStep(1);
+  // Bandeau duplication
+  let banner = document.getElementById('edit-banner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id='edit-banner';
+    banner.style.cssText='background:#F0FFF4;border:2px solid var(--success);border-radius:10px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:600;color:#1a7a40;';
+    document.querySelector('.container').insertBefore(banner, document.querySelector('.steps'));
+  }
+  banner.style.cssText='background:#F0FFF4;border:2px solid var(--success);border-radius:10px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:600;color:#1a7a40;';
+  banner.innerHTML='⧉ Duplication — modifiez le contrat puis générez-le pour créer une nouvelle entrée. <button onclick="cancelEdit()" style="margin-left:auto;padding:5px 14px;border:2px solid var(--success);border-radius:8px;background:white;color:var(--success);cursor:pointer;font-weight:600;">Annuler</button>';
+  banner.style.display='flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Patcher generate() pour gérer l'édition
+const _origSaveContractToSuivi = saveContractToSuivi;
+const _patchedSave = saveContractToSuivi;
+// Override via wrapper sur generate
+const __gen_orig = generate;
+generate = async function(){
+  if(!valid(5)) return;
+  // Si mode édition, on supprime l'ancien avant de sauvegarder
+  if(editingContractId){
+    const arr = loadContracts().filter(x=>x.id!==editingContractId);
+    saveContracts(arr);
+    editingContractId = null;
+    const b=document.getElementById('edit-banner'); if(b) b.style.display='none';
+  }
+  return __gen_orig.apply(this, arguments);
+};
+
+// ════════════════════════════════════════════════════════════
+// GRILLE TARIFAIRE
+// ════════════════════════════════════════════════════════════
+const TARIF_KEY = 'sanitClimat_tarifs_v1';
+const CAT_ICONS = {chaudiere:'🔥',vmc:'💨',multi:'🏢',thermodynamique:'💧',climatisation:'❄️',maintenance:'🔧',autre:'📦'};
+const CAT_LABELS = {chaudiere:'Chaudière',vmc:'VMC',multi:'Multi-équipements',thermodynamique:'Ballon thermodynamique',climatisation:'Génie climatique',maintenance:'Maintenance',autre:'Autre'};
+
+function loadTarifs(){ try{ return JSON.parse(localStorage.getItem(TARIF_KEY)||'[]'); }catch{ return []; } }
+function saveTarifs(arr){ localStorage.setItem(TARIF_KEY, JSON.stringify(arr)); }
+
+function saveTarif(){
+  const label = document.getElementById('tf-label').value.trim();
+  const prix  = parseFloat(document.getElementById('tf-prix').value||'0');
+  if(!label){ alert('Veuillez saisir une désignation.'); return; }
+  if(!prix||prix<=0){ alert('Veuillez saisir un prix valide.'); return; }
+  const arr = loadTarifs();
+  const editId = document.getElementById('tf-edit-id').value;
+  const item = {
+    id: editId || (Date.now().toString(36)+Math.random().toString(36).slice(2,5)),
+    label,
+    categorie: document.getElementById('tf-cat').value,
+    prix,
+    tva: parseInt(document.getElementById('tf-tva').value||'10'),
+    visites: document.getElementById('tf-visites').value||'1',
+    note: document.getElementById('tf-note').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  if(editId){
+    const idx = arr.findIndex(x=>x.id===editId);
+    if(idx>=0) arr[idx]=item; else arr.unshift(item);
+  } else {
+    arr.unshift(item);
+  }
+  saveTarifs(arr);
+  cancelEditTarif();
+  renderTarifs();
+}
+
+function cancelEditTarif(){
+  document.getElementById('tf-label').value='';
+  document.getElementById('tf-prix').value='';
+  document.getElementById('tf-visites').value='1';
+  document.getElementById('tf-note').value='';
+  document.getElementById('tf-edit-id').value='';
+  document.getElementById('tf-form-title').textContent='Nouveau tarif';
+  document.getElementById('tf-cancel').style.display='none';
+}
+
+function editTarif(id){
+  const t = loadTarifs().find(x=>x.id===id);
+  if(!t) return;
+  document.getElementById('tf-label').value = t.label;
+  document.getElementById('tf-cat').value = t.categorie||'chaudiere';
+  document.getElementById('tf-prix').value = t.prix;
+  document.getElementById('tf-tva').value = t.tva||'10';
+  document.getElementById('tf-visites').value = t.visites||'1';
+  document.getElementById('tf-note').value = t.note||'';
+  document.getElementById('tf-edit-id').value = t.id;
+  document.getElementById('tf-form-title').textContent = 'Modifier le tarif';
+  document.getElementById('tf-cancel').style.display = 'inline-flex';
+  document.getElementById('tarif-form-panel').scrollIntoView({behavior:'smooth'});
+}
+
+function deleteTarif(id){
+  if(!confirm('Supprimer ce tarif ?')) return;
+  saveTarifs(loadTarifs().filter(x=>x.id!==id));
+  renderTarifs();
+}
+
+function applyTarif(id){
+  // Applique ce tarif dans le formulaire (mode multi-prestations)
+  const t = loadTarifs().find(x=>x.id===id);
+  if(!t) return;
+  showView('new');
+  // Passer en mode multi si pas déjà
+  if(tm!=='multi') setTM('multi');
+  // Ajouter une ligne de prestation avec ce tarif
+  addPr();
+  const rows = document.querySelectorAll('#pr-list .pr-row');
+  const row = rows[rows.length-1];
+  const ins = row.querySelectorAll('input');
+  if(ins[0]) ins[0].value = t.label;
+  if(ins[1]) ins[1].value = t.visites||'1';
+  if(ins[2]) ins[2].value = '1';
+  if(ins[3]) ins[3].value = t.prix;
+  document.getElementById('tva2').value = t.tva||'10';
+  updR();
+  // Aller à l'étape tarification
+  setStep(4);
+}
+
+function renderTarifs(){
+  const all = loadTarifs();
+  const cat = document.getElementById('tarif-categorie-filter')?.value||'';
+  const q = (document.getElementById('tarif-search')?.value||'').toLowerCase();
+  const list = all.filter(t=>{
+    const matchCat = !cat || t.categorie===cat;
+    const matchQ = !q || t.label.toLowerCase().includes(q) || (t.note||'').toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  const el = document.getElementById('tarifs-list');
+  const empty = document.getElementById('tarifs-empty');
+  if(!list.length){ el.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  // Grouper par catégorie
+  const grouped = {};
+  list.forEach(t=>{
+    const k = t.categorie||'autre';
+    if(!grouped[k]) grouped[k]=[];
+    grouped[k].push(t);
+  });
+
+  el.innerHTML = Object.entries(grouped).map(([cat, items])=>`
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--gray);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-left:4px;">
+        ${CAT_ICONS[cat]||'📦'} ${CAT_LABELS[cat]||cat} <span style="font-size:12px;font-weight:400;">(${items.length})</span>
+      </div>
+      ${items.map(t=>{
+        const ttc = (t.prix*(1+t.tva/100)).toFixed(2).replace('.',',');
+        const ht = t.prix.toFixed(2).replace('.',',');
+        return `<div class="tarif-card">
+          <div class="tc-cat">${CAT_ICONS[t.categorie]||'📦'}</div>
+          <div class="tc-info">
+            <div class="tc-label-main">${t.label}</div>
+            <div class="tc-note">${t.note?t.note+' · ':''}${t.visites} visite${t.visites>1?'s':''}/an · TVA ${t.tva}%</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="tc-prix">${ht} € HT</div>
+            <div class="tc-ht">soit ${ttc} € TTC</div>
+          </div>
+          <div class="tarif-actions">
+            <button class="btn-action" onclick="applyTarif('${t.id}')" title="Utiliser dans le formulaire" style="background:#F0F7FF;border:2px solid var(--cyan);color:var(--cyan);">↗ Utiliser</button>
+            <button class="btn-action" onclick="editTarif('${t.id}')" style="background:#FFFBF0;border:2px solid #F39C12;color:#F39C12;">✏️</button>
+            <button class="btn-del" onclick="deleteTarif('${t.id}')" title="Supprimer">🗑</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+}
+
+// ── Mettre à jour showView pour gérer le 3ème onglet ──
+const _origShowView = showView;
+showView = function(view){
+  ['new','suivi','tarifs'].forEach(v=>{
+    const el = document.getElementById('view-'+v);
+    if(el) el.style.display = v===view ? '' : 'none';
+  });
+  ['navNew','navSuivi','navTarifs'].forEach(id=>{
+    const btn = document.getElementById(id);
+    if(!btn) return;
+    const active = id==='nav'+view.charAt(0).toUpperCase()+view.slice(1);
+    btn.style.background = active ? 'rgba(30,136,199,0.25)' : 'transparent';
+    btn.style.color = active ? 'var(--cyan)' : 'rgba(255,255,255,0.7)';
+    btn.style.borderColor = active ? 'var(--cyan)' : 'rgba(255,255,255,0.2)';
+  });
+  if(view==='suivi') renderSuivi();
+  if(view==='tarifs') renderTarifs();
+};
 
 </script>
 </body>
