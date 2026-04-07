@@ -20660,8 +20660,7 @@ async function generate(){
   st.innerHTML='<div class="status"><div class="spinner"></div><p style="color:var(--gray)">Génération du document Word…</p></div>';
 
   try {
-    const buffer = await buildDocx(d);
-    const blob = new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+    const blob = await buildDocx(d);
     const url = URL.createObjectURL(blob);
     const safe = (d.clientNom||'CONTRAT').replace(/[^a-zA-Z0-9_]/g,'_').toUpperCase();
     const date = (d.dateDebut||'').replace(/\//g,'-');
@@ -21089,7 +21088,7 @@ function buildDocx(d){
     }]
   });
 
-  return docx.Packer.toBuffer(doc);
+  return docx.Packer.toBlob(doc);
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
