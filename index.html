@@ -20265,6 +20265,46 @@ select { cursor: pointer; }
 hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
 .note { font-size: 12px; color: var(--gray); background: var(--cyan-light); border-left: 3px solid var(--cyan); border-radius: 6px; padding: 9px 13px; margin-bottom: 16px; }
 
+/* ── SUIVI ── */
+.view-section {}
+.contract-card {
+  background: white; border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 20px 24px; margin-bottom: 14px;
+  border-left: 5px solid var(--border);
+  transition: all .2s;
+}
+.contract-card:hover { box-shadow: 0 6px 30px rgba(30,136,199,0.15); transform: translateY(-1px); }
+.contract-card.attente { border-left-color: #F39C12; }
+.contract-card.accepte { border-left-color: var(--success); }
+.contract-card.refuse  { border-left-color: var(--danger); }
+.card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; gap:12px; flex-wrap:wrap; }
+.card-title { font-family: 'Syne',sans-serif; font-weight:700; font-size:16px; }
+.card-sub { font-size:13px; color:var(--gray); margin-top:2px; }
+.card-badges { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.badge-statut { padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; letter-spacing:0.5px; }
+.badge-statut.attente { background:#FEF9E7; color:#F39C12; border:1px solid #F39C12; }
+.badge-statut.accepte { background:#EAFAF1; color:var(--success); border:1px solid var(--success); }
+.badge-statut.refuse  { background:#FDEDEC; color:var(--danger); border:1px solid var(--danger); }
+.card-meta { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--gray); margin-bottom:14px; }
+.card-meta span { display:flex; align-items:center; gap:4px; }
+.card-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.btn-statut { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:2px solid; transition:all .15s; }
+.btn-statut.attente { border-color:#F39C12; color:#F39C12; background:white; }
+.btn-statut.attente:hover, .btn-statut.attente.active { background:#F39C12; color:white; }
+.btn-statut.accepte { border-color:var(--success); color:var(--success); background:white; }
+.btn-statut.accepte:hover, .btn-statut.accepte.active { background:var(--success); color:white; }
+.btn-statut.refuse  { border-color:var(--danger); color:var(--danger); background:white; }
+.btn-statut.refuse:hover, .btn-statut.refuse.active  { background:var(--danger); color:white; }
+.btn-rappel { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:2px solid var(--cyan); color:var(--cyan); background:white; transition:all .15s; }
+.btn-rappel.on { background:var(--cyan); color:white; }
+.btn-rappel:hover { background:var(--cyan); color:white; }
+.btn-dl-small { padding:6px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; background:#2B579A; color:white; border:none; transition:all .15s; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+.btn-dl-small:hover { background:#1e4080; }
+.btn-del { padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer; border:2px solid var(--border); color:var(--gray); background:white; transition:all .15s; margin-left:auto; }
+.btn-del:hover { border-color:var(--danger); color:var(--danger); }
+.rappel-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; background:#FEF9E7; color:#F39C12; border:1px solid #F39C12; border-radius:12px; padding:2px 10px; font-weight:600; }
+.rappel-urgent { background:#FDEDEC !important; color:var(--danger) !important; border-color:var(--danger) !important; }
+
 @media(max-width:720px) {
   .form-grid, .form-grid.g3 { grid-template-columns: 1fr; }
   .field.s2, .field.s3 { grid-column: span 1; }
@@ -20287,9 +20327,13 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
       <div class="logo-sub">Générateur de contrats</div>
     </div>
   </div>
-  <div class="badge">✦ Standalone — aucune installation</div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button class="btn-tab-nav" id="navNew" onclick="showView('new')" style="background:rgba(30,136,199,0.25);border:1px solid var(--cyan);color:var(--cyan);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">✦ Nouveau contrat</button>
+    <button class="btn-tab-nav" id="navSuivi" onclick="showView('suivi')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">📋 Suivi des contrats</button>
+  </div>
 </header>
 
+<div id="view-new" class="view-section">
 <div class="container">
   <div class="page-title">Nouveau <span>contrat</span> de maintenance</div>
   <div class="page-sub">Remplissez les 5 étapes · Le fichier Word se télécharge directement dans votre navigateur</div>
@@ -20379,6 +20423,25 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
       <div class="field"><label>Adresse complète du site *</label><input id="rAdr" placeholder="ex: 63 Chemin du Bon Civet 13400 AUBAGNE"></div>
     </div>
     <hr class="div">
+    <div class="form-grid" style="margin-bottom:20px;">
+      <div class="field">
+        <label>📸 Photo du site (optionnel)</label>
+        <input type="file" id="sitePhoto" accept="image/*" onchange="previewPhoto(this)" style="padding:8px;">
+        <div id="photoPreview" style="margin-top:10px;display:none;">
+          <img id="photoImg" src="" alt="Aperçu" style="max-width:200px;max-height:120px;border-radius:8px;border:2px solid var(--border);">
+          <button onclick="removePhoto()" style="display:block;margin-top:6px;font-size:12px;color:var(--danger);background:none;border:none;cursor:pointer;">✕ Supprimer la photo</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>🏢 Logo client (optionnel)</label>
+        <input type="file" id="clientLogo" accept="image/*" onchange="previewLogo(this)" style="padding:8px;">
+        <div id="logoPreview" style="margin-top:10px;display:none;">
+          <img id="logoImg" src="" alt="Logo" style="max-width:160px;max-height:80px;border-radius:6px;border:2px solid var(--border);">
+          <button onclick="removeLogo()" style="display:block;margin-top:6px;font-size:12px;color:var(--danger);background:none;border:none;cursor:pointer;">✕ Supprimer le logo</button>
+        </div>
+      </div>
+    </div>
+    <hr class="div">
     <div class="note">📦 Listez les équipements (pour l'annexe — facultatif)</div>
     <div id="eq-list" class="rows-list"></div>
     <button class="btn-add" onclick="addEq()">＋ Ajouter un équipement</button>
@@ -20455,6 +20518,31 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
   </div>
 
 </div>
+</div><!-- /view-new -->
+
+<!-- ══ VUE SUIVI ══ -->
+<div id="view-suivi" class="view-section" style="display:none;">
+  <div class="container">
+    <div class="page-title">Suivi des <span>contrats</span></div>
+    <div class="page-sub" id="suivi-sub">Retrouvez et gérez tous vos contrats générés</div>
+    <div id="suivi-toolbar" style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;">
+      <input id="suivi-search" placeholder="🔍 Rechercher un client, site..." oninput="renderSuivi()" style="flex:1;min-width:200px;padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;">
+      <select id="suivi-filter" onchange="renderSuivi()" style="padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px;cursor:pointer;">
+        <option value="">Tous les statuts</option>
+        <option value="attente">⏳ En attente</option>
+        <option value="accepte">✅ Accepté</option>
+        <option value="refuse">❌ Refusé</option>
+      </select>
+      <button onclick="clearAllContracts()" style="padding:9px 16px;border:2px solid var(--danger);border-radius:8px;font-size:13px;color:var(--danger);background:white;cursor:pointer;font-weight:600;">🗑 Tout effacer</button>
+    </div>
+    <div id="suivi-list"></div>
+    <div id="suivi-empty" style="text-align:center;padding:60px 20px;color:var(--gray);display:none;">
+      <div style="font-size:48px;margin-bottom:16px;">📋</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Aucun contrat enregistré</div>
+      <div style="font-size:14px;">Générez votre premier contrat pour le retrouver ici.</div>
+    </div>
+  </div>
+</div><!-- /view-suivi -->
 
 <script>
 // ════════════════════════════════════════════════════════════
@@ -20644,7 +20732,9 @@ function collectData(){
     tarifMode:tm, nombreVisites:v('nbVis'), montantHT:ht, tva:tvaR, ttc,
     prestations, garantiePieces:v('garPieces'),
     duree:v('duree'), dateDebut:v('dDeb'), dateFin:v('dFin'),
-    equipements
+    equipements,
+    sitePhoto: sitePhotoB64,
+    clientLogo: clientLogoB64
   };
 }
 
@@ -20665,12 +20755,15 @@ async function generate(){
     const safe = (d.clientNom||'CONTRAT').replace(/[^a-zA-Z0-9_]/g,'_').toUpperCase();
     const date = (d.dateDebut||'').replace(/\//g,'-');
     const fn = `CONTRAT_${safe}_${date}.docx`;
+    // Sauvegarder dans le suivi
+    saveContractToSuivi(d, url, fn);
     st.innerHTML=`
       <div class="status">
         <div class="ok-icon">✓</div>
         <p style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Contrat généré !</p>
         <p style="color:var(--gray);font-size:13px;margin-bottom:4px;">Fichier prêt : <strong>${fn}</strong></p>
         <a href="${url}" download="${fn}" class="dl-btn">📄 Télécharger le contrat Word (.docx)</a>
+        <button onclick="showView('suivi')" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;margin-top:10px;background:white;border:2px solid var(--cyan);color:var(--cyan);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">📋 Voir dans le suivi</button>
       </div>`;
     btn.disabled=false;
   } catch(e) {
@@ -20683,12 +20776,31 @@ async function generate(){
 // ════════════════════════════════════════════════════════════
 // DOCX BUILDER
 // ════════════════════════════════════════════════════════════
-function buildDocx(d){
+async function buildDocx(d){
   const {
     Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell,
     AlignmentType, BorderStyle, WidthType, ShadingType, Header, Footer,
-    PageBreak, HeadingLevel
+    PageBreak, HeadingLevel, ImageRun
   } = docx;
+
+  // ── Helper : convertir base64 dataURL en Uint8Array ──
+  function b64ToUint8(dataUrl){
+    const base64 = dataUrl.split(',')[1];
+    const bin = atob(base64);
+    const arr = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) arr[i]=bin.charCodeAt(i);
+    return arr;
+  }
+
+  // ── Helper : créer un ImageRun depuis une dataURL ──
+  function makeImageRun(dataUrl, w, h){
+    try {
+      return new ImageRun({
+        data: b64ToUint8(dataUrl),
+        transformation: { width: w, height: h }
+      });
+    } catch(e) { return null; }
+  }
 
   const CYAN='1E88C7', DARK='0D1B2A', GRAY='F4F7FA';
   const A4W=9638; // content width DXA for A4 1.5cm margins
@@ -20753,15 +20865,52 @@ function buildDocx(d){
   const children = [];
 
   // ── COVER PAGE ────────────────────────────────────────────
-  children.push(
-    ...Blank(3),
-    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:600},children:[
+  // Logo Sanit Climat SVG embarqué (converti en PNG via canvas)
+  const SC_LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60">
+    <rect width="200" height="60" rx="10" fill="#1E88C7"/>
+    <text x="16" y="38" font-size="28" font-family="Arial" fill="white">🔥</text>
+    <text x="52" y="26" font-size="16" font-family="Arial" font-weight="bold" fill="white">SANIT CLIMAT</text>
+    <text x="52" y="44" font-size="9" font-family="Arial" fill="rgba(255,255,255,0.75)" letter-spacing="2">MAINTENANCE</text>
+  </svg>`;
+
+  // Convertir SVG en PNG via canvas pour l'embarquer dans le docx
+  async function svgToPng(svgStr, w, h){
+    return new Promise(res=>{
+      const img = new Image();
+      const blob = new Blob([svgStr],{type:'image/svg+xml'});
+      const url = URL.createObjectURL(blob);
+      img.onload=()=>{
+        const c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        URL.revokeObjectURL(url);
+        c.toBlob(b=>{ const r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(b); },'image/png');
+      };
+      img.src=url;
+    });
+  }
+
+  // Générer le PNG du logo SC
+  const scLogoPng = await svgToPng(SC_LOGO_SVG, 200, 60);
+  const scLogoRun = makeImageRun(scLogoPng, 150, 45);
+
+  const coverChildren = [...Blank(2)];
+  // Logo SC en haut à gauche
+  if(scLogoRun) coverChildren.push(new Paragraph({spacing:{after:80},children:[scLogoRun]}));
+  // Logo client si fourni
+  if(d.clientLogo){
+    const logoRun = makeImageRun(d.clientLogo, 120, 60);
+    if(logoRun) coverChildren.push(new Paragraph({spacing:{after:400},children:[logoRun]}));
+    else coverChildren.push(...Blank(1));
+  } else { coverChildren.push(...Blank(2)); }
+
+  coverChildren.push(
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:400},children:[
       new TextRun({text:typeTitle,bold:true,size:52,color:CYAN,font:'Arial'})
     ]}),
-    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:240},children:[
+    new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:160},children:[
       new TextRun({text:'Maîtriser pour mieux préserver !',italics:true,size:28,font:'Arial',color:'666666'})
     ]}),
-    ...Blank(3),
+    ...Blank(1),
     new Paragraph({alignment:AlignmentType.CENTER,children:[
       new TextRun({text:(d.clientNom||'').toUpperCase(),bold:true,size:60,color:'CCCCCC',font:'Arial'})
     ]}),
@@ -20769,9 +20918,24 @@ function buildDocx(d){
     new Paragraph({alignment:AlignmentType.CENTER,children:[
       new TextRun({text:(d.residenceNom||d.clientAdresse1||'').toUpperCase(),bold:true,size:32,color:'BBBBBB',font:'Arial'})
     ]}),
-    ...Blank(5),
-    PB()
   );
+
+  // Photo du site si fournie
+  if(d.sitePhoto){
+    const photoRun = makeImageRun(d.sitePhoto, 400, 200);
+    if(photoRun){
+      coverChildren.push(...Blank(2));
+      coverChildren.push(new Paragraph({alignment:AlignmentType.CENTER,spacing:{after:80},children:[photoRun]}));
+      coverChildren.push(new Paragraph({alignment:AlignmentType.CENTER,children:[
+        new TextRun({text:d.residenceNom||'',italics:true,size:18,font:'Arial',color:'999999'})
+      ]}));
+    }
+  } else {
+    coverChildren.push(...Blank(3));
+  }
+  coverChildren.push(PB());
+
+  children.push(...coverChildren);
 
   // ── ART 1 ─────────────────────────────────────────────────
   children.push(H1('ARTICLE 1 - Désignation des parties'),...Blank(1),hdr('ENTRE'),...Blank(1),P('Les soussignées,'),...Blank(1));
@@ -21094,6 +21258,235 @@ function buildDocx(d){
 // ── INIT ──────────────────────────────────────────────────────────────────────
 addEq();
 updR();
+
+// ════════════════════════════════════════════════════════════
+// PHOTO / LOGO UPLOAD
+// ════════════════════════════════════════════════════════════
+let sitePhotoB64 = null;
+let clientLogoB64 = null;
+
+function fileToB64(file){ return new Promise(res=>{ const r=new FileReader(); r.onload=e=>res(e.target.result); r.readAsDataURL(file); }); }
+
+async function previewPhoto(input){
+  if(!input.files[0]) return;
+  sitePhotoB64 = await fileToB64(input.files[0]);
+  document.getElementById('photoImg').src = sitePhotoB64;
+  document.getElementById('photoPreview').style.display = 'block';
+}
+function removePhoto(){
+  sitePhotoB64=null;
+  document.getElementById('sitePhoto').value='';
+  document.getElementById('photoPreview').style.display='none';
+}
+async function previewLogo(input){
+  if(!input.files[0]) return;
+  clientLogoB64 = await fileToB64(input.files[0]);
+  document.getElementById('logoImg').src = clientLogoB64;
+  document.getElementById('logoPreview').style.display='block';
+}
+function removeLogo(){
+  clientLogoB64=null;
+  document.getElementById('clientLogo').value='';
+  document.getElementById('logoPreview').style.display='none';
+}
+
+// ════════════════════════════════════════════════════════════
+// VUE NAVIGATION
+// ════════════════════════════════════════════════════════════
+function showView(view){
+  document.getElementById('view-new').style.display   = view==='new'   ? '' : 'none';
+  document.getElementById('view-suivi').style.display = view==='suivi' ? '' : 'none';
+  document.getElementById('navNew').style.background   = view==='new'   ? 'rgba(30,136,199,0.25)' : 'transparent';
+  document.getElementById('navNew').style.color        = view==='new'   ? 'var(--cyan)' : 'rgba(255,255,255,0.7)';
+  document.getElementById('navNew').style.borderColor  = view==='new'   ? 'var(--cyan)' : 'rgba(255,255,255,0.2)';
+  document.getElementById('navSuivi').style.background = view==='suivi' ? 'rgba(30,136,199,0.25)' : 'transparent';
+  document.getElementById('navSuivi').style.color      = view==='suivi' ? 'var(--cyan)' : 'rgba(255,255,255,0.7)';
+  document.getElementById('navSuivi').style.borderColor= view==='suivi' ? 'var(--cyan)' : 'rgba(255,255,255,0.2)';
+  if(view==='suivi') renderSuivi();
+}
+
+// ════════════════════════════════════════════════════════════
+// STOCKAGE CONTRATS (localStorage)
+// ════════════════════════════════════════════════════════════
+const STORAGE_KEY = 'sanitClimat_contrats_v1';
+
+function loadContracts(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch{ return []; } }
+function saveContracts(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function saveContractToSuivi(d, blobUrl, filename){
+  const arr = loadContracts();
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+  const now = new Date();
+  // calcul date rappel = dateDebut de l'année suivante (J-30 avant dateFin)
+  let rappelDate = null;
+  if(d.dateFin){
+    const parts = d.dateFin.split('/');
+    if(parts.length===3){
+      const fin = new Date(parts[2], parts[1]-1, parts[0]);
+      fin.setDate(fin.getDate() - 30);
+      rappelDate = fin.toISOString().split('T')[0];
+    }
+  }
+  arr.unshift({
+    id, statut:'attente',
+    clientNom: d.clientNom||'Client',
+    residenceNom: d.residenceNom||'',
+    typeContrat: d.typeContrat||'',
+    ttc: d.ttc||0,
+    dateCreation: now.toISOString(),
+    dateDebut: d.dateDebut||'', dateFin: d.dateFin||'',
+    duree: d.duree||'',
+    rappelActif: false,
+    rappelDate,
+    filename
+  });
+  saveContracts(arr);
+}
+
+function setStatut(id, statut){
+  const arr = loadContracts();
+  const c = arr.find(x=>x.id===id);
+  if(c) c.statut=statut;
+  saveContracts(arr);
+  renderSuivi();
+}
+
+function toggleRappel(id){
+  const arr = loadContracts();
+  const c = arr.find(x=>x.id===id);
+  if(!c) return;
+  if(!c.rappelActif){
+    // Demander permission notifications
+    if('Notification' in window && Notification.permission==='default'){
+      Notification.requestPermission().then(p=>{
+        c.rappelActif = p==='granted';
+        saveContracts(arr);
+        renderSuivi();
+        if(p==='granted') scheduleRappels();
+      });
+      return;
+    }
+    c.rappelActif = true;
+  } else {
+    c.rappelActif = false;
+  }
+  saveContracts(arr);
+  renderSuivi();
+  scheduleRappels();
+}
+
+function deleteContract(id){
+  if(!confirm('Supprimer ce contrat du suivi ?')) return;
+  const arr = loadContracts().filter(x=>x.id!==id);
+  saveContracts(arr);
+  renderSuivi();
+}
+function clearAllContracts(){
+  if(!confirm('Effacer tout l\'historique des contrats ?')) return;
+  saveContracts([]);
+  renderSuivi();
+}
+
+// ════════════════════════════════════════════════════════════
+// RAPPELS
+// ════════════════════════════════════════════════════════════
+function scheduleRappels(){
+  if(!('Notification' in window) || Notification.permission!=='granted') return;
+  const today = new Date().toISOString().split('T')[0];
+  loadContracts().filter(c=>c.rappelActif && c.rappelDate).forEach(c=>{
+    if(c.rappelDate <= today && c.statut==='accepte'){
+      new Notification('⚠️ Entretien à programmer — Sanit Climat', {
+        body: `${c.clientNom} · ${c.residenceNom}
+Contrat se termine le ${c.dateFin}`,
+        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="%231E88C7"/><text x="16" y="22" font-size="18" text-anchor="middle" fill="white">🔥</text></svg>'
+      });
+    }
+  });
+}
+
+function daysUntil(dateStr){
+  if(!dateStr) return null;
+  const d = new Date(dateStr);
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.round((d-today)/(1000*60*60*24));
+}
+
+// ════════════════════════════════════════════════════════════
+// RENDU SUIVI
+// ════════════════════════════════════════════════════════════
+const TYPE_ICONS = {chaudiere:'🔥',vmc:'💨',multi:'🏢',thermodynamique:'💧',climatisation:'❄️',maintenance:'🔧'};
+const STATUT_LABELS = {attente:'⏳ En attente', accepte:'✅ Accepté', refuse:'❌ Refusé'};
+const STATUT_COLORS = {attente:'#F39C12', accepte:'#27AE60', refuse:'#E74C3C'};
+
+function renderSuivi(){
+  const all = loadContracts();
+  const q = (document.getElementById('suivi-search')?.value||'').toLowerCase();
+  const f = document.getElementById('suivi-filter')?.value||'';
+  let list = all.filter(c=>{
+    const matchQ = !q || c.clientNom.toLowerCase().includes(q) || c.residenceNom.toLowerCase().includes(q);
+    const matchF = !f || c.statut===f;
+    return matchQ && matchF;
+  });
+
+  const el = document.getElementById('suivi-list');
+  const empty = document.getElementById('suivi-empty');
+  const sub = document.getElementById('suivi-sub');
+
+  const nb_attente = all.filter(c=>c.statut==='attente').length;
+  const nb_accepte = all.filter(c=>c.statut==='accepte').length;
+  const nb_rappels = all.filter(c=>c.rappelActif).length;
+  sub.innerHTML = `${all.length} contrat${all.length>1?'s':''} enregistré${all.length>1?'s':''} · <span style="color:#F39C12">${nb_attente} en attente</span> · <span style="color:var(--success)">${nb_accepte} accepté${nb_accepte>1?'s':''}</span> · <span style="color:var(--cyan)">${nb_rappels} rappel${nb_rappels>1?'s':''} actif${nb_rappels>1?'s':''}</span>`;
+
+  if(!list.length){ el.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  el.innerHTML = list.map(c=>{
+    const d = new Date(c.dateCreation);
+    const dateStr = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
+    const icon = TYPE_ICONS[c.typeContrat]||'📋';
+    const jours = daysUntil(c.rappelDate);
+    let rappelHtml = '';
+    if(c.rappelActif && c.rappelDate){
+      const urgent = jours!==null && jours<=30;
+      rappelHtml = `<span class="rappel-badge${urgent?' rappel-urgent':''}">🔔 Rappel ${jours!==null?(jours<=0?'aujourd\'hui !':`dans ${jours}j`):`le ${c.rappelDate}`}</span>`;
+    }
+    return `<div class="contract-card ${c.statut}" id="card-${c.id}">
+      <div class="card-header">
+        <div>
+          <div class="card-title">${icon} ${c.clientNom}</div>
+          <div class="card-sub">${c.residenceNom||''} ${c.residenceNom&&c.duree?' · ':''} ${c.duree||''}</div>
+        </div>
+        <div class="card-badges">
+          <span class="badge-statut ${c.statut}">${STATUT_LABELS[c.statut]}</span>
+          ${rappelHtml}
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📅 Créé le ${dateStr}</span>
+        ${c.dateDebut?`<span>🗓 Du ${c.dateDebut} au ${c.dateFin}</span>`:''}
+        ${c.ttc?`<span>💶 ${c.ttc.toFixed(2).replace('.',',')} € TTC</span>`:''}
+      </div>
+      <div class="card-actions">
+        <button class="btn-statut attente${c.statut==='attente'?' active':''}" onclick="setStatut('${c.id}','attente')">⏳ En attente</button>
+        <button class="btn-statut accepte${c.statut==='accepte'?' active':''}" onclick="setStatut('${c.id}','accepte')">✅ Accepté</button>
+        <button class="btn-statut refuse${c.statut==='refuse'?' active':''}" onclick="setStatut('${c.id}','refuse')">❌ Refusé</button>
+        <button class="btn-rappel${c.rappelActif?' on':''}" onclick="toggleRappel('${c.id}')" title="Activer un rappel 30j avant la fin du contrat">🔔 Rappel${c.rappelActif?' activé':''}</button>
+        <button class="btn-del" onclick="deleteContract('${c.id}')" title="Supprimer">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// PATCH generate() pour enregistrer dans suivi
+// ════════════════════════════════════════════════════════════
+const _origGenerate = generate;
+// On override pour sauvegarder après génération réussie
+// (voir patch inline dans generate ci-dessus)
+
+// Lancer les vérifications de rappels au démarrage
+setTimeout(scheduleRappels, 2000);
+
 </script>
 </body>
 </html>
