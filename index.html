@@ -21193,7 +21193,20 @@ function valid(n){
     if(!nom){ alert('Veuillez renseigner le nom du client.'); return false; }
   }
   if(n===3&&!v('rNom')){ alert('Veuillez renseigner le nom de la résidence/site.'); return false; }
-  if(n===4&&tm==='simple'&&!v('mHT')){ alert('Veuillez saisir le montant H.T.'); return false; }
+  if(n===4){
+    const prRows = document.querySelectorAll('#pr-list .pr-row');
+    let multiTotal = 0;
+    prRows.forEach(row=>{
+      const ins=row.querySelectorAll('input');
+      multiTotal += parseFloat(ins[1]?.value||0)*parseFloat(ins[2]?.value||0)*parseFloat(ins[3]?.value||0);
+    });
+    const hasMulti = prRows.length>0 && multiTotal>0;
+    const hasSimple = !!v('mHT') && parseFloat(v('mHT'))>0;
+    if(!hasMulti && !hasSimple){ alert('Veuillez saisir le montant H.T. ou au moins une prestation avec un prix.'); return false; }
+    // auto-resync de tm si l'utilisateur a saisi en multi sans cliquer sur l'onglet
+    if(hasMulti && !hasSimple) tm='multi';
+    if(hasSimple && !hasMulti) tm='simple';
+  }
   if(n===5&&(!v('dDeb')||!v('dFin'))){ alert('Veuillez saisir les dates de début et fin.'); return false; }
   return true;
 }
