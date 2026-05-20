@@ -20573,6 +20573,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
     <button class="btn-rm" onclick="rmRow(&#39;pr8&#39;)">✕</button></div></div>
       <button class="btn-add" onclick="addPr()">＋ Ajouter une prestation</button>
+      <button class="btn-add" onclick="importFromEquipements()" style="margin-left:8px;">⇣ Reprendre les équipements</button>
       <div class="field" style="margin-top:14px;max-width:220px;">
         <label>Taux TVA</label>
         <select id="tva2" onchange="updR()">
@@ -21280,6 +21281,56 @@ function addPr(){
   document.getElementById('pr-list').appendChild(div);
 }
 function rmRow(id){ const el=document.getElementById(id); if(el) el.remove(); updR(); }
+
+// Reprise des équipements (Étape 4 — Site & équipements) dans la tarification multi
+function importFromEquipements(){
+  const eqRows = document.querySelectorAll('#eq-list .eq-row');
+  const eqs = [];
+  eqRows.forEach(row=>{
+    const ins = row.querySelectorAll('input');
+    const designation = ins[0]?.value?.trim() || '';
+    const quantite = ins[1]?.value || '1';
+    if(designation) eqs.push({designation, quantite});
+  });
+  if(eqs.length===0){
+    alert('Aucun équipement renseigné à l\u0027étape précédente. Saisissez d\u0027abord vos équipements.');
+    return;
+  }
+  // Passe en mode multi si besoin
+  if(tm!=='multi') setTM('multi');
+  // Vide les lignes existantes vides (désignation vide ET prix vide) pour éviter les doublons à blanc
+  document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
+    const ins = row.querySelectorAll('input');
+    const designation = ins[0]?.value?.trim() || '';
+    const prix = ins[3]?.value || '';
+    if(!designation && !prix) row.remove();
+  });
+  // Récupère les désignations déjà présentes pour ne pas dupliquer
+  const existing = new Set();
+  document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
+    const ins = row.querySelectorAll('input');
+    const d = ins[0]?.value?.trim().toLowerCase();
+    if(d) existing.add(d);
+  });
+  // Ajoute une ligne prestation par équipement non déjà présent
+  let added = 0;
+  eqs.forEach(eq=>{
+    if(existing.has(eq.designation.toLowerCase())) return;
+    addPr();
+    const rows = document.querySelectorAll('#pr-list .pr-row');
+    const last = rows[rows.length-1];
+    const ins = last.querySelectorAll('input');
+    if(ins[0]) ins[0].value = eq.designation;        // désignation
+    if(ins[1]) ins[1].value = ins[1].value || '1';   // visites/an (laisse défaut 1)
+    if(ins[2]) ins[2].value = eq.quantite || '1';    // quantité
+    // prix unitaire laissé vide → à compléter par l'utilisateur
+    added++;
+  });
+  updR();
+  if(added===0){
+    alert('Toutes les désignations d\u0027équipements sont déjà présentes dans la tarification.');
+  }
+}
 
 // ════════════════════════════════════════════════════════════
 // RECAP
