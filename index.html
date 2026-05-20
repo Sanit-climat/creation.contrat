@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0048)https://sanit-climat.github.io/creation.contrat/ -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sanit Climat — Générateur de Contrats</title>
 <script>(function(global2, factory) {
@@ -20354,9 +20354,9 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
-    <button class="btn-tab-nav" id="navNew" onclick="showView('new')" style="background:rgba(30,136,199,0.25);border:1px solid var(--cyan);color:var(--cyan);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">✦ Nouveau contrat</button>
-    <button class="btn-tab-nav" id="navSuivi" onclick="showView('suivi')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">📋 Suivi</button>
-    <button class="btn-tab-nav" id="navTarifs" onclick="showView('tarifs')" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">💶 Tarifs</button>
+    <button class="btn-tab-nav" id="navNew" onclick="showView(&#39;new&#39;)" style="background:rgba(30,136,199,0.25);border:1px solid var(--cyan);color:var(--cyan);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">✦ Nouveau contrat</button>
+    <button class="btn-tab-nav" id="navSuivi" onclick="showView(&#39;suivi&#39;)" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">📋 Suivi</button>
+    <button class="btn-tab-nav" id="navTarifs" onclick="showView(&#39;tarifs&#39;)" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:0.5px;">💶 Tarifs</button>
   </div>
 </header>
 
@@ -20367,16 +20367,16 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
 
   <!-- STEPS NAV -->
   <div class="steps">
-    <div class="step active" id="s1" onclick="goTo(1)"><div class="step-num">1</div>Type</div>
-    <div class="step" id="s2" onclick="goTo(2)"><div class="step-num">2</div>Client</div>
-    <div class="step" id="s3" onclick="goTo(3)"><div class="step-num">3</div>Site & équipements</div>
-    <div class="step" id="s4" onclick="goTo(4)"><div class="step-num">4</div>Tarification</div>
-    <div class="step" id="s5" onclick="goTo(5)"><div class="step-num">5</div>Durée & génération</div>
-    <div class="step" id="s6" onclick="goTo(6)"><div class="step-num">6</div>Gammes</div>
+    <div class="step done" id="s1" onclick="goTo(1)"><div class="step-num">1</div>Type</div>
+    <div class="step done" id="s2" onclick="goTo(2)"><div class="step-num">2</div>Client</div>
+    <div class="step done" id="s3" onclick="goTo(3)"><div class="step-num">3</div>Site &amp; équipements</div>
+    <div class="step done" id="s4" onclick="goTo(4)"><div class="step-num">4</div>Tarification</div>
+    <div class="step done" id="s5" onclick="goTo(5)"><div class="step-num">5</div>Durée &amp; génération</div>
+    <div class="step active" id="s6" onclick="goTo(6)"><div class="step-num">6</div>Gammes</div>
   </div>
 
   <!-- ── STEP 1 : TYPE ── -->
-  <div class="panel active" id="p1">
+  <div class="panel" id="p1">
     <div class="panel-title"><div class="panel-icon">📋</div>Type de contrat</div>
     <div class="type-grid">
       <div class="tc" data-t="chaudiere" onclick="pickType(this)">
@@ -20399,7 +20399,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
         <div class="tc-label">Ballon thermodynamique</div>
         <div class="tc-sub">Chauffe-eau thermodynamique</div>
       </div>
-      <div class="tc" data-t="climatisation" onclick="pickType(this)">
+      <div class="tc sel" data-t="climatisation" onclick="pickType(this)">
         <div class="tc-icon">❄️</div>
         <div class="tc-label">Génie climatique</div>
         <div class="tc-sub">Climatisation / split</div>
@@ -20419,12 +20419,12 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     <div class="field" style="margin-bottom:18px;">
       <label>Type de client</label>
       <div class="toggle">
-        <button class="tbtn on" id="tb-bail" onclick="setCT('bailleur')">Bailleur / SDC / Syndic</button>
-        <button class="tbtn" id="tb-part" onclick="setCT('particulier')">Particulier / Entreprise</button>
+        <button class="tbtn" id="tb-bail" onclick="setCT(&#39;bailleur&#39;)">Bailleur / SDC / Syndic</button>
+        <button class="tbtn on" id="tb-part" onclick="setCT(&#39;particulier&#39;)">Particulier / Entreprise</button>
       </div>
     </div>
     <!-- bailleur -->
-    <div id="f-bail" class="form-grid">
+    <div id="f-bail" class="form-grid" style="display: none;">
       <div class="field s2"><label>Nom du Syndicat / SDC *</label><input id="cNom" placeholder="ex: SDC DEBUSSY" oninput="updR()"></div>
       <div class="field"><label>Représenté par (bailleur) *</label><input id="cRep" placeholder="ex: LOGIS MEDITERRANEE" oninput="updR()"></div>
       <div class="field"><label>Représentant physique</label><input id="cRep2" placeholder="ex: M. Bernard RANVIER (DGD)"></div>
@@ -20433,7 +20433,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
       <div class="field"><label>CP + Ville *</label><input id="cAdr3" placeholder="ex: 13295 MARSEILLE CDX 08"></div>
     </div>
     <!-- particulier -->
-    <div id="f-part" class="form-grid" style="display:none">
+    <div id="f-part" class="form-grid" style="display: grid;">
       <div class="field"><label>Civilité</label><select id="cCiv"><option>Mr</option><option>Mme</option><option>M. et Mme</option><option>La Société</option></select></div>
       <div class="field"><label>Nom / Société *</label><input id="cNomP" placeholder="ex: ARMAGANIAN" oninput="syncP()"></div>
       <div class="field s2"><label>Adresse ligne 1 *</label><input id="cA1P" placeholder="ex: Lotissement Les CARDELINES" oninput="syncP()"></div>
@@ -20445,7 +20445,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
 
   <!-- ── STEP 3 : SITE ── -->
   <div class="panel" id="p3">
-    <div class="panel-title"><div class="panel-icon">🏗️</div>Site & équipements</div>
+    <div class="panel-title"><div class="panel-icon">🏗️</div>Site &amp; équipements</div>
     <div class="form-grid" style="margin-bottom:20px;">
       <div class="field"><label>Nom de la résidence / site *</label><input id="rNom" placeholder="ex: Résidence LES BARTAVELLES" oninput="updR()"></div>
       <div class="field"><label>Adresse complète du site *</label><input id="rAdr" placeholder="ex: 63 Chemin du Bon Civet 13400 AUBAGNE"></div>
@@ -20456,7 +20456,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
         <label>📸 Photo du site (optionnel)</label>
         <input type="file" id="sitePhoto" accept="image/*" onchange="previewPhoto(this)" style="padding:8px;">
         <div id="photoPreview" style="margin-top:10px;display:none;">
-          <img id="photoImg" src="" alt="Aperçu" style="max-width:200px;max-height:120px;border-radius:8px;border:2px solid var(--border);">
+          <img id="photoImg" src="https://sanit-climat.github.io/creation.contrat/" alt="Aperçu" style="max-width:200px;max-height:120px;border-radius:8px;border:2px solid var(--border);">
           <button onclick="removePhoto()" style="display:block;margin-top:6px;font-size:12px;color:var(--danger);background:none;border:none;cursor:pointer;">✕ Supprimer la photo</button>
         </div>
       </div>
@@ -20464,14 +20464,46 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
         <label>🏢 Logo client (optionnel)</label>
         <input type="file" id="clientLogo" accept="image/*" onchange="previewLogo(this)" style="padding:8px;">
         <div id="logoPreview" style="margin-top:10px;display:none;">
-          <img id="logoImg" src="" alt="Logo" style="max-width:160px;max-height:80px;border-radius:6px;border:2px solid var(--border);">
+          <img id="logoImg" src="https://sanit-climat.github.io/creation.contrat/" alt="Logo" style="max-width:160px;max-height:80px;border-radius:6px;border:2px solid var(--border);">
           <button onclick="removeLogo()" style="display:block;margin-top:6px;font-size:12px;color:var(--danger);background:none;border:none;cursor:pointer;">✕ Supprimer le logo</button>
         </div>
       </div>
     </div>
     <hr class="div">
     <div class="note">📦 Listez les équipements (pour l'annexe — facultatif)</div>
-    <div id="eq-list" class="rows-list"></div>
+    <div id="eq-list" class="rows-list"><div class="eq-row" id="eq1">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq1&#39;)">✕</button></div><div class="eq-row" id="eq2">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq2&#39;)">✕</button></div><div class="eq-row" id="eq3">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq3&#39;)">✕</button></div><div class="eq-row" id="eq4">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq4&#39;)">✕</button></div><div class="eq-row" id="eq5">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq5&#39;)">✕</button></div><div class="eq-row" id="eq6">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq6&#39;)">✕</button></div><div class="eq-row" id="eq7">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq7&#39;)">✕</button></div><div class="eq-row" id="eq8">
+    <div class="field"><label>Désignation</label><input placeholder="ex: Chaudière murale gaz naturel"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1"></div>
+    <div class="field"><label>Observations</label><input placeholder="Optionnel"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;eq8&#39;)">✕</button></div></div>
     <button class="btn-add" onclick="addEq()">＋ Ajouter un équipement</button>
     <div class="nav"><button class="btn btn-s" onclick="prev(3)">← Précédent</button><button class="btn btn-p" onclick="next(3)">Suivant →</button></div>
   </div>
@@ -20482,12 +20514,12 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     <div class="field" style="margin-bottom:18px;">
       <label>Mode de saisie</label>
       <div class="toggle">
-        <button class="tbtn on" id="tb-sim" onclick="setTM('simple')">Montant global</button>
-        <button class="tbtn" id="tb-mul" onclick="setTM('multi')">Détail par prestation</button>
+        <button class="tbtn" id="tb-sim" onclick="setTM(&#39;simple&#39;)">Montant global</button>
+        <button class="tbtn on" id="tb-mul" onclick="setTM(&#39;multi&#39;)">Détail par prestation</button>
       </div>
     </div>
     <!-- simple -->
-    <div id="t-sim" class="form-grid">
+    <div id="t-sim" class="form-grid" style="display: none;">
       <div class="field"><label>Libellé visites</label><input id="nbVis" value="1 visite annuelle" oninput="updR()"></div>
       <div class="field"><label>Montant H.T. (€) *</label><input type="number" id="mHT" placeholder="ex: 9944.48" step="0.01" oninput="updR()"></div>
       <div class="field"><label>Taux TVA</label>
@@ -20498,8 +20530,48 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
       </div>
     </div>
     <!-- multi -->
-    <div id="t-mul" style="display:none">
-      <div id="pr-list" class="rows-list"></div>
+    <div id="t-mul" style="display: block;">
+      <div id="pr-list" class="rows-list"><div class="pr-row" id="pr1">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr1&#39;)">✕</button></div><div class="pr-row" id="pr2">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr2&#39;)">✕</button></div><div class="pr-row" id="pr3">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr3&#39;)">✕</button></div><div class="pr-row" id="pr4">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr4&#39;)">✕</button></div><div class="pr-row" id="pr5">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr5&#39;)">✕</button></div><div class="pr-row" id="pr6">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr6&#39;)">✕</button></div><div class="pr-row" id="pr7">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr7&#39;)">✕</button></div><div class="pr-row" id="pr8">
+    <div class="field"><label>Désignation prestation</label><input placeholder="ex: CHAUDIERES GAZ" oninput="updR()"></div>
+    <div class="field"><label>Visites/an</label><input value="1"></div>
+    <div class="field"><label>Qté</label><input type="number" value="1" min="1" oninput="updR()"></div>
+    <div class="field"><label>Prix unit. H.T. (€)</label><input type="number" step="0.01" placeholder="0.00" oninput="updR()"></div>
+    <button class="btn-rm" onclick="rmRow(&#39;pr8&#39;)">✕</button></div></div>
       <button class="btn-add" onclick="addPr()">＋ Ajouter une prestation</button>
       <div class="field" style="margin-top:14px;max-width:220px;">
         <label>Taux TVA</label>
@@ -20522,7 +20594,7 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
 
   <!-- ── STEP 5 : DUREE & GENERATION ── -->
   <div class="panel" id="p5">
-    <div class="panel-title"><div class="panel-icon">📅</div>Durée & génération</div>
+    <div class="panel-title"><div class="panel-icon">📅</div>Durée &amp; génération</div>
     <div class="form-grid g3" style="margin-bottom:24px;">
       <div class="field"><label>Durée</label>
         <select id="duree" onchange="updR()">
@@ -20536,22 +20608,427 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
     </div>
     <hr class="div">
     <div class="panel-title" style="font-size:16px;margin-bottom:14px;"><div class="panel-icon">✅</div>Récapitulatif</div>
-    <div class="recap-grid" id="recap"></div>
-    <div id="total"></div>
+    <div class="recap-grid" id="recap">
+    <div class="rb">
+      <div class="rb-title">Contrat</div>
+      <div class="rr"><span class="rk">Type</span><span class="rv">❄️ Génie climatique</span></div>
+      <div class="rr"><span class="rk">Durée</span><span class="rv">1 an</span></div>
+      <div class="rr"><span class="rk">Du</span><span class="rv">01/06/2026</span></div>
+      <div class="rr"><span class="rk">Au</span><span class="rv">31/05/2027</span></div>
+    </div>
+    <div class="rb">
+      <div class="rb-title">Parties</div>
+      <div class="rr"><span class="rk">Client</span><span class="rv">PIVOT PANDA</span></div>
+      <div class="rr"><span class="rk">Site</span><span class="rv">CHANTIER ENTRESOL</span></div>
+      <div class="rr"><span class="rk">Prestataire</span><span class="rv">SANIT CLIMAT SAS</span></div>
+    </div></div>
+    <div id="total">
+    <div class="total-bar">
+      <div><div class="tb-label">Montant du contrat</div><div class="tb-ht">1520,00 € H.T. — TVA 20 %</div></div>
+      <div class="tb-amount">1824,00 € T.T.C.</div>
+    </div></div>
     <div id="status"></div>
     <div class="nav">
       <button class="btn btn-s" onclick="prev(5)">← Précédent</button>
-      <button class="btn btn-p" onclick="next(5)">Gammes & Génération →</button>
+      <button class="btn btn-p" onclick="next(5)">Gammes &amp; Génération →</button>
     </div>
   </div>
 
 
   <!-- ── STEP 6 : GAMMES DE MAINTENANCE ── -->
-  <div class="panel" id="p6">
+  <div class="panel active" id="p6">
     <div class="panel-title"><div class="panel-icon">🔧</div>Gammes de maintenance</div>
     <div class="page-sub" style="margin-bottom:20px;">Cochez les opérations à inclure dans l'annexe du contrat. Les opérations cochées apparaîtront dans un tableau récapitulatif.</div>
-    <div id="gammes-container"></div>
-    <div id="status6"></div>
+    <div id="gammes-container"><div class="gamme-section">
+      <div class="gamme-section-title">
+        <input type="checkbox" class="gs-check" id="chk_all_gs_climatisation_GROUPE_CONDENSATION" onchange="toggleSection(&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,this.checked)" checked="">
+        <label for="chk_all_gs_climatisation_GROUPE_CONDENSATION" style="cursor:pointer;color:white;font-size:14px;font-weight:700;">GROUPE CONDENSATION</label>
+        <span class="gamme-counter">9/9 cochées</span>
+        <button onclick="addGammeLine(&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;)" style="margin-left:8px;padding:2px 10px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);border-radius:12px;color:white;font-size:11px;cursor:pointer;">
+          ＋ Ajouter
+        </button>
+      </div>
+      <table class="gamme-table">
+        <thead><tr>
+          <th style="width:32px;"></th>
+          <th class="th-op">Opération <span style="font-weight:400;font-size:10px;color:var(--gray)">(cliquer pour modifier)</span></th>
+          <th title="Hebdomadaire">Hebdo</th><th title="Mensuel">Mensuel</th><th title="Bimensuel">Bimens.</th><th title="Trimestriel">Trimestr.</th><th title="Semestriel">Semestr.</th><th title="Annuel">Annuel</th><th title="Selon besoin">Selon besoin</th>
+          <th style="width:28px;"></th>
+        </tr></thead>
+        <tbody id="tbody_gs_climatisation_GROUPE_CONDENSATION"><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__0">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__0" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,0)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Nettoyage du condenseur / redressage des ailettes de la batterie" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__0&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__1">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__1" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,1)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle intensités absorbées par le compresseur" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__1&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__2">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__2" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,2)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle de l&#39;isolement électrique du compresseur" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__2&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__3">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__3" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,3)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Resserrage des connexions électriques" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__3&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__4">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__4" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,4)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle fonctionnement ventilo-condenseur" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__4&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__5">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__5" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,5)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Conbtrôle des paramètres du circuit frigorifique (Températures,…)" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__5&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__6">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__6" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,6)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Vérification étanchéité circuit frigorifique suivant décret 2007/737 du 07/05/07 et délivrance d&#39;un certificat d&#39;étanchéité" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__6&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__7">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__7" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,7)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle intensités absorbées par le ventilo-condenseur" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__7&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__GROUPE_CONDENSATION__8">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__GROUPE_CONDENSATION__8" checked="" onchange="toggleOp(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;climatisation&#39;,&#39;GROUPE CONDENSATION&#39;,8)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle de l&#39;isolement électrique du ventilo-condenseur" oninput="updateDesig(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__GROUPE_CONDENSATION__8&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr></tbody>
+      </table>
+    </div><div class="gamme-section">
+      <div class="gamme-section-title">
+        <input type="checkbox" class="gs-check" id="chk_all_gs_climatisation_UNITE_INTERIEURE" onchange="toggleSection(&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,this.checked)" checked="">
+        <label for="chk_all_gs_climatisation_UNITE_INTERIEURE" style="cursor:pointer;color:white;font-size:14px;font-weight:700;">UNITE INTERIEURE</label>
+        <span class="gamme-counter">7/7 cochées</span>
+        <button onclick="addGammeLine(&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;)" style="margin-left:8px;padding:2px 10px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.5);border-radius:12px;color:white;font-size:11px;cursor:pointer;">
+          ＋ Ajouter
+        </button>
+      </div>
+      <table class="gamme-table">
+        <thead><tr>
+          <th style="width:32px;"></th>
+          <th class="th-op">Opération <span style="font-weight:400;font-size:10px;color:var(--gray)">(cliquer pour modifier)</span></th>
+          <th title="Hebdomadaire">Hebdo</th><th title="Mensuel">Mensuel</th><th title="Bimensuel">Bimens.</th><th title="Trimestriel">Trimestr.</th><th title="Semestriel">Semestr.</th><th title="Annuel">Annuel</th><th title="Selon besoin">Selon besoin</th>
+          <th style="width:28px;"></th>
+        </tr></thead>
+        <tbody id="tbody_gs_climatisation_UNITE_INTERIEURE"><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__0">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__0" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,0)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Nettoyage du moto-ventilateur de soufflage" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__0&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__0&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__1">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__1" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,1)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Nettoyage du filtre à air" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__1&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__1&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__2">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__2" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,2)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle de l&#39;isolement électrique " oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__2&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__2&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__3">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__3" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,3)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Nettoyage du bac à condensats" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__3&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__3&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__4">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__4" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,4)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle bon écoulement des condensats" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__4&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__4&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__5">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__5" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,5)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Resserrage des connexions électriques" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__5&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__5&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr><tr class="row-checked" id="tr_climatisation__UNITE_INTERIEURE__6">
+        <td class="td-check">
+          <input type="checkbox" id="cb_climatisation__UNITE_INTERIEURE__6" checked="" onchange="toggleOp(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;climatisation&#39;,&#39;UNITE INTERIEURE&#39;,6)">
+        </td>
+        <td class="td-op">
+          <input type="text" value="Contrôle fonctionnement régulation de température" oninput="updateDesig(&#39;climatisation__UNITE_INTERIEURE__6&#39;,this.value)" style="width:100%;border:1px solid transparent;border-radius:4px;padding:3px 6px;font-size:13px;background:transparent;" onfocus="this.style.borderColor=&#39;var(--cyan)&#39;;this.style.background=&#39;white&#39;;" onblur="this.style.borderColor=&#39;transparent&#39;;this.style.background=&#39;transparent&#39;;">
+        </td>
+        <td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;H&#39;,this.checked)" title="Hebdomadaire" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;M&#39;,this.checked)" title="Mensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;B&#39;,this.checked)" title="Bimensuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;T&#39;,this.checked)" title="Trimestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" checked="" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;S&#39;,this.checked)" title="Semestriel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;A&#39;,this.checked)" title="Annuel" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td><td class="td-check">
+          <input type="checkbox" class="p-check" onchange="togglePeriode(&#39;climatisation__UNITE_INTERIEURE__6&#39;,&#39;SB&#39;,this.checked)" title="Selon besoin" style="width:14px;height:14px;accent-color:var(--cyan);cursor:pointer;">
+        </td>
+      </tr></tbody>
+      </table>
+    </div></div>
+    <div id="status6"><div class="status"><p style="color:var(--danger)">❌ Erreur : children.push(...).filter is not a function</p></div></div>
     <div class="nav">
       <button class="btn btn-s" onclick="prev(6)">← Précédent</button>
       <button class="btn btn-gen" id="btnGen" onclick="generate()">📄 Générer le contrat Word</button>
@@ -20803,7 +21280,10 @@ function calcTotal(){
     tvaR=parseInt(v('tva2')||10);
     document.querySelectorAll('#pr-list .pr-row').forEach(row=>{
       const ins=row.querySelectorAll('input');
-      ht+=parseFloat(ins[2]?.value||0)*parseFloat(ins[3]?.value||0);
+      const vis=parseFloat(ins[1]?.value||1);
+      const qte=parseFloat(ins[2]?.value||0);
+      const prix=parseFloat(ins[3]?.value||0);
+      ht+=vis*qte*prix;
     });
   }
   return {ht, tvaR, ttc: ht*(1+tvaR/100)};
@@ -21067,21 +21547,21 @@ async function buildDocx(d){
   children.push(P('Les soussignées,'),...Blank(1));
 
   if(d.clientType==='bailleur'){
-    children.push(
+    children.push(...[
       dotRow('',d.clientNom,true),
       dotRow('Représentée par',d.clientRepresentant,true),
       d.clientRepresentant2?dotRow('Et par',d.clientRepresentant2,false):null,
       dotRow('Domiciliée à',d.clientAdresse1,false),
       d.clientAdresse2?dotRow('',d.clientAdresse2,false):null,
       d.clientAdresse3?dotRow('',d.clientAdresse3,false):null,
-    ).filter(Boolean);
+    ].filter(Boolean));
   } else {
-    children.push(
+    children.push(...[
       dotRow('Mr/Mme',d.clientNom,true),
       dotRow('Domicilié(e) à',d.clientAdresse1,false),
       d.clientAdresse2?dotRow('',d.clientAdresse2,false):null,
       d.clientAdresse3?dotRow('',d.clientAdresse3,false):null,
-    ).filter(Boolean);
+    ].filter(Boolean));
   }
 
   children.push(
@@ -21220,11 +21700,14 @@ async function buildDocx(d){
   if(d.tarifMode==='multi' && d.prestations && d.prestations.length>0){
     const lns=[];
     d.prestations.forEach(p=>{
-      const pht=parseFloat(p.prixHT||0)*parseInt(p.quantite||1);
-      lns.push({t:`${p.visites||'1'} visite(s)/an — ${p.designation} (×${p.quantite})`,b:true,s:20});
-      lns.push({t:`${fmtE(p.prixHT)} € H.T. × ${p.quantite} = ${fmtE(pht)} € H.T.`,b:false,s:20,c:GRAY_TEXT});
+      const vis=parseInt(p.visites||1);
+      const qte=parseInt(p.quantite||1);
+      const prix=parseFloat(p.prixHT||0);
+      const pht=prix*qte*vis;
+      lns.push({t:`${p.designation} — ${vis} visite(s)/an (×${qte} unité(s))`,b:true,s:20});
+      lns.push({t:`${fmtE(prix)} € H.T. × ${qte} unité(s) × ${vis} visite(s) = ${fmtE(pht)} € H.T./an`,b:false,s:20,c:GRAY_TEXT});
     });
-    const totHT=d.prestations.reduce((s,p)=>s+parseFloat(p.prixHT||0)*parseInt(p.quantite||1),0);
+    const totHT=d.prestations.reduce((s,p)=>s+parseFloat(p.prixHT||0)*parseInt(p.quantite||1)*parseInt(p.visites||1),0);
     lns.push({t:`TOTAL : ${fmtE(totHT)} € H.T.  soit  ${ttcOf(totHT,d.tva)} € T.T.C.`,b:true,s:26,c:CYAN});
     children.push(priceBox(lns));
   } else {
@@ -22146,5 +22629,6 @@ function renderTarifs(){
 // showView déjà défini plus haut
 
 </script>
-</body>
-</html>
+
+
+</body></html>
