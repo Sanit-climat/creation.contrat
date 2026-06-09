@@ -21190,6 +21190,8 @@ const SC_PHOTO_DATAURL = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHY
 // STATE
 // ════════════════════════════════════════════════════════════
 let curStep = 1, selType = null, ct = 'bailleur', tm = 'simple';
+let gammesState = {};
+let editingContractId = null;
 let eqIdCtr = 0, prIdCtr = 0;
 
 const TYPE_LABELS = {
@@ -22076,7 +22078,25 @@ function removeLogo(){
 // ════════════════════════════════════════════════════════════
 // VUE NAVIGATION
 // ════════════════════════════════════════════════════════════
+function resetNewContractForm(){
+  // Réinitialiser l'état interne
+  editingContractId = null;
+  gammesState = {};
+  // Masquer le bandeau édition/duplication s'il existe
+  const b = document.getElementById('edit-banner'); if(b) b.style.display='none';
+  // Vider le conteneur des gammes pour forcer un re-rendu propre à l'étape 6
+  const gc = document.getElementById('gammes-container'); if(gc) gc.innerHTML='';
+  // Revenir à l'étape 1
+  if(typeof setStep==='function') setStep(1);
+}
+
 function showView(view){
+  // Quand on ouvre la vue "Nouveau contrat" sans être en mode édition/duplication,
+  // on repart d'un formulaire propre pour éviter tout état résiduel (gammes notamment).
+  if(view==='new' && !editingContractId){
+    gammesState = {};
+    const gc = document.getElementById('gammes-container'); if(gc && curStep!==6) gc.innerHTML='';
+  }
   ['new','suivi','tarifs'].forEach(v=>{
     const el = document.getElementById('view-'+v);
     if(el) el.style.display = v===view ? '' : 'none';
@@ -22296,7 +22316,7 @@ const GAMMES_PAR_TYPE = {
 };
 
 // State : map id_operation → {checked, periodeOverride}
-let gammesState = {};
+// (gammesState est déclaré plus haut avec les autres globales)
 
 function gammeId(g, opIdx){ return g.categorie+'__'+g.sheet.replace(/\s/g,'_')+'__'+opIdx; }
 
@@ -22458,7 +22478,7 @@ setTimeout(scheduleRappels, 2000);
 // ════════════════════════════════════════════════════════════
 // MODIFIER / DUPLIQUER UN CONTRAT
 // ════════════════════════════════════════════════════════════
-let editingContractId = null;
+// (editingContractId est déclaré plus haut avec les autres globales)
 
 function fillFormFromData(d){
   // Step 1 : type
@@ -22519,25 +22539,24 @@ function fillFormFromData(d){
   // Step 5 : durée
   sv('duree', d.duree); sv('dDeb', d.dateDebut); sv('dFin', d.dateFin);
 
-  // Step 6 : gammes de maintenance — restaurer l'état coché
+  // Step 6 : gammes de maintenance — restaurer uniquement l'état coché sauvegardé.
+  // On repart d'un état vide ; initGammes() (appelée à l'étape 6) recréera
+  // les lignes non sauvegardées en se basant sur le type de contrat.
   gammesState = {};
   const savedGammes = d.gammes || [];
   if(savedGammes.length){
     GAMMES_DATA.forEach(g=>{
-      // Retrouver la section sauvegardée correspondante (même catégorie + même feuille)
       const sg = savedGammes.find(s => s.categorie===g.categorie && s.section===g.sheet);
+      if(!sg) return; // section non sauvegardée : laisser initGammes la générer
       g.operations.forEach((op,idx)=>{
-        const id = gammeId(g, idx);
-        // Chercher l'opération sauvegardée par désignation
-        const savedOp = sg ? (sg.operations||[]).find(o => o.designation===op.designation) : null;
+        const savedOp = (sg.operations||[]).find(o => o.designation===op.designation);
         if(savedOp){
+          const id = gammeId(g, idx);
           gammesState[id] = { checked:true, periodes:[...(savedOp.periodes||op.periodes)], designation: savedOp.designation };
-        } else {
-          gammesState[id] = { checked:false, periodes:[...op.periodes], designation: op.designation };
         }
       });
     });
-    // Restaurer aussi les opérations ajoutées manuellement (non présentes dans GAMMES_DATA)
+    // Restaurer les opérations ajoutées manuellement (absentes de GAMMES_DATA)
     savedGammes.forEach(sg=>{
       const g = GAMMES_DATA.find(x=>x.categorie===sg.categorie && x.sheet===sg.section);
       if(!g) return;
@@ -22559,9 +22578,28 @@ function fillFormFromData(d){
 function editContract(id){
   const arr = loadContracts();
   const c = arr.find(x=>x.id===id);
-  if(!c || !c.formData){ alert('Données du formulaire non disponibles pour ce contrat.'); return; }
+  if(!c){ alert('Contrat introuvable.'); return; }
+
+  let partiel = false;
+  let data = c.formData;
+  if(!data){
+    // Ancien contrat sans formData complet : on reconstruit le maximum à partir des champs stockés
+    partiel = true;
+    data = {
+      typeContrat: c.typeContrat || 'multi',
+      clientNom: c.clientNom || '',
+      residenceNom: c.residenceNom || '',
+      duree: c.duree || '',
+      dateDebut: c.dateDebut || '',
+      dateFin: c.dateFin || '',
+      gammes: [],
+      equipements: [],
+      prestations: []
+    };
+  }
+
   editingContractId = id;
-  fillFormFromData(c.formData);
+  fillFormFromData(data);
   showView('new');
   setStep(1);
   // Afficher bandeau "Mode édition"
@@ -22569,9 +22607,14 @@ function editContract(id){
   if(!banner){
     banner = document.createElement('div');
     banner.id = 'edit-banner';
+    document.querySelector('.container').insertBefore(banner, document.querySelector('.steps'));
+  }
+  if(partiel){
+    banner.style.cssText = 'background:#FFF4E5;border:2px solid #E67E22;border-radius:10px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:600;color:#A04000;';
+    banner.innerHTML = '⚠️ Contrat ancien — seules les infos principales (client, site, dates, montant) ont été récupérées. Vérifiez et recomplétez les gammes et équipements avant de générer. <button onclick="cancelEdit()" style="margin-left:auto;padding:5px 14px;border:2px solid #E67E22;border-radius:8px;background:white;color:#E67E22;cursor:pointer;font-weight:600;">Annuler</button>';
+  } else {
     banner.style.cssText = 'background:#FEF9E7;border:2px solid #F39C12;border-radius:10px;padding:12px 20px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-weight:600;color:#B7770D;';
     banner.innerHTML = '✏️ Mode édition — ce contrat sera mis à jour après génération. <button onclick="cancelEdit()" style="margin-left:auto;padding:5px 14px;border:2px solid #F39C12;border-radius:8px;background:white;color:#F39C12;cursor:pointer;font-weight:600;">Annuler</button>';
-    document.querySelector('.container').insertBefore(banner, document.querySelector('.steps'));
   }
   banner.style.display='flex';
   window.scrollTo({top:0,behavior:'smooth'});
@@ -22586,8 +22629,20 @@ function cancelEdit(){
 function duplicateContract(id){
   const arr = loadContracts();
   const c = arr.find(x=>x.id===id);
-  if(!c || !c.formData){ alert('Données du formulaire non disponibles pour ce contrat.'); return; }
-  fillFormFromData(c.formData);
+  if(!c){ alert('Contrat introuvable.'); return; }
+  let data = c.formData;
+  if(!data){
+    data = {
+      typeContrat: c.typeContrat || 'multi',
+      clientNom: c.clientNom || '',
+      residenceNom: c.residenceNom || '',
+      duree: c.duree || '',
+      dateDebut: c.dateDebut || '',
+      dateFin: c.dateFin || '',
+      gammes: [], equipements: [], prestations: []
+    };
+  }
+  fillFormFromData(data);
   editingContractId = null; // pas de mise à jour — nouveau contrat
   showView('new');
   setStep(1);
