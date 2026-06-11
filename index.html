@@ -20384,6 +20384,11 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
         <div class="tc-label">Chaudière</div>
         <div class="tc-sub">Entretien chaudières gaz</div>
       </div>
+      <div class="tc" data-t="chaufferie" onclick="pickType(this)">
+        <div class="tc-icon">🏭</div>
+        <div class="tc-label">Chaufferie</div>
+        <div class="tc-sub">Chaufferie gaz collective</div>
+      </div>
       <div class="tc" data-t="vmc" onclick="pickType(this)">
         <div class="tc-icon">💨</div>
         <div class="tc-label">VMC</div>
@@ -20578,6 +20583,26 @@ hr.div { border: none; border-top: 2px solid var(--border); margin: 22px 0; }
         <option value="non">Non — Entretien forfaitaire P2 uniquement</option>
         <option value="oui">Oui — P2 + Garantie pièces P3 incluse</option>
       </select>
+    </div>
+    <div class="field" style="max-width:560px;margin-top:14px;">
+      <label>Diagnostic de panne</label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px 14px;border:2px solid var(--border);border-radius:8px;font-weight:500;">
+        <input type="checkbox" id="depInclus" onchange="updR()" style="width:18px;height:18px;cursor:pointer;">
+        <span>Diagnostic de panne inclus dans le forfait annuel</span>
+      </label>
+      <div id="depDetail" style="display:none;margin-top:10px;">
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Le déplacement et la recherche de panne seront inclus dans le forfait. La réparation (main-d'œuvre et pièces) reste facturée séparément.</div>
+      </div>
+    </div>
+    <div class="field" style="max-width:560px;margin-top:14px;">
+      <label>Astreinte</label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:12px 14px;border:2px solid var(--border);border-radius:8px;font-weight:500;">
+        <input type="checkbox" id="astreinte" onchange="updR()" style="width:18px;height:18px;cursor:pointer;">
+        <span>Astreinte facturable (nuits, week-ends et jours fériés 24h/24)</span>
+      </label>
+      <div id="astDetail" style="display:none;margin-top:10px;">
+        <div style="font-size:13px;color:var(--muted);line-height:1.5;">Une clause d'astreinte sera ajoutée au contrat. Les interventions hors heures ouvrées seront facturées à l'appel, sans forfait annuel.</div>
+      </div>
     </div>
     <div class="nav"><button class="btn btn-s" onclick="prev(4)">← Précédent</button><button class="btn btn-p" onclick="next(4)">Suivant →</button></div>
   </div>
@@ -21195,17 +21220,17 @@ let editingContractId = null;
 let eqIdCtr = 0, prIdCtr = 0;
 
 const TYPE_LABELS = {
-  chaudiere:'🔥 Chaudière', vmc:'💨 VMC', multi:'🏢 Multi-équipements',
+  chaudiere:'🔥 Chaudière', chaufferie:'🏭 Chaufferie gaz', vmc:'💨 VMC', multi:'🏢 Multi-équipements',
   thermodynamique:'💧 Ballon thermodynamique', climatisation:'❄️ Génie climatique',
   maintenance:'🔧 Maintenance générale'
 };
 const TYPE_TITLES = {
-  chaudiere:'Contrat maintenance chaudière', vmc:'Contrat maintenance VMC',
+  chaudiere:'Contrat maintenance chaudière', chaufferie:'Contrat maintenance chaufferie gaz', vmc:'Contrat maintenance VMC',
   multi:'Contrat maintenance', thermodynamique:'Contrat ballon thermodynamique',
   climatisation:'Contrat génie climatique', maintenance:'Contrat maintenance'
 };
 const EQUIP_LABEL = {
-  chaudiere:'des chaudières gaz', vmc:'des moteurs VMC',
+  chaudiere:'des chaudières gaz', chaufferie:'de la chaufferie gaz collective', vmc:'des moteurs VMC',
   multi:'des équipements (VMC, chaudières et ramonage)',
   thermodynamique:'du ballon thermodynamique',
   climatisation:'des installations de génie climatique',
@@ -21394,6 +21419,10 @@ function calcTotal(){
 }
 function fmt(n){ return n.toFixed(2).replace('.',','); }
 function updR(){
+  const dep=document.getElementById('depInclus'), depD=document.getElementById('depDetail');
+  if(dep&&depD) depD.style.display = dep.checked ? 'block' : 'none';
+  const ast=document.getElementById('astreinte'), astD=document.getElementById('astDetail');
+  if(ast&&astD) astD.style.display = ast.checked ? 'block' : 'none';
   const rc=document.getElementById('recap'), tb=document.getElementById('total');
   if(!rc) return;
   const {ht,tvaR,ttc}=calcTotal();
@@ -21440,6 +21469,8 @@ function collectData(){
     residenceNom:v('rNom'), residenceAdresse:v('rAdr'),
     tarifMode:tm, nombreVisites:v('nbVis'), montantHT:ht, tva:tvaR, ttc,
     prestations, garantiePieces:v('garPieces'),
+    depInclus: document.getElementById('depInclus')?.checked || false,
+    astreinte: document.getElementById('astreinte')?.checked || false,
     duree:v('duree'), dateDebut:v('dDeb'), dateFin:v('dFin'),
     equipements,
     sitePhoto: sitePhotoB64,
@@ -21733,7 +21764,7 @@ async function buildDocx(d){
     ...Blank(1),
     para([run('3.1 Entretien forfaitaire P2',{b:true,s:22,c:CYAN})],{sb:80,sa:80,align:AlignmentType.LEFT}),
     P("Cet entretien couvre l'ensemble des appareils énumérés en pièce jointe, et comprend :"),
-    Bul("1 visite annuelle systématique et préventive dont le détail est défini sur la nomenclature des opérations d'entretien en annexe ;"),
+    Bul(`${d.nombreVisites||'1 visite annuelle'} systématique et préventive dont le détail est défini sur la nomenclature des opérations d'entretien en annexe ;`),
     Bul("La prise en charge par le prestataire des frais de main-d'œuvre consécutifs aux dépannages demandés expressément par le client ou les utilisateurs."),
     ...Blank(1),
   );
@@ -21756,7 +21787,14 @@ async function buildDocx(d){
     P("Ne sont pas couverts par le contrat entretien forfaitaire P2 les pièces ou les appareils de remplacement."),
     ...Blank(1),hdr('DEPANNAGES'),...Blank(1),
     P("En dehors des visites planifiées et pendant les jours et heures œuvrées (de 08h00 à 17h00 du lundi au vendredi), le prestataire pourra être appelé à effectuer des dépannages."),
-    para([run('Les dépannages ne sont pas inclus',{b:true}),run(" dans le montant forfaitaire annuel, ils feront l'objet d'une facturation séparée.")],{align:AlignmentType.JUSTIFIED}),
+    (d.depInclus
+      ? para([run('Le diagnostic de panne est inclus',{b:true}),run(" dans le montant forfaitaire annuel : le déplacement et la recherche de panne sont pris en charge par le prestataire. La réparation (main-d'œuvre et pièces de rechange) fera l'objet d'une facturation séparée, sur devis préalable.")],{align:AlignmentType.JUSTIFIED})
+      : para([run('Les dépannages ne sont pas inclus',{b:true}),run(" dans le montant forfaitaire annuel, ils feront l'objet d'une facturation séparée.")],{align:AlignmentType.JUSTIFIED})),
+    ...(d.astreinte ? [
+      ...Blank(1),hdr('ASTREINTE'),...Blank(1),
+      P("Le prestataire assure un service d'astreinte joignable en dehors des heures ouvrées, à savoir les nuits, les week-ends et les jours fériés, 24 heures sur 24."),
+      para([run("Les interventions réalisées dans le cadre de l'astreinte ne sont pas comprises dans le montant forfaitaire annuel.",{b:true}),run(" Elles font l'objet d'une facturation à l'appel, selon les tarifs en vigueur du prestataire, incluant le déplacement, la main-d'œuvre aux taux majorés applicables et les pièces de rechange éventuelles.")],{align:AlignmentType.JUSTIFIED}),
+    ] : []),
     ...Blank(1),hdr('FOURNITURES'),...Blank(1),
     P("Pour assurer l'entretien courant, le prestataire n'aura à sa charge que les ingrédients et consommables habituels de faible valeur (lubrifiants, produits de nettoyage, etc.)."),
     ...Blank(1),hdr('TRAVAUX HORS CONTRAT'),...Blank(1),
@@ -22299,7 +22337,7 @@ const _origGenerate = generate;
 // ════════════════════════════════════════════════════════════
 // GAMMES DE MAINTENANCE
 // ════════════════════════════════════════════════════════════
-const GAMMES_DATA = [{"categorie": "climatisation", "sheet": "GROUPE CONDENSATION", "operations": [{"designation": "Nettoyage du condenseur / redressage des ailettes de la batterie", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle intensités absorbées par le compresseur", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle de l'isolement électrique du compresseur", "groupe": null, "periodes": ["A"]}, {"designation": "Resserrage des connexions électriques", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle fonctionnement ventilo-condenseur", "groupe": null, "periodes": ["S"]}, {"designation": "Conbtrôle des paramètres du circuit frigorifique (Températures,…)", "groupe": null, "periodes": ["A"]}, {"designation": "Vérification étanchéité circuit frigorifique suivant décret 2007/737 du 07/05/07 et délivrance d'un certificat d'étanchéité", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle intensités absorbées par le ventilo-condenseur", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle de l'isolement électrique du ventilo-condenseur", "groupe": null, "periodes": ["A"]}]}, {"categorie": "climatisation", "sheet": "UNITE INTERIEURE", "operations": [{"designation": "Nettoyage du moto-ventilateur de soufflage", "groupe": null, "periodes": ["A"]}, {"designation": "Nettoyage du filtre à air", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle de l'isolement électrique ", "groupe": null, "periodes": ["A"]}, {"designation": "Nettoyage du bac à condensats", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle bon écoulement des condensats", "groupe": null, "periodes": ["A"]}, {"designation": "Resserrage des connexions électriques", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle fonctionnement régulation de température", "groupe": null, "periodes": ["S"]}]}, {"categorie": "vmc", "sheet": "Moteur VMC", "operations": [{"designation": "Remplacement courroie", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Graissage", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Nettoyage", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Contrôle électrique", "periodes": ["A"], "groupe": "Moteur VMC"}]}, {"categorie": "multi", "sheet": "Ramonages", "operations": [{"designation": "Ramonages conduits", "periodes": ["A"], "groupe": "Ramonages"}]}, {"categorie": "chaudiere", "sheet": "Chaudières", "operations": [{"designation": "Vérification de l'état, de la nature et de le géometrie du conduit de raccordement de l'appareil", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Nettoyage du corp de chauffe, de la veilleuse et de l'extracteur", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Démontage et nettoyage du bruleur", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification fonctionnelle des dispositifs de sécurité de l'appareil", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification et réglage éventuel du débit gaz", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification fonctionnelle du circulateur de chauffage", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification et réglage des organes de régulation", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification du DSC", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification réseau secondaire", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification bouches entrées et sorties", "periodes": ["A"], "groupe": "Chaudières"}]}];
+const GAMMES_DATA = [{"categorie": "climatisation", "sheet": "GROUPE CONDENSATION", "operations": [{"designation": "Nettoyage du condenseur / redressage des ailettes de la batterie", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle intensités absorbées par le compresseur", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle de l'isolement électrique du compresseur", "groupe": null, "periodes": ["A"]}, {"designation": "Resserrage des connexions électriques", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle fonctionnement ventilo-condenseur", "groupe": null, "periodes": ["S"]}, {"designation": "Conbtrôle des paramètres du circuit frigorifique (Températures,…)", "groupe": null, "periodes": ["A"]}, {"designation": "Vérification étanchéité circuit frigorifique suivant décret 2007/737 du 07/05/07 et délivrance d'un certificat d'étanchéité", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle intensités absorbées par le ventilo-condenseur", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle de l'isolement électrique du ventilo-condenseur", "groupe": null, "periodes": ["A"]}]}, {"categorie": "climatisation", "sheet": "UNITE INTERIEURE", "operations": [{"designation": "Nettoyage du moto-ventilateur de soufflage", "groupe": null, "periodes": ["A"]}, {"designation": "Nettoyage du filtre à air", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle de l'isolement électrique ", "groupe": null, "periodes": ["A"]}, {"designation": "Nettoyage du bac à condensats", "groupe": null, "periodes": ["S"]}, {"designation": "Contrôle bon écoulement des condensats", "groupe": null, "periodes": ["A"]}, {"designation": "Resserrage des connexions électriques", "groupe": null, "periodes": ["A"]}, {"designation": "Contrôle fonctionnement régulation de température", "groupe": null, "periodes": ["S"]}]}, {"categorie": "vmc", "sheet": "Moteur VMC", "operations": [{"designation": "Remplacement courroie", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Graissage", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Nettoyage", "periodes": ["A"], "groupe": "Moteur VMC"}, {"designation": "Contrôle électrique", "periodes": ["A"], "groupe": "Moteur VMC"}]}, {"categorie": "multi", "sheet": "Ramonages", "operations": [{"designation": "Ramonages conduits", "periodes": ["A"], "groupe": "Ramonages"}]}, {"categorie": "chaudiere", "sheet": "Chaudières", "operations": [{"designation": "Vérification de l'état, de la nature et de le géometrie du conduit de raccordement de l'appareil", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Nettoyage du corp de chauffe, de la veilleuse et de l'extracteur", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Démontage et nettoyage du bruleur", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification fonctionnelle des dispositifs de sécurité de l'appareil", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification et réglage éventuel du débit gaz", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification fonctionnelle du circulateur de chauffage", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification et réglage des organes de régulation", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification du DSC", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification réseau secondaire", "periodes": ["A"], "groupe": "Chaudières"}, {"designation": "Vérification bouches entrées et sorties", "periodes": ["A"], "groupe": "Chaudières"}]}, {"categorie": "chaufferie", "sheet": "Brûleur gaz", "operations": [{"designation": "Contrôle et nettoyage de la ligne gaz (filtre, vanne, pressostat)", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Démontage, nettoyage et contrôle de la tête de combustion", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Contrôle et nettoyage des électrodes d'allumage et d'ionisation", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Vérification du programmateur / coffret de sécurité brûleur", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Contrôle du pressostat air et du pressostat gaz", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Analyse de combustion et réglage (CO, CO₂, rendement, température fumées)", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Contrôle de l'étanchéité de la rampe gaz", "periodes": ["A"], "groupe": "Brûleur gaz"}, {"designation": "Vérification du temps de sécurité à l'allumage et à l'extinction", "periodes": ["A"], "groupe": "Brûleur gaz"}]}, {"categorie": "chaufferie", "sheet": "Corps de chauffe / Générateur", "operations": [{"designation": "Ramonage et nettoyage du corps de chauffe et des parcours de fumées", "periodes": ["A"], "groupe": "Corps de chauffe / Générateur"}, {"designation": "Contrôle de l'état du réfractaire et de l'isolation", "periodes": ["A"], "groupe": "Corps de chauffe / Générateur"}, {"designation": "Vérification de l'état du conduit de raccordement et de la cheminée", "periodes": ["A"], "groupe": "Corps de chauffe / Générateur"}, {"designation": "Contrôle du tirage et de l'évacuation des produits de combustion", "periodes": ["A"], "groupe": "Corps de chauffe / Générateur"}, {"designation": "Vérification de l'étanchéité des portes de foyer et des joints", "periodes": ["A"], "groupe": "Corps de chauffe / Générateur"}]}, {"categorie": "chaufferie", "sheet": "Régulation & Sécurités", "operations": [{"designation": "Contrôle et essai du thermostat de régulation", "periodes": ["A"], "groupe": "Régulation & Sécurités"}, {"designation": "Contrôle et essai du thermostat de sécurité à réarmement manuel", "periodes": ["A"], "groupe": "Régulation & Sécurités"}, {"designation": "Vérification de la régulation en fonction de la température extérieure (loi d'eau)", "periodes": ["S"], "groupe": "Régulation & Sécurités"}, {"designation": "Contrôle du fonctionnement de l'aquastat et des sondes", "periodes": ["A"], "groupe": "Régulation & Sécurités"}, {"designation": "Essai de la chaîne de sécurité (coupure gaz sur défaut)", "periodes": ["A"], "groupe": "Régulation & Sécurités"}, {"designation": "Contrôle du détecteur de gaz et de l'électrovanne de coupure", "periodes": ["A"], "groupe": "Régulation & Sécurités"}, {"designation": "Vérification de l'arrêt d'urgence et de la coupure générale", "periodes": ["A"], "groupe": "Régulation & Sécurités"}]}, {"categorie": "chaufferie", "sheet": "Circuit hydraulique", "operations": [{"designation": "Contrôle du fonctionnement des circulateurs / pompes", "periodes": ["S"], "groupe": "Circuit hydraulique"}, {"designation": "Vérification de la pression du circuit et du vase d'expansion", "periodes": ["T"], "groupe": "Circuit hydraulique"}, {"designation": "Contrôle et essai de la soupape de sécurité", "periodes": ["A"], "groupe": "Circuit hydraulique"}, {"designation": "Purge des points hauts et des bouteilles de décantation", "periodes": ["S"], "groupe": "Circuit hydraulique"}, {"designation": "Contrôle de l'étanchéité des réseaux et des organes de robinetterie", "periodes": ["A"], "groupe": "Circuit hydraulique"}, {"designation": "Vérification du bon fonctionnement des vannes mélangeuses / 3 voies", "periodes": ["A"], "groupe": "Circuit hydraulique"}, {"designation": "Relevé des températures départ / retour chauffage", "periodes": ["S"], "groupe": "Circuit hydraulique"}]}, {"categorie": "chaufferie", "sheet": "Traitement d'eau", "operations": [{"designation": "Contrôle du TH et de la qualité de l'eau de l'installation", "periodes": ["S"], "groupe": "Traitement d'eau"}, {"designation": "Vérification et appoint du dispositif de traitement (adoucisseur / pot à boues)", "periodes": ["S"], "groupe": "Traitement d'eau"}, {"designation": "Contrôle du taux d'embouage et de l'inhibiteur", "periodes": ["A"], "groupe": "Traitement d'eau"}, {"designation": "Vérification du disconnecteur de remplissage", "periodes": ["A"], "groupe": "Traitement d'eau"}]}, {"categorie": "chaufferie", "sheet": "Local & Réglementaire", "operations": [{"designation": "Contrôle de la ventilation haute et basse du local chaufferie", "periodes": ["A"], "groupe": "Local & Réglementaire"}, {"designation": "Vérification de l'affichage des consignes de sécurité et du carnet de chaufferie", "periodes": ["A"], "groupe": "Local & Réglementaire"}, {"designation": "Contrôle de l'éclairage de sécurité et des extincteurs", "periodes": ["A"], "groupe": "Local & Réglementaire"}, {"designation": "Mise à jour du livret de chaufferie et relevé des compteurs", "periodes": ["S"], "groupe": "Local & Réglementaire"}, {"designation": "Vérification de l'accessibilité et de la propreté du local", "periodes": ["S"], "groupe": "Local & Réglementaire"}]}];
 
 const PERIODES_ALL = ['H','M','B','T','S','A','SB'];
 const PERIODES_LABELS = {H:'Hebdo',M:'Mensuel',B:'Bimens.',T:'Trimestr.',S:'Semestr.',A:'Annuel',SB:'Selon besoin'};
@@ -22308,11 +22346,12 @@ const PERIODES_FULL = {H:'Hebdomadaire',M:'Mensuel',B:'Bimensuel',T:'Trimestriel
 // Quelles gammes afficher selon le type de contrat sélectionné
 const GAMMES_PAR_TYPE = {
   chaudiere: ['chaudiere'],
+  chaufferie: ['chaufferie'],
   vmc: ['vmc'],
   multi: ['vmc','multi','chaudiere','climatisation'],
   thermodynamique: ['maintenance'],
   climatisation: ['climatisation'],
-  maintenance: ['chaudiere','vmc','multi','climatisation','maintenance']
+  maintenance: ['chaudiere','vmc','multi','climatisation','maintenance','chaufferie']
 };
 
 // State : map id_operation → {checked, periodeOverride}
@@ -22523,6 +22562,8 @@ function fillFormFromData(d){
     sv('tva2', d.tva);
   }
   sv('garPieces', d.garantiePieces);
+  const depEl=document.getElementById('depInclus'); if(depEl) depEl.checked = !!d.depInclus;
+  const astEl=document.getElementById('astreinte'); if(astEl) astEl.checked = !!d.astreinte;
 
   // Équipements
   document.getElementById('eq-list').innerHTML=''; eqIdCtr=0;
